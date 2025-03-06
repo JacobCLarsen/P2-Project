@@ -85,3 +85,54 @@
     </script>
   </body>
 </html>
+
+
+<form>
+  <head>
+      <style>
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #0d0d0d;
+            border-radius: 5px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+          }
+
+        button {
+
+            width: 50%;
+            padding: 10px;
+            background: rgb(123, 130, 126);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: rgb(0, 0, 0);
+        }
+    </style>
+</head>
+  <div class="Page">
+
+    <label for="uname"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="uname" required>
+
+    <label for="psw"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="psw" required>
+
+    <button type="submit">Login</button>
+
+</form>
