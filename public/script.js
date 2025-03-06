@@ -1,5 +1,7 @@
 var socket = io();
 
+var userCount = document.getElementById("userCount");
+
 var messages = document.getElementById("messages");
 var form = document.getElementById("form");
 var input = document.getElementById("input");
@@ -26,4 +28,9 @@ socket.on("chat message", function (msg) {
   item.textContent = msg;
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
+});
+
+socket.on("user join", function () {
+  counter = int(userCount.innerText) + 1;
+  userCount.innerText = counter;
 });
