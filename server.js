@@ -9,14 +9,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-/*
-io.on("connection", (socket) => {
-  console.log("a user connected");
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
-*/
+app.use(express.static("public"));
 
 io.on("connection", (socket) => {
   console.log("a user connected");
