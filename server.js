@@ -13,16 +13,13 @@ app.get("/", (req, res) => {
 // Define the path of public content
 app.use(express.static("public"));
 
-<<<<<<< Updated upstream
 let values = [1, 2, 3, 4, 5];
 let taskNumber = 0;
-=======
+
 // When the user joins ...
 function handleJoin() {
   console.log("a user connected");
-  io.emit("user join");
 }
->>>>>>> Stashed changes
 
 // When the user disconnects ...
 function handleDisconnect() {
@@ -54,11 +51,7 @@ io.on("connection", (socket) => {
   });
 });
 
-<<<<<<< Updated upstream
-server.listen(3000, () => {
-=======
 // Port for the server
 server.listen(3000, "0.0.0.0", () => {
->>>>>>> Stashed changes
   console.log("listening on http://localhost:3000");
 });
