@@ -87,7 +87,7 @@
 </html>
 
 
-<form>
+<html>
   <head>
       <style>
         body {
@@ -109,7 +109,6 @@
             display: flex;
             justify-content: center;
           }
-
         button {
 
             width: 50%;
@@ -123,16 +122,55 @@
         button:hover {
             background: rgb(0, 0, 0);
         }
+        #message {
+        color: red;
+        font-weight: bold;
+        }
     </style>
 </head>
-  <div class="Page">
 
-    <label for="uname"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="uname" required>
+<body>
+    <!-- Login Form -->
+    <form onsubmit="return validateLogin(event)">
+      <div class="Page">
+        <h2>Login</h2>
+        <label for="username"><b>Username</b></label>
+        <input type="text" id="username" placeholder="Enter Username" required>
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
+        <label for="password"><b>Password</b></label>
+        <input type="password" id="password" placeholder="Enter Password" required>
 
-    <button type="submit">Login</button>
+        <div class="btn-container">
+          <button type="submit">Login</button>
+        </div>
 
+        <p id="message"></p>
+  </div>
 </form>
+
+<script>
+
+  const CurrentUsername = "Chupapi";
+  const CurrentPassword = "6969";
+  function validateLogin(event) {
+            event.preventDefault(); // Prevent form from submitting
+
+            
+            const enteredUsername = document.getElementById("username").value;
+            const enteredPassword = document.getElementById("password").value;
+            const message = document.getElementById("message");
+
+            if (enteredUsername === CurrentUsername && enteredPassword === CurrentPassword) {
+                message.style.color = "green";
+                message.textContent = "Login Successful!";
+                alert("Welcome, " + enteredUsername + "!");
+                window.location.href = "welcome.html"; // Redirect (Optional)
+            } else {
+                message.style.color = "red";
+                message.textContent = "Invalid Username or Password!";
+            }
+        }
+
+      </script>
+    </body>
+  </html>
