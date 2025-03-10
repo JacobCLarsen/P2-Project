@@ -48,3 +48,8 @@ body {
 #messages > li:nth-child(odd) {
   background: #efefef;
 }
+
+#userCountContainer {
+  margin-left: 20px;
+  margin-top: 20px;
+}
