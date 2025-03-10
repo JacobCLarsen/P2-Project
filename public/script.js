@@ -7,16 +7,30 @@ var taskResults = document.getElementById("taskResults");
 
 // clicking "Request task" will start work form this client
 startBtn.addEventListener("click", function () {
-  if (startBtn.innerText == "Request task") {
-    startBtn.innerText = "working ... ";
+  if (startBtn.innerText == "Request Task") {
+    startBtn.innerText = "Breaking hashes . ";
+    loading();
     setTimeout(() => {
       startWork();
-      startBtn.innerText = "Request task";
-    }, "1000");
+      startBtn.innerText = "Request Task";
+    }, "2000");
   } else {
     startBtn.innerText = "Request task";
   }
 });
+
+// For fun loading function for when work is started
+function loading() {
+  setTimeout(() => {
+    startBtn.innerText = "Breaking hashes ..";
+    setTimeout(() => {
+      startBtn.innerText = "Breaking hashes ...";
+      setTimeout(() => {
+        startBtn.innerText = "Breaking hashes .";
+      }, "500");
+    }, "500");
+  }, "500");
+}
 
 // When work stops, emit it to the server
 // TODO: Change it so that the serves uses this information to keep track of haw many resources it has available
