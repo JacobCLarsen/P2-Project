@@ -7,15 +7,11 @@ var taskResults = document.getElementById("taskResults");
 
 // clicking "Request task" will start work form this client
 startBtn.addEventListener("click", function () {
-  if (startBtn.innerText == "Request Task") {
-    startBtn.innerText = "Breaking hashes . ";
-    loading();
-    setTimeout(() => {
-      startWork();
-      startBtn.innerText = "Request Task";
-    }, "2000");
+  if (startBtn.innerText == "Start Working") {
+    startBtn.innerText = "Working ... (click to stop session)";
+    startWork();
   } else {
-    startBtn.innerText = "Request task";
+    startBtn.innerText = "Start Working";
   }
 });
 
@@ -72,6 +68,13 @@ function completeTask(task) {
       `task ${task.value} completed with result ${e.data}`
     );
   };
+
+  // Start working again
+  setTimeout(() => {
+    if (startBtn.innerText == "Working ... (click to stop session)") {
+      startWork();
+    }
+  }, "2000");
 }
 
 // When a task i completed by another client, it is send to all clients so show on the GUI
