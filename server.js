@@ -33,8 +33,8 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     handleDisconnect();
   });
-  socket.on("request task", (text) => {
-    console.log(text);
+  socket.on("request task", (text, id) => {
+    console.log(`${text} - ${id}`);
     socket.emit("assigned task", {
       taskId: 123,
       value: values[taskNumber],

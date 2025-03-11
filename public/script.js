@@ -1,4 +1,10 @@
+import { v4 as uuidv4 } from "https://cdn.jsdelivr.net/npm/uuid@8.3.2/+esm";
+
 var socket = io();
+
+// Generate node id
+let nodeId = uuidv4();
+console.log(`Generated id: ${nodeId}`);
 
 // Get element from the HTML-page
 var startBtn = document.getElementById("startBtn");
@@ -41,7 +47,7 @@ function startWork() {
 
 // To fetch a task, we use socket.emit to send a message to the server asking for a task
 async function fetchTask() {
-  socket.emit("request task", "A worker wants to do a task");
+  socket.emit("request task", "A worker wants to do a task", nodeId);
 }
 
 // When the client recieves a message with an "assigned task", it will use the data send in the message and complete the task
@@ -65,7 +71,7 @@ function completeTask(task) {
     taskList.append(item);
     socket.emit(
       "complete task",
-      `task ${task.value} completed with result ${e.data}`
+      `task ${task.value} completed with result ${e.data} from node ${nodeId}`
     );
   };
 
@@ -89,4 +95,3 @@ socket.on("user disconnect", function () {
   userCount.innerText = counter;
   console.log("recieved");
 });
-
