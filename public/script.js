@@ -83,3 +83,10 @@ socket.on("task result", (msg) => {
   result.innerText = msg;
   taskResults.append(result);
 });
+
+socket.on("user disconnect", function () {
+  counter = Number(userCount.innerText) + -1;
+  userCount.innerText = counter;
+  console.log("recieved");
+});
+
