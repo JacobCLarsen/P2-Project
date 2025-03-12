@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Start Work</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="main">
+        <button id="startBtn">Start Working</button>
+        <ul id="tasks"></ul>
+      </div>
+      <aside class="sidebar">
+        <h2>All completed Tasks</h2>
+        <ul id="taskResults"></ul>
+      </aside>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="/script.js"></script>
+  </body>
+</html>
