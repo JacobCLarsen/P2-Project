@@ -1,5 +1,5 @@
 // Imports the function hashSHA512 from the file hash.js.
-import { hashSHA512 } from './hash.js';
+import { hashSHA512 } from './hash-functions.js';
 
 // Function for comparing dictionary with the target hashed password.
 async function dictionaryAttack(targetHash, dictionary) {
