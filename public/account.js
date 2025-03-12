@@ -1,3 +1,4 @@
+/*
 async function handleRegister(e) {
     e.preventDefault(); //Prevent form from submitting
 
@@ -20,3 +21,4 @@ async function handleRegister(e) {
       alert(result.message); //Display error message
     }
   }
+*/
