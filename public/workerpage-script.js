@@ -94,5 +94,3 @@ socket.on("task result", (msg) => {
   result.innerText = msg;
   taskResults.append(result);
 });
-
-
