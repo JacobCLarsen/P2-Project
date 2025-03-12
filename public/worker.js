@@ -1,4 +1,4 @@
-// This worker script takes 
+// This worker script takes
 onmessage = (e) => {
   console.log(`Message received from main script: ${e.data}`);
 
