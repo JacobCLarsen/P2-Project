@@ -1,17 +1,22 @@
+/** Import functions
+ * - uuid4 is used to generete a unique ID with random numbers
+ */
 import { v4 as uuidv4 } from "https://cdn.jsdelivr.net/npm/uuid@8.3.2/+esm";
 
+// Create a socket client using io()
 var socket = io();
 
-// Generate node id
+// Generate unique node id with uuivd4
+// todo: This id should be greated when creating a user and not like here, where a new id is created whenever the browser is loaded
 let nodeId = uuidv4();
 console.log(`Generated id: ${nodeId}`);
 
-// Get element from the HTML-page
+// Get elements from the HTML-page
 var startBtn = document.getElementById("startBtn");
 var taskList = document.getElementById("tasks");
 var taskResults = document.getElementById("taskResults");
 
-// clicking "Request task" will start work form this client
+// clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtn.innerText == "Start Working") {
     startBtn.innerText = "Working ... (click to stop session)";
@@ -90,8 +95,4 @@ socket.on("task result", (msg) => {
   taskResults.append(result);
 });
 
-socket.on("user disconnect", function () {
-  counter = Number(userCount.innerText) + -1;
-  userCount.innerText = counter;
-  console.log("recieved");
-});
+
