@@ -30,7 +30,7 @@ function validateLogin(event) {
     // Redirect to the homepage (root route)
     setTimeout(() => {
       // Timeout for dramatic effect
-      window.location.href = "/"; // Redirect to the homepage
+      window.location.href = "/startwork"; // Redirect to the homepage
     }, 500);
   } else {
     message.style.color = "red";

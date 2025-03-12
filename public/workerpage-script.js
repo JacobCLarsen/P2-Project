@@ -73,6 +73,7 @@ function completeTask(task) {
 
     let item = document.createElement("li");
     item.innerText = `you completed task ${task.value} with result ${e.data}`;
+    taskList.innerHTML = "";
     taskList.append(item);
     socket.emit(
       "complete task",
