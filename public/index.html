@@ -86,7 +86,10 @@
   </body>
 </html>
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 <html>
   <head>
       <style>
@@ -130,7 +133,12 @@
 </head>
 
 <body>
+<<<<<<< Updated upstream
     <!-- Login Form -->
+=======
+    <!---Log in for user here----> 
+
+>>>>>>> Stashed changes
     <form onsubmit="return validateLogin(event)">
       <div class="Page">
         <h2>Login</h2>
@@ -150,8 +158,18 @@
 
 <script>
 
+<<<<<<< Updated upstream
   const CurrentUsername = "FIKiR";
   const CurrentPassword = "6969";
+=======
+  const users = [
+    {username: "Daniel" , password:"123"},
+    {username: "Jacob" , password:"345"},
+    {username: "Philip" , password:"567"},
+    {username: "Anders" , password:"789"},
+    {username: "Zet" , password:"1234"}
+  ];  
+>>>>>>> Stashed changes
   function validateLogin(event) {
             event.preventDefault(); // Prevent form from submitting
 
@@ -160,12 +178,26 @@
             const enteredPassword = document.getElementById("password").value;
             const message = document.getElementById("message");
 
+<<<<<<< Updated upstream
             if (enteredUsername === CurrentUsername && enteredPassword === CurrentPassword) {
+=======
+
+  const CorrectUser = users.find (user => user.username === enteredUsername && user.password === enteredPassword);
+
+            if (CorrectUser)
+            {
+>>>>>>> Stashed changes
                 message.style.color = "green";
                 message.textContent = "Login Successful!";
                 alert("Welcome, " + enteredUsername + "!");
                 window.location.href = "welcome.html"; // Redirect (Optional)
+<<<<<<< Updated upstream
             } else {
+=======
+            } 
+            
+            else {
+>>>>>>> Stashed changes
                 message.style.color = "red";
                 message.textContent = "Invalid Username or Password!";
             }
@@ -173,4 +205,8 @@
 
       </script>
     </body>
+<<<<<<< Updated upstream
   </html>
+=======
+  </html>
+>>>>>>> Stashed changes
