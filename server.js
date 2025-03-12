@@ -3,13 +3,13 @@
  * Socket.io (Websockets) are used for real time communication between the clients and the server
  * "require "./router"" specifies wherer to find the routes for the webpages
  */
-const express = require("express");
+import express from "express";
 const app = express();
-const http = require("http");
-const server = http.createServer(app);
-const { Server } = require("socket.io");
+import { createServer } from "http";
+const server = createServer(app);
+import { Server } from "socket.io";
 const io = new Server(server);
-const router = require("./router");
+import router from "./router.js";
 
 // Use the router for handling routes
 app.use("/", router);
