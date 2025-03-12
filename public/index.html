@@ -9,7 +9,7 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Helvetica, Arial, sans-serif;
       }
-
+        
       #form {
         background: rgba(0, 0, 0, 0.15);
         padding: 0.25rem;
@@ -86,48 +86,10 @@
   </body>
 </html>
 
+
 <html>
   <head>
-      <style>
-        body {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #0d0d0d;
-            border-radius: 5px;
-        }
-        .btn-container {
-            display: flex;
-            justify-content: center;
-          }
-        button {
-
-            width: 50%;
-            padding: 10px;
-            background: rgb(123, 130, 126);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: rgb(0, 0, 0);
-        }
-        #message {
-        color: red;
-        font-weight: bold;
-        }
-    </style>
-</head>
-
+    <link rel="stylesheet" href="/Login/visual.css"></head>
 <body>
     <form onsubmit="return validateLogin(event)">
       <div class="Page">
@@ -145,40 +107,6 @@
         <p id="message"></p>
   </div>
 </form>
-
-<script>
-
-  const users = [
-    {username: "Daniel" , password:"123"},
-    {username: "Jacob" , password:"345"},
-    {username: "Philip" , password:"567"},
-    {username: "Anders" , password:"789"},
-    {username: "Zet" , password:"1234"}
-  ];  
-
-  function validateLogin(event) {
-            event.preventDefault(); // Prevent form from submitting
-
-            
-            const enteredUsername = document.getElementById("username").value;
-            const enteredPassword = document.getElementById("password").value;
-            const message = document.getElementById("message");
-  const CorrectUser = users.find (user => user.username === enteredUsername && user.password === enteredPassword);
-
-            if (CorrectUser)
-            {
-                message.style.color = "green";
-                message.textContent = "Login Successful!";
-                alert("Welcome, " + enteredUsername + "!");
-                window.location.href = "welcome.html"; // Redirect (Optional)
-            } 
-            
-            else {
-                message.style.color = "red";
-                message.textContent = "Invalid Username or Password!";
-            }
-        }
-
-          </script>
+<script src="/Login/user.js"></script>
         </body>
       </html>
