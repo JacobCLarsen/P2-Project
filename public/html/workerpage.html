@@ -5,26 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Start Work</title>
     <link rel="stylesheet" href="/css/style.css" />
+    <!-- Link to your external stylesheet -->
   </head>
   <body>
+    <!-- Navbar with "About" and "Profile" links at the top -->
     <nav id="navbar">
-      <a href="/about">
-        <button>About</button>
-      </a>
-      <a href="/login">
-        <button>Login</button>
-      </a>
+      <div id="navbar-link-container">
+        <a href="/about">
+          <button>About</button>
+        </a>
+        <a href="/profile">
+          <button>Profile</button>
+        </a>
+      </div>
     </nav>
+    
     <div class="container">
       <div class="main">
         <button id="startBtn">Start Working</button>
         <ul id="tasks"></ul>
       </div>
+
       <aside class="sidebar">
         <h2>All completed Tasks</h2>
         <ul id="taskResults"></ul>
       </aside>
     </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="/workerpage-script.js"></script>
   </body>

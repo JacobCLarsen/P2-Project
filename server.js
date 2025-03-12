@@ -7,7 +7,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import router from "./router.js";
-import setupSocketCommunication from "./socketCommunication.js";
+import { setupSocketCommunication } from "./setupSocketCommunication.js";
 
 // Create Express App & Server:
 const app = express();
