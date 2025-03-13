@@ -9,24 +9,30 @@
     <link rel="stylesheet" href="/css/navbar.css" />
   </head>
 
-    <body>
-      <script src="navbar.js" defer></script>
+  <body>
+    <script src="navbar.js" defer></script>
 
-      <div class="converter-contiainer">
-        <h2>Password to Hash Converter</h2>
-        <div class="converter-box">
-          <div class="input-group">
-            <input type="text" id="password" placeholder="Insert Password" required>
-            <div class="btn-container">
-              <button class="btn" onclick="return convertedPassword()">Convert</button>
-            </div>
+    <div class="converter-contiainer">
+      <h2>Password to Hash Converter</h2>
+      <div class="converter-box">
+        <div class="input-group">
+          <input
+            type="text"
+            id="password"
+            placeholder="Insert Password"
+            required
+          />
+          <div class="btn-container">
+            <button class="btn" onclick="return convertedPassword()">
+              Convert
+            </button>
           </div>
         </div>
       </div>
+    </div>
 
-      <p id="output"></p>
+    <p id="output"></p>
 
-      <script src="/hash-converter.js"></script>
-      
-    </body>
+    <script src="/hash-converter.js"></script>
+  </body>
 </html>
