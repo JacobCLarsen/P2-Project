@@ -8,6 +8,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import router from "./router.js";
 import { setupSocketCommunication } from "./setupSocketCommunication.js";
+import { setupAuth } from "./setupAuth.js"; 
 
 // Create Express App & Server:
 const app = express();
@@ -24,6 +25,9 @@ app.use(express.static("public"));
 
 // Set up Socket Communication:
 setupSocketCommunication(io);
+
+// Set up Authentication Routes:
+setupAuth(app); // Calls the function to add login/signup routes
 
 // Port for the Server:
 server.listen(3000, "0.0.0.0", () => {

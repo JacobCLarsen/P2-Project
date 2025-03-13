@@ -31,4 +31,9 @@ router.get("/about", (req, res) => {
   res.sendFile(path.join(basePath, "about.html"));
 });
 
+// Route for the signup page
+router.get("/signup", (req, res) => {
+  res.sendFile(path.join(basePath, "signup.html"));
+});
+
 export default router;
