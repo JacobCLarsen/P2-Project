@@ -17,10 +17,11 @@
   gap: 20px;
 }
 
-#navbar-logout-container {
+#navbar-profile-container {
   display: flex;
   justify-content: right;
-  margin-right: 50px;
+  position: relative; /* Added to position the dropdown relative to profile container */
+  margin-right: 150px;
 }
 
 #navbar a {
@@ -40,4 +41,34 @@
 
 #navbar button:hover {
   background-color: #444;
+}
+
+/* Dropdown Styling */
+#dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background-color: #f1f1f1;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+#log-out:hover {
+  color: #333;
+}
+
+#navbar-profile-container:hover #dropdown-content {
+  display: block; /* Show dropdown when hovering over profile container */
+}
+
+#dropdown-content a {
+  display: block;
+  padding: 10px;
+  color: black;
+  text-decoration: none;
+}
+
+#dropdown-content a:hover {
+  background-color: #ddd;
 }

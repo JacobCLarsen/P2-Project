@@ -7,15 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const navbarHTML = `
     <nav id="navbar">
-        <div id="navbar-link-container">
+    <div id="navbar-link-container">
         <a href="/startwork">
             <button>Home</button>
         </a>
         <a href="/about">
             <button>About</button>
-        </a>
-        <a href="/profile">
-            <button>Profile</button>
         </a>
         <a href="/converter">
             <button>Converter</button>
@@ -23,13 +20,18 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="/dashboard">
             <button>Dashboard</button>
         </a>
-        </div>
-        <div id="navbar-logout-container">
-        <a href="/login">
-            <button>Log out</button>
+    </div>
+    <div id="navbar-profile-container">
+        <a href="/profile">
+            <button>Profile</button>
         </a>
+        <div id="dropdown-content">
+            <a id="log-out" href="/login">
+                Log out
+            </a>
         </div>
-    </nav>
+    </div>
+</nav>
     `;
 
   // Insert navbar at the top of the body
