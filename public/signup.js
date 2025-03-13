@@ -1,15 +1,14 @@
 //Select the signup form and add an event listener for form submission
 document
   .getElementById("signupForm") //Gets the signup form element via its given id
-  .addEventListener(
-    "submit", //Add eventlistener to check when user submits their account information
+  .addEventListener("submit",   //Add eventlistener to check when user submits their account information
     async function (event) {
       event.preventDefault(); //Prevent default form submission behavior (avoids page reload)
 
       //Get user input values
       const newUsername = document.getElementById("newUsername").value; //Entered username for account creation
       const newPassword = document.getElementById("newPassword").value; //Entered password for account creation
-      const signupMessage = document.getElementById("signupMessage"); //Declaring signup meesage for later account creation response
+      const signupMessage = document.getElementById("signupMessage");   //Declaring signup meesage for later account creation response
 
       try {
         //Send a POST request to the server to create a new user
