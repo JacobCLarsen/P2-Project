@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const navbarHTML = `
     <nav id="navbar">
         <div id="navbar-link-container">
+        <a href="/startwork">
+            <button>Start</button>
+        </a>
         <a href="/about">
             <button>About</button>
         </a>
