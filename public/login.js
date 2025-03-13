@@ -26,7 +26,7 @@ async function validateLogin(e) {
     if (data.success) {
       //If login is successful, display success message
       message.style.color = "green";
-      message.textContent = "Login Successful!";
+      message.textContent = "Log In Successful!";
 
       //Redirect user to the start work page after a short delay
       setTimeout(() => {

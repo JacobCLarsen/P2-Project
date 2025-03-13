@@ -1,6 +1,9 @@
 // Create a socket client using io()
 var socket = io();
 
+//Send the name to the server after connecting
+socket.emit("set_name", "USER TEMP");
+
 // Get elements from the HTML-page
 var startBtn = document.getElementById("startBtn");
 var taskList = document.getElementById("tasks");
@@ -55,7 +58,7 @@ function completeTask(task) {
     taskList.append(item);
     socket.emit(
       "complete task",
-      `task ${task.value} completed with result ${e.data} from node ${socket.id}`
+      `task ${task.value} completed with result ${e.data} from node ${task.username}`
     );
   };
 
