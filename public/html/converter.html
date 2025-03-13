@@ -9,8 +9,8 @@
     </head>
 
     <body>
-    <!-- Navbar with links -->
-    <nav id="navbar">
+      <!-- Navbar with links -->
+      <nav id="navbar">
         <div id="navbar-link-container">
           <a href="/about">
             <button>About</button>
@@ -25,6 +25,7 @@
             <button>Dashboard</button>
           </a>
         </div>
+        
         <div id="navbar-logout-container">
           <a href="/login">
             <button>Log out</button>
@@ -32,21 +33,22 @@
         </div>
       </nav>
         
+    
       <div class="converter-contiainer">
         <h2>Password to Hash Converter</h2>
         <div class="converter-box">
-            <form onsubmit="return hashSHA512(input)"></form>
-            <div class="input-group">
-                <label for="password"></label>
-                <input type="text" id="password" placeholder="Insert Password" required>
-            </div>
+            <form onsubmit="return hashSHA512(input)">
+                <div class="input-group">
+                    <label for="password"></label>
+                    <input type="text" id="password" placeholder="Insert Password" required>
+                </div>
 
-            <div class="btn-container">
-                <button type="submit" class="btn">Convert</button>
-            </div>
+                <div class="btn-container">
+                    <button type="submit" class="btn">Convert</button>
+                </div>
+            </form>
         </div>
       </div>
-
       <script src="/hash-functions.js"></script>
     </body>
 </html>
