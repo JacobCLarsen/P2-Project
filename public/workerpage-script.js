@@ -58,7 +58,7 @@ function completeTask(task) {
     taskList.append(item);
     socket.emit(
       "complete task",
-      `task ${task.value} completed with result ${e.data} from node ${task.name}`
+      `task ${task.value} completed with result ${e.data} from node ${task.username}`
     );
   };
 

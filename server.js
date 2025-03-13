@@ -8,7 +8,9 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import router from "./router.js";
 import { setupSocketCommunication } from "./setupSocketCommunication.js";
-import { setupAuth } from "./setupAuth.js"; 
+import { setupAuth } from "./setupAuth.js";
+import bodyParser from "body-parser";
+import jwt from "jsonwebtoken";
 
 // Create Express App & Server:
 const app = express();

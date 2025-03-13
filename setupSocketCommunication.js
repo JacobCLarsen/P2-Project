@@ -23,7 +23,7 @@ export function setupSocketCommunication(io) {
     socket.on("set_name", (name) => {
       socket.name = name; //Store name in the socket object
       console.log(`User set their name to: ${name}`);
-  });
+    });
 
     // When a user starts working, increment workingUsers by one
     socket.on("start work", () => {
@@ -58,7 +58,7 @@ export function setupSocketCommunication(io) {
       // Send the task to the client with "assigned task". The client reads the task object when it revices a "assgiend task" message
       socket.emit("assigned task", {
         taskId: 123,
-        name: socket.name,
+        username: socket.name,
         value: values[taskNumber],
       });
       taskNumber = taskNumber < 4 ? taskNumber + 1 : 0;
