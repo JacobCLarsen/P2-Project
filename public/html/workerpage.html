@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Start Work</title>
     <link rel="stylesheet" href="/css/style.css" />
-    <!-- Link to your external stylesheet -->
   </head>
   <body>
-    <!-- Navbar with "About" and "Profile" links at the top -->
+    <!-- Navbar with links -->
     <nav id="navbar">
       <div id="navbar-link-container">
         <a href="/about">
@@ -19,16 +18,29 @@
         </a>
         
       </div>
+      <div id="navbar-logout-container">
+        <a href="/login">
+          <button>Log out</button>
+        </a>
+      </div>
     </nav>
-    
+
+    <!-- Main content and sidebar -->
     <div class="container">
+      <!-- Main content section -->
       <div class="main">
         <button id="startBtn">Start Working</button>
-        <ul id="tasks"></ul>
+
+        <!-- Active tasks -->
+        <section id="activeTasks">
+          <h4>Latest task</h4>
+          <ul id="tasks"></ul>
+        </section>
       </div>
 
+      <!-- Sidebar for completed tasks -->
       <aside class="sidebar">
-        <h2>All completed Tasks</h2>
+        <h3>Completed tasks from all users</h3>
         <ul id="taskResults"></ul>
       </aside>
     </div>

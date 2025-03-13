@@ -26,19 +26,6 @@ startBtn.addEventListener("click", function () {
   }
 });
 
-// For fun loading function for when work is started
-function loading() {
-  setTimeout(() => {
-    startBtn.innerText = "Breaking hashes ..";
-    setTimeout(() => {
-      startBtn.innerText = "Breaking hashes ...";
-      setTimeout(() => {
-        startBtn.innerText = "Breaking hashes .";
-      }, "500");
-    }, "500");
-  }, "500");
-}
-
 // When work stops, emit it to the server
 // TODO: Change it so that the serves uses this information to keep track of haw many resources it has available
 function stopWork(result) {
@@ -73,6 +60,7 @@ function completeTask(task) {
 
     let item = document.createElement("li");
     item.innerText = `you completed task ${task.value} with result ${e.data}`;
+    taskList.innerHTML = "";
     taskList.append(item);
     socket.emit(
       "complete task",
