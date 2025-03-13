@@ -31,8 +31,8 @@ async function dictionaryAttack(targetHash, filePath) {
 // Const for the dictionary.txt file and the target hash.
 const filePath = "./public/dictionary.txt";
 
-// Hash for the password "Gizmo"
-const targetHash = "197babf83b48b6f429918e6358f778d1bf23e129d68d75880c3fb3f9203b1622a4b2a08660e33707f97957817e912bfba9fd7cb8225b5daddf2868eb0aad3470";
+// Hash for the password 
+const targetHash = "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db";
 
 // Calls the function.
 dictionaryAttack(targetHash, filePath);
