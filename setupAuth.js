@@ -1,7 +1,7 @@
 /* Imports: */
-//Import the Express framework for creating a web server 
-//Import the validateLogin function from auth.js to handle login validation
-//Import the signup function from signup.js to handle user registration
+// - Import the Express framework for creating a web server 
+// - Import the validateLogin function from auth.js to handle login validation
+// - Import the signup function from signup.js to handle user registration
 import express from "express";
 import { validateLogin } from "./auth.js";
 import { signup } from "./signup.js";
