@@ -1,15 +1,5 @@
-/** Import functions
- * - uuid4 is used to generete a unique ID with random numbers
- */
-import { v4 as uuidv4 } from "https://cdn.jsdelivr.net/npm/uuid@8.3.2/+esm";
-
 // Create a socket client using io()
 var socket = io();
-
-// Generate unique node id with uuivd4
-// todo: This id should be greated when creating a user and not like here, where a new id is created whenever the browser is loaded
-let nodeId = uuidv4();
-console.log(`Generated id: ${nodeId}`);
 
 // Get elements from the HTML-page
 var startBtn = document.getElementById("startBtn");
@@ -19,27 +9,28 @@ var taskResults = document.getElementById("taskResults");
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtn.innerText == "Start Working") {
-    startBtn.innerText = "Working ... (click to stop session)";
+    startBtn.innerText = "Working ... (click to stop)";
     startWork();
   } else {
     startBtn.innerText = "Start Working";
+    stopWork();
   }
 });
 
 // When work stops, emit it to the server
-// TODO: Change it so that the serves uses this information to keep track of haw many resources it has available
 function stopWork(result) {
   socket.emit("stop work");
 }
 
 // Starting work will fetch a task
 function startWork() {
+  socket.emit("start work");
   fetchTask();
 }
 
 // To fetch a task, we use socket.emit to send a message to the server asking for a task
 async function fetchTask() {
-  socket.emit("request task", "A worker wants to do a task", nodeId);
+  socket.emit("request task", "A worker wants to do a task");
 }
 
 // When the client recieves a message with an "assigned task", it will use the data send in the message and complete the task
@@ -64,14 +55,14 @@ function completeTask(task) {
     taskList.append(item);
     socket.emit(
       "complete task",
-      `task ${task.value} completed with result ${e.data} from node ${nodeId}`
+      `task ${task.value} completed with result ${e.data} from node ${socket.id}`
     );
   };
 
   // Start working again
   setTimeout(() => {
-    if (startBtn.innerText == "Working ... (click to stop session)") {
-      startWork();
+    if (startBtn.innerText == "Working ... (click to stop)") {
+      fetchTask();
     }
   }, "2000");
 }

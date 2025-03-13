@@ -9,36 +9,21 @@
   </head>
   <body>
     <!-- Navbar with links -->
-    <nav id="navbar">
-      <div id="navbar-link-container">
-        <a href="/about">
-          <button>About</button>
-        </a>
-        <a href="/profile">
-          <button>Profile</button>
-        </a>
-        <a href="/dashboard">
-          <button>Dashboard</button>
-        </a>
-      </div>
-      <div id="navbar-logout-container">
-        <a href="/login">
-          <button>Log out</button>
-        </a>
-      </div>
-    </nav>
+    <script src="navbar.js" defer></script>
 
     <!-- Dashboard page -->
     <div class="main">
       <!-- Dashbord Container -->
       <div class="dashboard-wrapper">
-        <div id="active-workers" class="container">Aktive workers:</div>
+        <div class="container">
+          <p id="active-workers">Active workers:</p>
+        </div>
         <div class="container">NaN</div>
         <div class="container">NaN</div>
         <div class="container">NaN</div>
       </div>
     </div>
-
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/dashboard.js"></script>
   </body>
 </html>

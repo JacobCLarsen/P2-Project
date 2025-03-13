@@ -1,5 +1,11 @@
+// Create a socket client using io()
+const socket = io();
+
 // Get elements from the dom
 const activeWorkersField = document.getElementById("active-workers");
 
-// write the number of active workers to the dashboard page
-activeWorkersField.append(" 2");
+socket.on("worker amount change", (activeWorkers) => {
+  console.log("worker changed");
+
+  activeWorkersField.innerText = `Active workers: ${activeWorkers}`;
+});
