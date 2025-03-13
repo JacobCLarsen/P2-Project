@@ -31,4 +31,9 @@ router.get("/about", (req, res) => {
   res.sendFile(path.join(basePath, "about.html"));
 });
 
+// Route for the dashboard page
+router.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(basePath, "dashboard.html"));
+});
+
 export default router;
