@@ -1,10 +1,10 @@
 /* Imports: */
-// - Import the Express framework for creating a web server 
+// - Import the Express framework for creating a web server
 // - Import the validateLogin function from auth.js to handle login validation
 // - Import the signup function from signup.js to handle user registration
 import express from "express";
-import { validateLogin } from "./auth.js";
-import { signup } from "./signup.js";
+import { validateLogin } from "./auth_json.js";
+import { signup } from "./signup_json.js";
 
 /**
  * Function to set up authentication-related routes in the Express app.
@@ -25,7 +25,7 @@ export function setupAuth(app) {
     //Extract username and password from the request body
     const { username, password } = req.body;
 
-     //Check if both username and password are provided
+    //Check if both username and password are provided
     if (!username || !password) {
       return res
         .status(400) //Bad request status response code
@@ -45,7 +45,6 @@ export function setupAuth(app) {
         .json({ success: false, message: "Invalid username or password" }); //Error message if username or password is wrong
     }
   });
-
 
   /* Signup: (Handles new user registration) */
   /**
