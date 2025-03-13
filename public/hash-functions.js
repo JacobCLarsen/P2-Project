@@ -1,11 +1,10 @@
-//Import the built-in crypto module in Node.js.
-import { createHash } from "crypto";
-
-//Function to generate SHA-512 hash for a given input string.
-export function hashSHA512(input) {
-    return createHash('sha512').update(input).digest('hex');
+async function hashSHA512(message) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-512", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    return hashHex;
 }
 
-// createHash("sha512"): Create a SHA-512 hash instance.
-// update(input): Feed the input string into the hash function.
-// digest("hex"): Compute the final hash and return it as a hexadecimal string.
+export { hashSHA512 };
