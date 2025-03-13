@@ -10,7 +10,9 @@ export function setupAuth(app) {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ success: false, message: "Missing username or password" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing username or password" });
     }
 
     const isValid = await validateLogin(username, password);
@@ -18,7 +20,9 @@ export function setupAuth(app) {
     if (isValid) {
       res.json({ success: true, message: "Login successful!" });
     } else {
-      res.status(401).json({ success: false, message: "Invalid username or password" });
+      res
+        .status(401)
+        .json({ success: false, message: "Invalid username or password" });
     }
   });
 
@@ -27,7 +31,9 @@ export function setupAuth(app) {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ success: false, message: "Missing username or password" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing username or password" });
     }
 
     const result = await signup(username, password);

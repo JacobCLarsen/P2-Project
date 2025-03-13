@@ -11,7 +11,10 @@ async function validateLogin(e) {
     const response = await fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: enteredUsername, password: enteredPassword }),
+      body: JSON.stringify({
+        username: enteredUsername,
+        password: enteredPassword,
+      }),
     });
 
     const data = await response.json();
@@ -32,36 +35,3 @@ async function validateLogin(e) {
 }
 
 
-
-
-
-
-
-
-
-
-/*
-  // Find the user with matching credentials
-  const CorrectUser = users.find(
-    (user) =>
-      user.username === enteredUsername && user.password === enteredPassword
-  );
-
-  // Show success or error message
-  if (CorrectUser) {
-    message.style.color = "green";
-    message.textContent = "Login Successful!";
-
-    // Redirect to the homepage (root route)
-    setTimeout(() => {
-      // Timeout for dramatic effect
-      window.location.href = "/startwork"; // Redirect to the homepage
-    }, 500);
-  } else {
-    message.style.color = "red";
-    message.textContent = "Invalid Username or Password! Please try again.";
-
-    // Focus the username or password field to guide the user
-    document.getElementById("username").focus();
-  }
-*/
