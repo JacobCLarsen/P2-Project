@@ -21,7 +21,7 @@
   display: flex;
   justify-content: right;
   position: relative; /* Added to position the dropdown relative to profile container */
-  margin-right: 80px;
+  margin-right: 40px;
 }
 
 #navbar a {
