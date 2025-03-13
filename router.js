@@ -31,6 +31,11 @@ router.get("/about", (req, res) => {
   res.sendFile(path.join(basePath, "about.html"));
 });
 
+// Route for the profile page
+router.get("/profile", (req, res) => {
+  res.sendFile(path.join(basePath, "profile.html"));
+});
+
 // Route for the signup page
 router.get("/signup", (req, res) => {
   res.sendFile(path.join(basePath, "signup.html"));
