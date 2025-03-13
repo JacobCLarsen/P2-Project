@@ -12,7 +12,7 @@ var taskResults = document.getElementById("taskResults");
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtn.innerText == "Start Working") {
-    startBtn.innerText = "Working ... (click to stop)";
+    startBtn.innerText = "Working...\n(Click To Stop)";
     startWork();
   } else {
     startBtn.innerText = "Start Working";
