@@ -1,4 +1,4 @@
-/** Imports
+/* Imports:
  * Express for API's/ routing
  * Socket.io (Websockets) are used for real time communication between the clients and the server
  * "require "./router"" specifies wherer to find the routes for the webpages
