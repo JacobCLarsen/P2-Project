@@ -1,10 +1,11 @@
-// Converter for creating hashes from passwords using the hash-functions.js function.
 import { hashSHA512 } from "./hash-functions.js";
 
-function convertedPassword() {
+console.log(typeof hashSHA512);
+
+async function convertedPassword() {
     let password = document.getElementById("password").value;
-    let hashed = hashSHA512(password);
+    let hashed = await hashSHA512(password);
     document.getElementById("output").innerText = "Hashed Output: " + hashed;
 }
 
-
+document.querySelector(".btn").addEventListener("click", convertedPassword);

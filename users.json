@@ -1,0 +1,28 @@
+{
+  "users": {
+    "1": {
+      "username": "Philip",
+      "password": "1110"
+    },
+    "2": {
+      "username": "Jacob",
+      "password": "345"
+    },
+    "3": {
+      "username": "Daniel",
+      "password": "123"
+    },
+    "4": {
+      "username": "Anders",
+      "password": "1234"
+    },
+    "5": {
+      "username": "Zet",
+      "password": "1234"
+    },
+    "6": {
+      "username": "Viktor",
+      "password": "Hitler123"
+    }
+  }
+}
