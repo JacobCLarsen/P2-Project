@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <nav id="navbar">
         <div id="navbar-link-container">
         <a href="/startwork">
-            <button>Start</button>
+            <button>Home</button>
         </a>
         <a href="/about">
             <button>About</button>
