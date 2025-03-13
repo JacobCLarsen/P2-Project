@@ -41,4 +41,9 @@ router.get("/dashboard", (req, res) => {
   res.sendFile(path.join(basePath, "dashboard.html"));
 });
 
+// Route for the converter page
+router.get("/converter", (req, res) => {
+  res.sendFile(path.join(basePath, "converter.html"));
+});
+
 export default router;
