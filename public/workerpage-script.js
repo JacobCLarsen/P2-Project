@@ -64,7 +64,7 @@ function completeTask(task) {
 
   // Start working again
   setTimeout(() => {
-    if (startBtn.innerText == "Working ... (click to stop)") {
+    if (startBtn.innerText == "Working...\n(Click To Stop)") {
       fetchTask();
     }
   }, "2000");
