@@ -1,3 +1,6 @@
+/* Imports: */
+// - Import the 'fs/promises' module to work with the file system asynchronously (read/write operations)
+// - Import the 'path' module to handle file paths in a cross-platform manner
 import fs from "fs/promises";
 import path from "path";
 
