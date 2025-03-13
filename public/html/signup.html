@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link rel="icon" type="png" href="/assets/favicon-32x32.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Signup</title>
     <link rel="stylesheet" href="/css/signup-style.css" />
-</head>
-<body>
+  </head>
+  <body>
     <custom-navbar></custom-navbar>
     <div class="signup-container">
       <div class="signup-box">
@@ -14,14 +15,24 @@
         <form id="signupForm">
           <div class="input-group">
             <label for="username"><b>Username</b></label>
-            <input type="text" id="newUsername" placeholder="Enter Username" required />
+            <input
+              type="text"
+              id="newUsername"
+              placeholder="Enter Username"
+              required
+            />
           </div>
 
           <div class="input-group">
             <label for="password"><b>Password</b></label>
-            <input type="password" id="newPassword" placeholder="Enter Password" required />
+            <input
+              type="password"
+              id="newPassword"
+              placeholder="Enter Password"
+              required
+            />
           </div>
-          
+
           <div id="message" class="message"></div>
 
           <div class="btn-container">
@@ -34,8 +45,6 @@
         </form>
       </div>
     </div>
-    <script src="/signup.js"></script>    
-</body>
+    <script src="/signup.js"></script>
+  </body>
 </html>
-
-
