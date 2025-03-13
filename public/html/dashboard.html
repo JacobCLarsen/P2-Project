@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Start Work</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="/css/navbar.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
   </head>
   <body>
     <!-- Navbar with links -->
@@ -28,27 +28,17 @@
       </div>
     </nav>
 
-    <!-- Main content and sidebar -->
-    <div class="container">
-      <!-- Main content section -->
-      <div class="main">
-        <button id="startBtn">Start Working</button>
-
-        <!-- Active tasks -->
-        <section id="activeTasks">
-          <h4>Latest task</h4>
-          <ul id="tasks"></ul>
-        </section>
+    <!-- Dashboard page -->
+    <div class="main">
+      <!-- Dashbord Container -->
+      <div class="dashboard-wrapper">
+        <div id="active-workers" class="container">Aktive workers:</div>
+        <div class="container">NaN</div>
+        <div class="container">NaN</div>
+        <div class="container">NaN</div>
       </div>
-
-      <!-- Sidebar for completed tasks -->
-      <aside class="sidebar">
-        <h3>Completed tasks from all users</h3>
-        <ul id="taskResults"></ul>
-      </aside>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="/workerpage-script.js"></script>
+    <script src="/dashboard.js"></script>
   </body>
 </html>

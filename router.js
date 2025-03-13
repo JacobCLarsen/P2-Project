@@ -36,4 +36,9 @@ router.get("/signup", (req, res) => {
   res.sendFile(path.join(basePath, "signup.html"));
 });
 
+// Route for the dashboard page
+router.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(basePath, "dashboard.html"));
+});
+
 export default router;

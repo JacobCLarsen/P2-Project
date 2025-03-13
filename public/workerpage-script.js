@@ -26,19 +26,6 @@ startBtn.addEventListener("click", function () {
   }
 });
 
-// For fun loading function for when work is started
-function loading() {
-  setTimeout(() => {
-    startBtn.innerText = "Breaking hashes ..";
-    setTimeout(() => {
-      startBtn.innerText = "Breaking hashes ...";
-      setTimeout(() => {
-        startBtn.innerText = "Breaking hashes .";
-      }, "500");
-    }, "500");
-  }, "500");
-}
-
 // When work stops, emit it to the server
 // TODO: Change it so that the serves uses this information to keep track of haw many resources it has available
 function stopWork(result) {

@@ -3,6 +3,14 @@ export function setupSocketCommunication(io) {
   let values = [1, 2, 3, 4, 5];
   let taskNumber = 0;
 
+  // Keep track of active workers
+  let activeWorkers = 0;
+
+  // When a user starts working it should be logged and the activeWorkers variables is updated
+  function handleStartWork() {
+    activeWorkers++;
+  }
+
   // io.on("connections") runs when a client is connected.
   io.on("connection", (socket) => {
     console.log("a user connected");

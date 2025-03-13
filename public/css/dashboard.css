@@ -1,0 +1,24 @@
+.main {
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-wrapper {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 75%;
+  margin-top: 200px;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+
+  font-size: 30px;
+  border-radius: 10px;
+}

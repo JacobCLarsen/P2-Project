@@ -1,11 +1,18 @@
-// Imports the function hashSHA512 from the file hash.js.
+// Imports the function hashSHA512 from the file hash.js and the file system module.
 import { hashSHA512 } from './hash-functions.js';
+import fs from 'fs';
 
 // Function for comparing dictionary with the target hashed password.
-async function dictionaryAttack(targetHash, dictionary) {
+async function dictionaryAttack(targetHash, filePath) {
+
+    // Reads the file and returns as a string. utf8 is the type of character encoding used in the file.
+    const data = fs.readFileSync(filePath, 'utf8');
+
+    // data.split splits const data into array of lines. password.trim removes extra spaces ad empty lines.
+    const passwords = data.split('\n').map(password => password.trim());
 
     // "For of" loop that goes through each password of the dictionary.
-    for (let password of dictionary) {
+    for (let password of passwords) {
 
         // Hashes the current password and assigns it to the const hashedPassword.
         const hashedPassword = await hashSHA512(password);
@@ -21,10 +28,10 @@ async function dictionaryAttack(targetHash, dictionary) {
     return null;
 }
 
-// Temporary const for proof of concept.
-const dictionary = ["123","1234","123456","12345","1234567"];
-const targetHash = "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413";
+// Const for the dictionary.txt file and the target hash.
+const filePath = "./public/dictionary.txt";
+const targetHash = prompt("Insert the hash you wish to look for: ");
 
 // Calls the function.
-dictionaryAttack(targetHash, dictionary);
+dictionaryAttack(targetHash, filePath);
 
