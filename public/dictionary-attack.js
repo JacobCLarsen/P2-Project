@@ -30,7 +30,7 @@ async function dictionaryAttack(targetHash, filePath) {
 
 // Const for the dictionary.txt file and the target hash.
 const filePath = "./public/dictionary.txt";
-const targetHash = prompt("Insert the hash you wish to look for: ");
+const targetHash = "";
 
 // Calls the function.
 dictionaryAttack(targetHash, filePath);
