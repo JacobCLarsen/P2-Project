@@ -36,4 +36,3 @@ const targetHash = "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9d
 
 // Calls the function.
 dictionaryAttack(targetHash, filePath);
-
