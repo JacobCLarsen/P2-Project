@@ -8,7 +8,7 @@ async function convertedPassword() {
 
     // Makes the grey output box appear only after the password is hashed.
     output.style.display = "block";
-
+    
     document.getElementById("output").innerText = "Hashed Output: " + hashed;
 }
 
@@ -18,10 +18,8 @@ document.querySelector(".btn").addEventListener("click", convertedPassword);
 
 // Copy to clipboard function
 document.getElementById("copy-btn").addEventListener("click", function () {
-
     // Gets element from the id "output" and excludes the "Hashed Output: " part.
     let hashText = document.getElementById("output").innerText.replace("Hashed Output: ", "");
-
     // Copies the elemtent to system clipboard.
     navigator.clipboard.writeText(hashText);
 });
