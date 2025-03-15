@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="icon" type="png" href="/assets/favicon.png" />
+    <link rel="icon" type="png" href="/assets/circular-favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
@@ -15,11 +15,15 @@
     <div class="container">
       <!-- Main content section -->
       <div class="main">
-        <button id="startBtn">Start Working</button>
+        <div id="btn-container">
+          <button id="startBtn">Start Working</button>
+          <p>Please leave this page open to continue working</p>
+          <p id="workstatus"></p>
+        </div>
 
         <!-- Active tasks -->
         <section id="activeTasks">
-          <h4>Latest Completed Task</h4>
+          <!-- <h4>Latest Completed Task</h4> -->
           <ul id="tasks"></ul>
         </section>
       </div>

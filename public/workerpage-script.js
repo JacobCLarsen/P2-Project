@@ -8,11 +8,17 @@ socket.emit("set_name", "USER TEMP");
 var startBtn = document.getElementById("startBtn");
 var taskList = document.getElementById("tasks");
 var taskResults = document.getElementById("taskResults");
+var statusMessage = document.getElementById("workstatus");
+
+// Alert the user when they try to leave to reload the page while working. This function is added to the workbutton eventlistener
+function beforeReloadHandeler(event) {
+  event.preventDefault();
+}
 
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtn.innerText == "Start Working") {
-    startBtn.innerText = "Working...\n(Click To Stop)";
+    startBtn.innerText = "Stop Working";
     startWork();
   } else {
     startBtn.innerText = "Start Working";
@@ -20,15 +26,21 @@ startBtn.addEventListener("click", function () {
   }
 });
 
-// When work stops, emit it to the server
-function stopWork(result) {
-  socket.emit("stop work");
-}
-
 // Starting work will fetch a task
 function startWork() {
+  // Cosmetic changes
+  startBtn.style.background = "#007bff";
   socket.emit("start work");
   fetchTask();
+  window.addEventListener("beforeunload", beforeReloadHandeler); // Add eventlistener to alert the user before leaving the page
+}
+
+// When work stops, emit it to the server
+function stopWork(result) {
+  // Comsetic changes
+  startBtn.style.background = "#333";
+  socket.emit("stop work");
+  window.removeEventListener("beforeunload", beforeReloadHandeler); // The user is save to leave the page, as no work is being done
 }
 
 // To fetch a task, we use socket.emit to send a message to the server asking for a task
@@ -53,18 +65,18 @@ function completeTask(task) {
     myWorker.terminate();
 
     let item = document.createElement("li");
-    item.innerText = `you completed task ${task.value} with result ${e.data}`;
+    item.innerText = `You completed task ${task.value} with result ${e.data}`;
     taskList.innerHTML = "";
     taskList.append(item);
     socket.emit(
       "complete task",
-      `task ${task.value} completed with result ${e.data} from node ${task.username}`
+      `Task ${task.value} completed with result: ${e.data} from node: ${task.username} with id: ${socket.id}`
     );
   };
 
   // Start working again
   setTimeout(() => {
-    if (startBtn.innerText == "Working...\n(Click To Stop)") {
+    if (startBtn.innerText == "Stop Working") {
       fetchTask();
     }
   }, "2000");
