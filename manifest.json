@@ -6,20 +6,20 @@
     "author": "SW Group 1",
     "action": {
         "default_popup": "/public/html/chrome-extension.html",
-        "default_title": "Ethical Hash Cracker",
-        "default_icon": "/public/assets/favicon.png"
+        "default_title": "Ethical Hash Cracker"
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "css": ["/public/css/chrome-extension.css"],
-            "js": ["/public/injector.js"],
-            "run_at": "document_start",
-            "all_frames": true
+            "matches": ["file:///"],
+            "css": ["/public/css/chrome-extension.css"]
         }
     ],
+    "icons": {
+        "128": "/public/assets/circular-favicon.png",
+        "16": "/public/assets/circular-favicon.png",
+        "48": "/public/assets/circular-favicon.png"
+    },
     "permissions": [
         "activeTab"
     ]
-
 }
