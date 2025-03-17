@@ -11,7 +11,8 @@
     "content_scripts": [
         {
             "matches": ["file:///"],
-            "css": ["/public/css/chrome-extension.css"]
+            "css": ["/public/css/chrome-extension.css"],
+            "js": ["/public/workerpage-script.js"]
         }
     ],
     "icons": {

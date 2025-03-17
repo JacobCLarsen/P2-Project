@@ -1,5 +1,4 @@
 #startBtn {
-    margin-top: 100;
     font-size: 24px;
     cursor: pointer;
     border: none;
@@ -16,7 +15,7 @@
     flex-direction: column;
 }
 .container{
-    height: 150px;
+    height: 100px;
     width: 250px;
     border-radius: 10px;
 }
