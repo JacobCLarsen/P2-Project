@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Circular background -->
+  <circle cx="256" cy="256" r="250" fill="#FFBF00"/>
+  
+  <!-- Outer border circles -->
+  <circle cx="256" cy="256" r="240" fill="none" stroke="#1B1464" stroke-width="6"/>
+  <circle cx="256" cy="256" r="225" fill="none" stroke="#1B1464" stroke-width="4"/>
+  
+  <!-- Decorative elements adapted to circular format -->
+  <!-- Top decorative element -->
+  <path d="M256 70 C220 90, 190 70, 170 90 C190 110, 220 100, 256 120 C292 100, 322 110, 342 90 C322 70, 292 90, 256 70Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  
+  <!-- Bottom decorative element -->
+  <path d="M256 442 C220 422, 190 442, 170 422 C190 402, 220 412, 256 392 C292 412, 322 402, 342 422 C322 442, 292 422, 256 442Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  
+  <!-- Left decorative element -->
+  <path d="M70 256 C90 220, 70 190, 90 170 C110 190, 100 220, 120 256 C100 292, 110 322, 90 342 C70 322, 90 292, 70 256Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  
+  <!-- Right decorative element -->
+  <path d="M442 256 C422 220, 442 190, 422 170 C402 190, 412 220, 392 256 C412 292, 402 322, 422 342 C442 322, 422 292, 442 256Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  
+  <!-- Diagonal decorative elements -->
+  <path d="M120 120 C140 140, 120 160, 140 180 C160 160, 140 140, 120 120Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  <path d="M392 120 C372 140, 392 160, 372 180 C352 160, 372 140, 392 120Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  <path d="M120 392 C140 372, 120 352, 140 332 C160 352, 140 372, 120 392Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  <path d="M392 392 C372 372, 392 352, 372 332 C352 352, 372 372, 392 392Z" fill="none" stroke="#1B1464" stroke-width="5"/>
+  
+  <!-- Central wavy circle for the C -->
+  <path d="M256 180 C220 180, 190 220, 190 256 C190 292, 220 332, 256 332 C292 332, 322 292, 322 256 C322 220, 292 180, 256 180Z" fill="none" stroke="#1B1464" stroke-width="6" stroke-dasharray="0 15" stroke-linecap="round" stroke-dashoffset="7.5"/>
+  
+  <!-- The letter C -->
+  <path d="M290 226 C270 210, 240 210, 220 230 C200 250, 200 280, 220 300 C240 320, 270 320, 290 304" fill="none" stroke="#1B1464" stroke-width="10" stroke-linecap="round"/>
+</svg>
