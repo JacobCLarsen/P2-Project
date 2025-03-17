@@ -5,12 +5,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
   </head>
   <body>
     <script src="navbar.js"></script>
+
     <div class="container">
-      <h1>This is the profile page</h1>
+      <h1>Profile Page</h1>
+      <div class="profileCard">
+        <img id="profileImg" src="assets/DefaultProfileIMG.png" alt="Profile Picture" class="profilePic">
+        <input type="file" id="uploadProfilePic" accept="image/*" class="hidden"><br>
+        <button id="changeProfilePicBtn">Change Profile Picture</button>
+        <h2 id="userName">John Pork</h2>
+        <p id="userEmail">johnpork@example.com</p>
+        <p id="userBio">This is a sample bio.</p>
+        <button id="editProfileBtn">Edit Profile</button> <br><br>
+      </div>
+
+      <br><br><br><hr><br>
+
+      <div id="editProfileForm" class="hidden">
+          <label>Name:</label><br>
+          <input type="text" id="editName"><br><br>
+          <label>Email:</label><br>
+          <input type="email" id="editEmail"><br><br>
+          <label>Bio:</label><br>
+          <textarea id="editBio"></textarea><br><br>
+          <button id="saveProfileBtn">Save</button>
+          <button id="cancelEditBtn">Cancel</button>
+      </div>
     </div>
+
+    <script src="profile.js"></script>
   </body>
 </html>
