@@ -10,22 +10,14 @@
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "css": ["/public/css/chrome-extension.css"],
-            "run_at": "document_start",
-            "all_frames": true
-        }
-    ],
-    "web_accessible_resources": [
-        {
-            "resources": ["/public/css/chrome-extension.css"],
-            "matches": ["<all_urls>"]
+            "matches": ["file:///"],
+            "css": ["/public/css/chrome-extension.css"]
         }
     ],
     "icons": {
-        "16": "/public/assets/circular-favicon.svg",
-        "48": "/public/assets/circular-favicon.svg",
-        "128": "/public/assets/circular-favicon.svg"
+        "128": "/public/assets/circular-favicon.png",
+        "16": "/public/assets/circular-favicon.png",
+        "48": "/public/assets/circular-favicon.png"
     },
     "permissions": [
         "activeTab"
