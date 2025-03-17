@@ -90,7 +90,7 @@ socket.on("task result", (msg) => {
 
 // Function to open af new tab to work on antoher page
 plusTabBtn.addEventListener("click", function () {
-  window.location.href = "/startwork";
+  window.open("/startwork", "_blank");
 });
 
 // ************ Cosmetic functions ************
@@ -146,10 +146,6 @@ function hashAnimation() {
         return letters[Math.floor(Math.random() * letters.length)];
       })
       .join("");
-
-    if (iteration >= hashingText.dataset.value.length) {
-      clearInterval(interval);
-    }
 
     iteration += 1 / 3;
   }, 100);

@@ -31,7 +31,9 @@ body {
 }
 
 #plus-tab-btn {
-  border: #444 solid 2px;
+  border: rgb(255, 57, 57) solid 2px;
+  color: rgb(255, 57, 57);
+  background-color: transparent;
   padding: 10px;
   border-radius: 10px;
   display: none;
