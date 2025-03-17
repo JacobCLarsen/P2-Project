@@ -31,6 +31,13 @@ function startWork() {
   // Cosmetic changes
   startBtn.style.background = "#007bff";
   socket.emit("start work");
+  document.querySelectorAll("a").forEach((link) => {
+    // When working naivgation to a new page should open it in a new window
+    link.setAttribute("target", "_blank");
+
+    link.setAttribute("rel", "noopener noreferrer");
+  });
+
   fetchTask();
   window.addEventListener("beforeunload", beforeReloadHandeler); // Add eventlistener to alert the user before leaving the page
 }
@@ -39,6 +46,13 @@ function startWork() {
 function stopWork(result) {
   // Comsetic changes
   startBtn.style.background = "#333";
+  document.querySelectorAll("a").forEach((link) => {
+    // When not working, taps are opened in the same window
+    link.removeAttribute("target", "_blank");
+
+    link.removeAttribute("rel", "noopener noreferrer");
+  });
+
   socket.emit("stop work");
   window.removeEventListener("beforeunload", beforeReloadHandeler); // The user is save to leave the page, as no work is being done
 }
