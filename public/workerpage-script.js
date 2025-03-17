@@ -139,9 +139,6 @@ function hashAnimation() {
     hashingText.innerText = hashingText.innerText
       .split("")
       .map((letter, index) => {
-        if (index < iteration) {
-          return hashingText.dataset.value[index];
-        }
 
         return letters[Math.floor(Math.random() * letters.length)];
       })
