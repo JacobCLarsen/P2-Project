@@ -24,29 +24,53 @@ body {
   align-items: center;
 }
 
-#btn-container {
+#main-section-container {
+  margin-top: 200px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: 40%;
+}
+
+#plus-tab-btn {
+  border: rgb(255, 57, 57) solid 2px;
+  color: rgb(255, 57, 57);
+  background-color: transparent;
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+  cursor: pointer;
+}
+
+#btn-container {
+  margin-right: 20px;
+  align-items: center;
+  width: 260px;
+  border: #444 solid 2px;
+  border-radius: 20px;
+  padding: 0px 15px 0px 15px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 #startBtn {
-  margin-top: 200px;
-  padding: 15px 30px;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
-  border: none;
-  background-color: #333;
-  color: white;
-  border-radius: 8px;
+  color: #333;
   transition: 0.3s;
-  width: 300px;
-  text-align: left;
+  text-align: center;
+  user-select: none;
 }
 
-#startBtn:hover {
-  background-color: #444;
+#btn-container:hover {
+  border: #007bff solid 2px;
+}
+
+#btn-container:hover #startBtn {
+  color: #007bff;
+}
+#hashingText {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #00c72f;
 }
 
 /* Active tasks list styling */
@@ -90,7 +114,7 @@ body {
 }
 
 #taskResults li {
-  background: #d4edda;
+  background: #c5edce;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
