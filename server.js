@@ -30,6 +30,6 @@ setupSocketCommunication(io);
 setupAuth(app); // Calls the function to add login/signup routes
 
 // Port for the Server:
-server.listen(3000, "0.0.0.0", () => {
-  console.log("listening on http://localhost:3000");
+server.listen(3310, "0.0.0.0", () => {
+  console.log("listening on http://localhost:3310");
 });
