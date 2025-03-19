@@ -30,7 +30,11 @@ app.use((req, res, next) => {
   express.static(path.join(__dirname, "public"))(req, res, next);
 });
 
-//app.use(express.static("pulbic"));
+// Test
+// Explicitly handle the socket.io path:
+app.use("/socket.io", (req, res, next) => {
+  next(); // Allow socket.io to handle its own requests
+});
 
 // Set up Socket Communication:
 setupSocketCommunication(io);
