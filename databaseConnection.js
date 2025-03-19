@@ -4,7 +4,7 @@ import mysql from "mysql";
 const DBConnection = mysql.createConnection({
   host: "localhost", // Database host
   user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "mye7cahHm8/AWd%q", // Database password
+  password: "123", // Database password
   database: "cs_25_sw_2_01", // Database name
 });
 
@@ -12,10 +12,10 @@ const DBConnection = mysql.createConnection({
 export function connectToDatabase() {
   DBConnection.connect((err) => {
     if (err) {
-      console.error("❌ Database connection failed:", err); // Log error if connection fails
+      console.error("Database connection failed:", err); // Log error if connection fails
       return;
     }
-    console.log("✅ MySQL Connected!"); // Log success message if connection is successful
+    console.log("MySQL Connected!"); // Log success message if connection is successful
 
     // Create "users" table if it does not already exist
     const createUsersTable = `
@@ -26,11 +26,11 @@ export function connectToDatabase() {
             )`;
 
     // Execute the query to create the table
-    DBConnection.query(createUsersTable, (err, result) => {
+    DBConnection.query(createUsersTable, (err) => {
       if (err) {
-        console.error("❌ Error creating users table:", err); // Log error if table creation fails
+        console.error("Error creating users table:", err); // Log error if table creation fails
       } else {
-        console.log("✅ Users table is ready!"); // Log success message if table is created
+        console.log("Users table is ready!"); // Log success message if table is created
       }
     });
   });
@@ -39,27 +39,33 @@ export function connectToDatabase() {
 // Function to set up database-related routes
 export function setupDatabaseRoutes(app) {
   // Route to test database connection
-  app.get("/test-db", (req, res) => {
+  app.get("/test-db", (res) => {
+    // Execute a simple query to test the database connection
     DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
       if (err) {
-        res.status(500).json({ error: "Database connection failed!" }); // Respond with error if query fails
+        // Respond with an error message if the query fails
+        res.status(500).json({ error: "Database connection failed!" });
       } else {
-        res.json({ success: true, message: "Database connected!", result }); // Respond with success if query succeeds
+        // Respond with a success message and query result if the query succeeds
+        res.json({ success: true, message: "Database connected!", result });
       }
     });
   });
 
   // Route to fetch all users from the database
-  app.get("/users", (req, res) => {
+  app.get("/users", (res) => {
     const query = "SELECT * FROM users"; // SQL query to fetch all users
+    // Execute the query to fetch all users
     DBConnection.query(query, (err, results) => {
       if (err) {
-        console.error("❌ Error fetching users:", err); // Log error if query fails
+        // Log the error and respond with an error message if the query fails
+        console.error("Error fetching users:", err);
         res
           .status(500)
-          .json({ error: "Failed to fetch users from the database." }); // Respond with error if query fails
+          .json({ error: "Failed to fetch users from the database." });
       } else {
-        res.json({ success: true, users: results }); // Respond with success and the list of users
+        // Respond with a success message and the list of users if the query succeeds
+        res.json({ success: true, users: results });
       }
     });
   });

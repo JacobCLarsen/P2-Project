@@ -12,7 +12,7 @@ export function setupAuth(app) {
   // Middleware to parse JSON data from incoming requests
   app.use(express.json()); // Enables parsing of JSON payloads in incoming requests
 
-  /* Login: (Handles user authentication) */
+  /* ----- Login (Handles User Authentication) ----- */
   /**
    * Method: POST
    * URL: /login
@@ -32,7 +32,7 @@ export function setupAuth(app) {
     const query = "SELECT * FROM users WHERE username = ? AND password = ?";
     DBConnection.query(query, [username, password], (err, results) => {
       if (err) {
-        console.error("❌ Error validating login:", err); // Log error if query fails
+        console.error("Error validating login:", err); // Log error if query fails
         return res
           .status(500)
           .json({ success: false, message: "Internal server error" }); // Respond with "Internal Server Error"
@@ -48,7 +48,7 @@ export function setupAuth(app) {
     });
   });
 
-  /* Signup: (Handles new user registration) */
+  /* ----- Signup: (Handles New User Registration) ----- */
   /**
    * Method: POST
    * URL: /signup
@@ -68,7 +68,7 @@ export function setupAuth(app) {
     const checkQuery = "SELECT * FROM users WHERE username = ?";
     DBConnection.query(checkQuery, [username], (err, results) => {
       if (err) {
-        console.error("❌ Error checking username:", err); // Log error if query fails
+        console.error("Error checking username:", err); // Log error if query fails
         return res
           .status(500)
           .json({ success: false, message: "Internal server error" }); // Respond with "Internal Server Error"
