@@ -37,7 +37,7 @@ function startWork() {
 }
 
 // When work stops, emit it to the server
-function stopWork(result) {
+ function stopWork(result) {
   workStoppedUI();
   socket.emit("stop work");
 }
