@@ -36,6 +36,11 @@ setupSocketCommunication(io);
 // Set up Authentication Routes:
 setupAuth(app); // Calls the function to add login/signup routes
 
+// Test
+app.use("/ws0", (req, res) =>
+  proxy.web(req, res, { target: "ws://localhost:4310" })
+);
+
 // Connect to the database:
 connectToDatabase();
 
