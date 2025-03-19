@@ -11,6 +11,7 @@ import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import DBConnection from "./database.js"; // Import database connection
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,7 +35,32 @@ setupSocketCommunication(io);
 // Set up Authentication Routes:
 setupAuth(app); // Calls the function to add login/signup routes
 
+
+
+
+
+app.use(express.json());
+
+// Simple test route
+app.get("/", (req, res) => {
+    res.send("Server is running!");
+});
+
+
+// Check database connection
+app.get("/test-db", (req, res) => {
+  DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
+      if (err) {
+          res.status(500).json({ error: "Database connection failed!" });
+      } else {
+          res.json({ success: true, message: "Database connected!", result });
+      }
+  });
+});
+
+
 // Port for the Server:
-server.listen(3310, "0.0.0.0", () => {
+const PORT = 3310;
+server.listen(PORT, "0.0.0.0", () => {
   console.log("listening on http://localhost:3310");
 });
