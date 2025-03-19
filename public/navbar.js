@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Dynamically add the external CSS file for the navbar
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = "/css/navbar.css"; // Path to your external stylesheet
+  link.href = "css/navbar.css"; // Path to your external stylesheet
   document.head.appendChild(link);
 
   const navbarHTML = `

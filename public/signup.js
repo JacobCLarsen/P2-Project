@@ -13,7 +13,7 @@ document
 
       try {
         //Send a POST request to the server to create a new user
-        const response = await fetch("/signup", {
+        const response = await fetch("signup", {
           method: "POST", //HTTP method
           headers: { "Content-Type": "application/json" }, //Specify JSON format
           body: JSON.stringify({
@@ -32,7 +32,7 @@ document
 
           //Redirect user to the login page after a short delay
           setTimeout(() => {
-            window.location.href = "/login"; //Redirect to login page after success
+            window.location.href = "login"; //Redirect to login page after success
           }, 500);
         } else {
           //If signup fails, throw an error with the server-provided message

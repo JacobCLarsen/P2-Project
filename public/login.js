@@ -30,7 +30,7 @@ async function validateLogin(e) {
 
       //Redirect user to the start work page after a short delay
       setTimeout(() => {
-        window.location.href = "/startwork"; //Redirect to work page after success
+        window.location.href = "startwork"; //Redirect to work page after success
       }, 500);
     } else {
       //If login fails, throw an error with the server-provided message
