@@ -27,6 +27,7 @@ mySocket.addEventListener("open", (event) => {
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
 
+
   switch (message.action) {
     case "new task":
       console.log("Received new task:", message.data);
