@@ -34,6 +34,7 @@ textarea {
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  resize: none; /* Prevent resizing of the textarea */
 }
 
 button {
