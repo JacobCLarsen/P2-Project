@@ -11,8 +11,11 @@ import { Server } from "socket.io";
 
 // Custom modules
 import router from "./router.js";
-import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
+
+import { WebSocketServer } from "ws";
+import { WebsocketListen } from "./serverWebsocket.js";
+
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
@@ -28,6 +31,7 @@ const server = createServer(app);
 
 /* ----- MIDDLEWARE ----- */
 
+
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -37,10 +41,14 @@ app.use(express.json());
 // Use the router for handling routes
 app.use("/", router);
 
-// Set up WebSocket communication:
-const io = new Server(server);
-setupSocketCommunication(io);
+// Websockets:
+const wss = new WebSocketServer({ port: 8080 });
 
+wss.on("connection", function connection(ws) {
+  console.log("connected");
+  // See which messages the websocket server is listening for in serverWebsocket.js
+  WebsocketListen(ws);
+});
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
