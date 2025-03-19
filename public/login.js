@@ -42,3 +42,22 @@ async function validateLogin(e) {
     message.textContent = error.message || "Invalid login!";
   }
 }
+
+// Example: Fetch all users when the login page loads
+async function fetchUsers() {
+  try {
+    const response = await fetch(
+      "https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/users"
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch users");
+    }
+    const data = await response.json();
+    console.log("Fetched Users:", data.users); // Log the list of users
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+}
+
+// Call fetchUsers when the page loads
+fetchUsers();

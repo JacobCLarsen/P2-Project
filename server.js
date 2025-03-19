@@ -64,8 +64,23 @@ app.get("/test-db", (req, res) => {
   });
 });
 
+// Route to fetch all users from the database
+app.get("/users", (req, res) => {
+  const query = "SELECT * FROM users"; // SQL query to fetch all users
+  DBConnection.query(query, (err, results) => {
+    if (err) {
+      console.error("❌ Error fetching users:", err);
+      res
+        .status(500)
+        .json({ error: "Failed to fetch users from the database." });
+    } else {
+      res.json({ success: true, users: results });
+    }
+  });
+});
+
 // Start the server on the specified port:
 const PORT = 3310;
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("🚀 Server is listening on http://localhost:3310");
+  console.log("🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/");
 });
