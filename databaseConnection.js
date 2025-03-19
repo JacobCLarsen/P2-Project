@@ -26,7 +26,7 @@ export function connectToDatabase() {
             )`;
 
     // Execute the query to create the table
-    DBConnection.query(createUsersTable, (err) => {
+    DBConnection.query(createUsersTable, (err, result) => {
       if (err) {
         console.error("Error creating users table:", err); // Log error if table creation fails
       } else {
@@ -39,7 +39,7 @@ export function connectToDatabase() {
 // Function to set up database-related routes
 export function setupDatabaseRoutes(app) {
   // Route to test database connection
-  app.get("/test-db", (res) => {
+  app.get("/test-db", (req, res) => {
     // Execute a simple query to test the database connection
     DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
       if (err) {
@@ -53,7 +53,7 @@ export function setupDatabaseRoutes(app) {
   });
 
   // Route to fetch all users from the database
-  app.get("/users", (res) => {
+  app.get("/users", (req, res) => {
     const query = "SELECT * FROM users"; // SQL query to fetch all users
     // Execute the query to fetch all users
     DBConnection.query(query, (err, results) => {
