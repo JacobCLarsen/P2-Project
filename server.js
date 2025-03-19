@@ -9,6 +9,11 @@ import { Server } from "socket.io";
 import router from "./router.js";
 import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Create Express App & Server:
 const app = express();
@@ -21,7 +26,7 @@ const io = new Server(server);
 app.use("/", router);
 
 // Define the path of public content:
-app.use(express.static("node0/public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Set up Socket Communication:
 setupSocketCommunication(io);

@@ -11,7 +11,7 @@ async function validateLogin(e) {
 
   try {
     //Send a POST request to the server with login credentials
-    const response = await fetch("/login", {
+    const response = await fetch("login", {
       method: "POST", //HTTP method
       headers: { "Content-Type": "application/json" }, //Specify JSON format
       body: JSON.stringify({
@@ -30,7 +30,7 @@ async function validateLogin(e) {
 
       //Redirect user to the start work page after a short delay
       setTimeout(() => {
-        window.location.href = "/startwork"; //Redirect to work page after success
+        window.location.href = "startwork"; //Redirect to work page after success
       }, 500);
     } else {
       //If login fails, throw an error with the server-provided message
