@@ -36,5 +36,34 @@ export function connectToDatabase() {
   });
 }
 
+// Function to set up database-related routes
+export function setupDatabaseRoutes(app) {
+  // Route to test database connection
+  app.get("/test-db", (req, res) => {
+    DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
+      if (err) {
+        res.status(500).json({ error: "Database connection failed!" });
+      } else {
+        res.json({ success: true, message: "Database connected!", result });
+      }
+    });
+  });
+
+  // Route to fetch all users from the database
+  app.get("/users", (req, res) => {
+    const query = "SELECT * FROM users"; // SQL query to fetch all users
+    DBConnection.query(query, (err, results) => {
+      if (err) {
+        console.error("❌ Error fetching users:", err);
+        res
+          .status(500)
+          .json({ error: "Failed to fetch users from the database." });
+      } else {
+        res.json({ success: true, users: results });
+      }
+    });
+  });
+}
+
 // Export the database connection object
 export default DBConnection;

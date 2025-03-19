@@ -12,7 +12,10 @@ import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import DBConnection, {connectToDatabase} from "./databaseConnection.js"; // Import DB connection function and insertTestData
+import DBConnection, {
+  connectToDatabase,
+  setupDatabaseRoutes,
+} from "./databaseConnection.js"; // Import DB connection function and insertTestData
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -37,47 +40,24 @@ setupSocketCommunication(io);
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
-// Middleware to parse JSON payloads in incoming requests:
-app.use(express.json());
-
-// Test WebSocket proxy route (example usage):
-app.use("/ws0", (req, res) =>
-  proxy.web(req, res, { target: "ws://localhost:4310" })
-);
-
 // Connect to the database and initialize tables:
 connectToDatabase();
+
+// Set up database-related routes
+setupDatabaseRoutes(app);
+
+// Middleware to parse JSON payloads in incoming requests:
+app.use(express.json());
 
 // Simple test route to verify server is running:
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Route to test database connection:
-app.get("/test-db", (req, res) => {
-  DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
-    if (err) {
-      res.status(500).json({ error: "Database connection failed!" });
-    } else {
-      res.json({ success: true, message: "Database connected!", result });
-    }
-  });
-});
-
-// Route to fetch all users from the database
-app.get("/users", (req, res) => {
-  const query = "SELECT * FROM users"; // SQL query to fetch all users
-  DBConnection.query(query, (err, results) => {
-    if (err) {
-      console.error("❌ Error fetching users:", err);
-      res
-        .status(500)
-        .json({ error: "Failed to fetch users from the database." });
-    } else {
-      res.json({ success: true, users: results });
-    }
-  });
-});
+// Test WebSocket proxy route (example usage):
+app.use("/ws0", (req, res) =>
+  proxy.web(req, res, { target: "ws://localhost:4310" })
+);
 
 // Start the server on the specified port:
 const PORT = 3310;
