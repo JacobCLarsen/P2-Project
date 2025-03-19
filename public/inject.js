@@ -1,1 +1,0 @@
-// Code for injecting the chrome extension with functions
