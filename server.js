@@ -65,7 +65,7 @@ app.use("/ws0", (req, res) =>
 );
 
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
-let x = 1;
+let x = 2;
 if (x === 1) {
   const PORT = 3310;
   server.listen(PORT, "0.0.0.0", () => {
@@ -75,9 +75,7 @@ if (x === 1) {
   });
 } else if (x === 2) {
   const PORT = 3000;
-  server.listen(PORT, "127.0.0.1", () => {
-    console.log(
-      "🚀 Server is listening on https://localhost:3000"
-    );
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log("🚀 Server is listening on http://localhost:3000");
   });
 }
