@@ -21,7 +21,7 @@ const io = new Server(server);
 app.use("/", router);
 
 // Define the path of public content:
-app.use(express.static("public"));
+app.use(express.static("node0/public"));
 
 // Set up Socket Communication:
 setupSocketCommunication(io);
