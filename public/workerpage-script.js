@@ -1,5 +1,5 @@
 // Create a socket client using io()
-const socket = io("https://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws0/");
+const socket = io();
 
 //Send the name to the server after connecting
 socket.emit("set_name", "USER TEMP");

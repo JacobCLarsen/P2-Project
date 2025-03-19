@@ -32,11 +32,6 @@ app.use(express.static(path.join(__dirname, "public")));
 // Set up Socket Communication:
 setupSocketCommunication(io);
 
-// Test
-app.use("/ws0", (req, res) =>
-  proxy.web(req, res, { target: "ws://localhost:4310" })
-);
-
 // Set up Authentication Routes:
 setupAuth(app); // Calls the function to add login/signup routes
 
