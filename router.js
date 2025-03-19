@@ -13,7 +13,7 @@ const basePath = path.join(__dirname, "./public/html"); // Going up one level to
 
 // Define a route for the home page
 router.get("/", (req, res) => {
-  res.sendFile(path.join(basePath, "login.html"));
+  res.sendFile(path.join(basePath, "workerpage.html"));
 });
 
 // Route for the login page

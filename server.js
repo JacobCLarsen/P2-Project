@@ -7,8 +7,9 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import router from "./router.js";
-import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
+import { WebSocketServer } from "ws";
+import { WebsocketListen } from "./serverWebsocket.js";
 
 // Create Express App & Server:
 const app = express();
@@ -23,11 +24,17 @@ app.use("/", router);
 // Define the path of public content:
 app.use(express.static("public"));
 
-// Set up Socket Communication:
-setupSocketCommunication(io);
+// Websockets:
+const wss = new WebSocketServer({ port: 8080 });
+
+wss.on("connection", function connection(ws) {
+  console.log("connected");
+  // See which messages the websocket server is listening for in serverWebsocket.js
+  WebsocketListen(ws);
+});
 
 // Set up Authentication Routes:
-setupAuth(app); // Calls the function to add login/signup routes
+// setupAuth(app); // Calls the function to add login/signup routes
 
 // Port for the Server:
 server.listen(3000, "0.0.0.0", () => {

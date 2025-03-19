@@ -1,35 +1,108 @@
-// Create a socket client using io()
-const socket = io();
-
-//Send the name to the server after connecting
-socket.emit("set_name", "USER TEMP");
-
 // Get elements from the HTML-page
-var startBtn = document.getElementById("btn-container");
-var startBtnText = document.getElementById("startBtn");
-var taskList = document.getElementById("tasks");
-var taskResults = document.getElementById("taskResults");
-var statusMessage = document.getElementById("workstatus");
-var hashingText = document.getElementById("hashingText");
-var plusTabBtn = document.getElementById("plus-tab-btn");
+const startBtn = document.getElementById("startBtn");
+const startBtnText = document.getElementById("startBtnContent");
+const startBtnLoad = document.getElementById("startBtnLoad");
+const taskList = document.getElementById("tasks");
+const taskResults = document.getElementById("taskResults");
+const statusMessage = document.getElementById("workstatus");
+const hashingText = document.getElementById("hashingText");
+const plusTabBtn = document.getElementById("plus-tab-btn");
+
+// Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
+const mySocket = new WebSocket("ws://localhost:8080");
+const clientId = `client-${Math.random().toString(36).substr(2, 9)}`;
+
+// Send the name to the server after connecting
+mySocket.addEventListener("open", (event) => {
+  let message = {
+    action: "connect",
+    data: null,
+    id: clientId, // Use the generated client ID
+  };
+  mySocket.send(JSON.stringify(message));
+});
+
+// Listen for messages from the server, switch case to handle different message "action" types
+mySocket.onmessage = (event) => {
+  let message = JSON.parse(event.data);
+
+  switch (message.action) {
+    case "new task":
+      console.log("Received new task:", message.data);
+      startWork(message.data);
+      break;
+
+    default:
+      console.warn("Unknown message type:", type);
+  }
+};
+
+// Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
+function startWork(task) {
+  const myWorker = new Worker("worker.js");
+  console.log("worker connected!");
+  myWorker.postMessage(task.hash);
+  console.log(`Message containing ${task.hash} was send to the a worker`);
+
+  myWorker.onmessage = (e) => {
+    let taskresult = {
+      action: "send result",
+      data: e.data,
+    };
+    console.log("Message received from worker:", e.data);
+    myWorker.terminate();
+
+    let item = document.createElement("li");
+    item.innerText = `You completed task ${task.id} with result ${e.data}`;
+    taskList.innerHTML = "";
+    taskList.append(item);
+
+    mySocket.send(JSON.stringify(taskresult));
+  };
+}
+
+// Send a message to the server to fetch a task
+function fetchTask() {
+  let message = {
+    action: "request task",
+    data: null,
+    id: clientId,
+  };
+  mySocket.send(JSON.stringify(message));
+}
 
 // Alert the user when they try to leave to reload the page while working. This function is added to the workbutton eventlistener
 function beforeReloadHandeler(event) {
   event.preventDefault();
 }
 
+// Animate the work button, when working.
+function hashAnimation() {
+  let dots = "";
+  const interval = setInterval(() => {
+    if (startBtnText.innerText !== "Hashing hashes") {
+      clearInterval(interval);
+      startBtnLoad.innerText = "";
+      return;
+    }
+    dots = dots.length < 3 ? dots + "." : ".";
+    startBtnLoad.innerText = dots;
+  }, 800);
+}
+
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to start working") {
-    startBtnText.innerText = "Hashing hashes ...";
-    startWork();
+    startBtnText.innerText = "Hashing hashes";
+    fetchTask();
     hashAnimation();
   } else {
     startBtnText.innerText = "Click to start working";
-    stopWork();
+    startBtnLoad.innerText = "";
   }
 });
 
+/*
 // Starting work will fetch a task
 function startWork() {
   workStartedUI();
@@ -146,3 +219,4 @@ function hashAnimation() {
     iteration += 1 / 3;
   }, 100);
 }
+  */
