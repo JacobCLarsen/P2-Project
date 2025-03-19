@@ -11,7 +11,7 @@ async function validateLogin(e) {
 
   try {
     //Send a POST request to the server with login credentials
-    const response = await fetch("/login", {
+    const response = await fetch("login", {
       method: "POST", //HTTP method
       headers: { "Content-Type": "application/json" }, //Specify JSON format
       body: JSON.stringify({
