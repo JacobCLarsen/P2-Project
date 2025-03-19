@@ -45,7 +45,7 @@ body {
   margin-right: 20px;
   align-items: center;
   width: 270px;
-  min-height: 90px;
+  height: 100px;
   border: #444 solid 2px;
   border-radius: 20px;
   padding: 0px 15px 0px 15px;
@@ -58,20 +58,33 @@ body {
   cursor: pointer;
   color: #333;
   transition: 0.3s;
-  text-align: center;
+  user-select: none;
 }
 
 #startBtnLoad {
   font-size: 30px;
-  text-justify: center;
+  margin-left: 5px;
+  user-select: none;
+  transition: 0.3s;
 }
 
-#btn-container:hover {
+#startBtn:hover {
   border: #007bff solid 2px;
 }
 
-#btn-container:hover #startBtn {
+#startBtn:hover #startBtnContent {
   color: #007bff;
+}
+
+#startBtn:hover #startBtnLoad {
+  color: #007bff;
+}
+
+#messageBox {
+  display: none;
+  margin-top: 20px;
+  padding: 10px;
+  color: #333;
 }
 
 /* Active tasks list styling */

@@ -2,6 +2,7 @@
 const startBtn = document.getElementById("startBtn");
 const startBtnText = document.getElementById("startBtnContent");
 const startBtnLoad = document.getElementById("startBtnLoad");
+const messageBox = document.getElementById("messageBox");
 const taskList = document.getElementById("tasks");
 const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
@@ -61,6 +62,45 @@ function startWork(task) {
   };
 }
 
+// Animate the work button, when working.
+function startWorkUI() {
+  // Distaplay the message "Please dont leave the page when working, and also adds a beforeunloadHandeler to the window
+  window.addEventListener("beforeunload", beforeReloadHandeler);
+  messageBox.style.display = "block";
+
+  // Loading function to the
+  let dots = "";
+  const interval = setInterval(() => {
+    if (startBtnText.innerText !== "Hashing hashes") {
+      clearInterval(interval);
+      startBtnLoad.innerText = "";
+      return;
+    }
+    dots = dots.length < 4 ? dots + "." : ".";
+    startBtnLoad.innerText = dots;
+  }, 600);
+
+  // Set the color of the button to blue
+  startBtn.style.border = "#007bff solid 2px";
+  startBtnText.style.color = "#007bff";
+  startBtnLoad.style.color = "#007bff";
+}
+
+function stopWork() {
+  stopWorkUI();
+}
+
+function stopWorkUI() {
+  // Remove the message and the beforeunloadHandler from the window
+  window.removeEventListener("beforeunload", beforeReloadHandeler);
+  // Hide the messsage box
+  messageBox.style.display = "none";
+  // Revert to default (hover-only)
+  startBtn.style.border = "";
+  startBtnText.style.color = "";
+  startBtnLoad.style.color = "";
+}
+
 // Send a message to the server to fetch a task
 function fetchTask() {
   let message = {
@@ -68,6 +108,8 @@ function fetchTask() {
     data: null,
     id: clientId,
   };
+
+  // When the server receives the message, it will send a task back to the client which will be received in the onmessage eventlistener above
   mySocket.send(JSON.stringify(message));
 }
 
@@ -76,29 +118,16 @@ function beforeReloadHandeler(event) {
   event.preventDefault();
 }
 
-// Animate the work button, when working.
-function hashAnimation() {
-  let dots = "";
-  const interval = setInterval(() => {
-    if (startBtnText.innerText !== "Hashing hashes") {
-      clearInterval(interval);
-      startBtnLoad.innerText = "";
-      return;
-    }
-    dots = dots.length < 3 ? dots + "." : ".";
-    startBtnLoad.innerText = dots;
-  }, 800);
-}
-
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to start working") {
     startBtnText.innerText = "Hashing hashes";
     fetchTask();
-    hashAnimation();
+    startWorkUI();
   } else {
     startBtnText.innerText = "Click to start working";
     startBtnLoad.innerText = "";
+    stopWork();
   }
 });
 
