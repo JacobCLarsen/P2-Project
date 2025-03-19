@@ -1,5 +1,5 @@
 // Create a socket client using io()
-var socket = io();
+const socket = io();
 
 //Send the name to the server after connecting
 socket.emit("set_name", "USER TEMP");
@@ -90,7 +90,7 @@ socket.on("task result", (msg) => {
 
 // Function to open af new tab to work on antoher page
 plusTabBtn.addEventListener("click", function () {
-  window.open("/startwork", "_blank");
+  window.open("startwork", "_blank");
 });
 
 // ************ Cosmetic functions ************
