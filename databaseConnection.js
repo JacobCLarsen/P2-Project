@@ -45,7 +45,6 @@ export function insertTestData() {
     { username: "Anders", password: "1234" },
     { username: "Zet", password: "1234" },
     { username: "Viktor", password: "123" },
-    { username: "123", password: "123" },
   ];
 
   testUsers.forEach((user) => {
