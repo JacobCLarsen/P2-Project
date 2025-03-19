@@ -12,7 +12,10 @@ import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import DBConnection, { connectToDatabase } from "./databaseConnection.js"; // Import DB connection function
+import DBConnection, {
+  connectToDatabase,
+  insertTestData,
+} from "./databaseConnection.js"; // Import DB connection function and insertTestData
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -47,6 +50,8 @@ app.use("/ws0", (req, res) =>
 
 // Connect to the database and initialize tables:
 connectToDatabase();
+// Insert test data into the users table:
+insertTestData();
 
 // Simple test route to verify server is running:
 app.get("/", (req, res) => {
@@ -82,5 +87,7 @@ app.get("/users", (req, res) => {
 // Start the server on the specified port:
 const PORT = 3310;
 server.listen(PORT, "0.0.0.0", () => {
-  console.log("🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/");
+  console.log(
+    "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
+  );
 });
