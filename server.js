@@ -107,32 +107,31 @@ setupSocketCommunication(io);
 databaseConnection();
 
 
+// Test
+app.use("/ws0", (req, res) =>
+  proxy.web(req, res, { target: "ws://localhost:4310" })
+);
+
 // Set up Authentication Routes:
 setupAuth(app); // Calls the function to add login/signup routes
-
-
-
-
 
 app.use(express.json());
 
 // Simple test route
 app.get("/", (req, res) => {
-    res.send("Server is running!");
+  res.send("Server is running!");
 });
-
 
 // Check database connection
 app.get("/test-db", (req, res) => {
   DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
-      if (err) {
-          res.status(500).json({ error: "Database connection failed!" });
-      } else {
-          res.json({ success: true, message: "Database connected!", result });
-      }
+    if (err) {
+      res.status(500).json({ error: "Database connection failed!" });
+    } else {
+      res.json({ success: true, message: "Database connected!", result });
+    }
   });
 });
-
 
 // Port for the Server:
 const PORT = 3310;
