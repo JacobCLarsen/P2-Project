@@ -27,7 +27,6 @@ const app = express();
 const server = createServer(app);
 
 
-
 /* ----- MIDDLEWARE ----- */
 
 // Serve static files from the "public" directory
@@ -46,13 +45,14 @@ setupSocketCommunication(io);
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
-// Database setup:
+
+/* ----- DATABASE SETUP ----- */
+
 // Connect to the database and initialize tables
-connectToDatabase();
+connectToDatabase(); // Establishes a connection to the MySQL database and ensures the "users" table exists
 
 // Set up database-related routes
-setupDatabaseRoutes(app);
-
+setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
 
 
 /* ----- ROUTES ----- */
