@@ -50,8 +50,6 @@ app.use("/ws0", (req, res) =>
 
 // Connect to the database and initialize tables:
 connectToDatabase();
-// Insert test data into the users table:
-insertTestData();
 
 // Simple test route to verify server is running:
 app.get("/", (req, res) => {
