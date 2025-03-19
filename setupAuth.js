@@ -1,10 +1,8 @@
 /* Imports: */
 // - Import the Express framework for creating a web server
-// - Import the validateLogin function from auth.js to handle login validation
-// - Import the signup function from signup.js to handle user registration
+// - Import the database connection
 import express from "express";
-import { validateLogin } from "./auth_json.js";
-import { signup } from "./signup_json.js";
+import DBConnection from "./databaseConnection.js";
 
 /**
  * Function to set up authentication-related routes in the Express app.
@@ -32,18 +30,24 @@ export function setupAuth(app) {
         .json({ success: false, message: "Missing username or password" }); //Error message if username or password is missing
     }
 
-    //Validate login credentials
-    const isValid = await validateLogin(username, password);
+    // Query the database to check if the username and password match
+    const query = "SELECT * FROM users WHERE username = ? AND password = ?";
+    DBConnection.query(query, [username, password], (err, results) => {
+      if (err) {
+        console.error("❌ Error validating login:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      }
 
-    if (isValid) {
-      //Send success response if credentials are valid
-      res.json({ success: true, message: "Login successful!" });
-    } else {
-      //Send error response if credentials are invalid
-      res
-        .status(401) //Unauthorized status response code
-        .json({ success: false, message: "Invalid username or password" }); //Error message if username or password is wrong
-    }
+      if (results.length > 0) {
+        res.json({ success: true, message: "Login successful!" });
+      } else {
+        res
+          .status(401)
+          .json({ success: false, message: "Invalid username or password" });
+      }
+    });
   });
 
   /* Signup: (Handles new user registration) */
@@ -64,11 +68,36 @@ export function setupAuth(app) {
         .json({ success: false, message: "Missing username or password" }); //Error message if username or password is missing
     }
 
-    //Call the signup function to create a new user
-    const result = await signup(username, password);
+    // Check if the username already exists
+    const checkQuery = "SELECT * FROM users WHERE username = ?";
+    DBConnection.query(checkQuery, [username], (err, results) => {
+      if (err) {
+        console.error("❌ Error checking username:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      }
 
-    //Send the response returned from the signup function
-    res.json(result);
+      if (results.length > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Username already taken!" });
+      }
+
+      // Insert the new user into the database
+      const insertQuery =
+        "INSERT INTO users (username, password) VALUES (?, ?)";
+      DBConnection.query(insertQuery, [username, password], (err, result) => {
+        if (err) {
+          console.error("❌ Error creating user:", err);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        }
+
+        res.json({ success: true, message: "Account created successfully!" });
+      });
+    });
   });
 
   //Log message to indicate that authentication routes have been set up

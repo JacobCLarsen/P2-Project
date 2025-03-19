@@ -36,29 +36,5 @@ export function connectToDatabase() {
   });
 }
 
-// Function to insert test data into the users table
-export function insertTestData() {
-  const testUsers = [
-    { username: "Philip", password: "1110" },
-    { username: "Jacob", password: "345" },
-    { username: "Daniel", password: "123" },
-    { username: "Anders", password: "1234" },
-    { username: "Zet", password: "1234" },
-    { username: "Viktor", password: "123" },
-    { username: "123", password: "123" },
-  ];
-
-  testUsers.forEach((user) => {
-    const query = "INSERT INTO users (username, password) VALUES (?, ?)";
-    DBConnection.query(query, [user.username, user.password], (err, result) => {
-      if (err) {
-        console.error(`❌ Error inserting user ${user.username}:`, err);
-      } else {
-        console.log(`✅ User ${user.username} inserted!`);
-      }
-    });
-  });
-}
-
 // Export the database connection object
 export default DBConnection;
