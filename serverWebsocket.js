@@ -7,8 +7,9 @@ export function WebsocketListen(ws) {
         console.log(`worker connected with id: ${message.id}`);
         break;
       case "request task":
+        let task = createTask();
         console.log(
-          `sending a task to worker: ${message.id}, with task id: ${task.taskID}`
+          `sending a task to worker: ${message.id}, with task id: ${task.id}`
         );
         ws.send(JSON.stringify({ action: "new task", data: task }));
         break;
@@ -28,8 +29,10 @@ export function WebsocketListen(ws) {
   };
 }
 
-// This is an example task
-const task = {
-  id: 123,
-  hash: "0x123",
-};
+// function to create a random task to use in this file
+export function createTask() {
+  let task = {};
+  task.id = Math.floor(Math.random() * 1000);
+  task.hash = `0x${Math.random().toString(36).substr(2, 9)}`;
+  return task;
+}

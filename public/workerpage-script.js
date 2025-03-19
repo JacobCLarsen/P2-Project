@@ -60,6 +60,11 @@ function startWork(task) {
 
     mySocket.send(JSON.stringify(taskresult));
   };
+
+  // for demo - weight 2 seconds before fetching a new task
+  setTimeout(() => {
+    fetchTask();
+  }, 2000);
 }
 
 // Animate the work button, when working.
@@ -71,7 +76,7 @@ function startWorkUI() {
   // Loading function to the
   let dots = "";
   const interval = setInterval(() => {
-    if (startBtnText.innerText !== "Hashing hashes") {
+    if (startBtnText.innerText !== "Hashing passwords") {
       clearInterval(interval);
       startBtnLoad.innerText = "";
       return;
@@ -121,7 +126,7 @@ function beforeReloadHandeler(event) {
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to start working") {
-    startBtnText.innerText = "Hashing hashes";
+    startBtnText.innerText = "Hashing passwords";
     fetchTask();
     startWorkUI();
   } else {
