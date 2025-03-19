@@ -29,6 +29,9 @@ copyBtn.addEventListener("click", function () {
     if (copyBtn.innerHTML == "Copy") {
         copyBtn.innerHTML = "Copied!";
     }
+    setTimeout(() => {
+        copyBtn.innerHTML = "Copy";
+    }, 2000);
 });
 
 
