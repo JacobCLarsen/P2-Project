@@ -65,7 +65,7 @@ app.use("/ws0", (req, res) =>
 );
 
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
-let x = 2;
+let x = 1;
 if (x === 1) {
   const PORT = 3310;
   server.listen(PORT, "0.0.0.0", () => {
