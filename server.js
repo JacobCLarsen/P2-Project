@@ -26,7 +26,6 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 
-
 /* ----- MIDDLEWARE ----- */
 
 // Serve static files from the "public" directory
@@ -45,7 +44,6 @@ setupSocketCommunication(io);
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
-
 /* ----- DATABASE SETUP ----- */
 
 // Connect to the database and initialize tables
@@ -53,7 +51,6 @@ connectToDatabase(); // Establishes a connection to the MySQL database and ensur
 
 // Set up database-related routes
 setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
-
 
 /* ----- ROUTES ----- */
 
@@ -67,10 +64,20 @@ app.use("/ws0", (req, res) =>
   proxy.web(req, res, { target: "ws://localhost:4310" })
 );
 
-// Start the server on the specified port:
-const PORT = 3310;
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(
-    "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
-  );
-});
+// Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
+let x = 1;
+if (x === 1) {
+  const PORT = 3310;
+  server.listen(PORT, "0.0.0.0", () => {
+    console.log(
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
+    );
+  });
+} else if (x === 2) {
+  const PORT = 3000;
+  server.listen(PORT, "127.0.0.1", () => {
+    console.log(
+      "🚀 Server is listening on https://localhost:3000"
+    );
+  });
+}
