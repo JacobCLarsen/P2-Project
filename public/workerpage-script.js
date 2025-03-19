@@ -1,5 +1,5 @@
 // Create a socket client using io()
-const socket = io();
+const socket = io("https://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws0/");
 
 //Send the name to the server after connecting
 socket.emit("set_name", "USER TEMP");
@@ -139,7 +139,6 @@ function hashAnimation() {
     hashingText.innerText = hashingText.innerText
       .split("")
       .map((letter, index) => {
-
         return letters[Math.floor(Math.random() * letters.length)];
       })
       .join("");
