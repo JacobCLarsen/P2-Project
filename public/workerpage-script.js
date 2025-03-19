@@ -10,7 +10,7 @@ const hashingText = document.getElementById("hashingText");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
-const mySocket = new WebSocket("ws://localhost:8080");
+const mySocket = new WebSocket("ws://localhost:4310");
 const clientId = `client-${Math.random().toString(36).substr(2, 9)}`;
 
 // Send the name to the server after connecting
@@ -26,7 +26,6 @@ mySocket.addEventListener("open", (event) => {
 // Listen for messages from the server, switch case to handle different message "action" types
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
-
 
   switch (message.action) {
     case "new task":

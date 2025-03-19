@@ -31,7 +31,6 @@ const server = createServer(app);
 
 /* ----- MIDDLEWARE ----- */
 
-
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -42,7 +41,7 @@ app.use(express.json());
 app.use("/", router);
 
 // Websockets:
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 4310 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
