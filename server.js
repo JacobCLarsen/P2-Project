@@ -19,15 +19,17 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 
-// Create socket.io Server:
-const io = new Server(server);
+// Create socket.io Server with a custom path:
+const io = new Server(server, {
+  path: "/node0/socket.io", // Set the path to include the proxy prefix
+});
 
 // Use the router for handling routes:
 app.use("/", router);
 
 // Define the path of public content dynamically based on the base URL:
 app.use((req, res, next) => {
-  if (!req.path.startsWith("socket.io")) {
+  if (!req.path.startsWith("/socket.io")) {
     express.static(path.join(__dirname, "public"))(req, res, next);
   } else {
     next(); // Skip static middleware for socket.io paths
@@ -36,7 +38,7 @@ app.use((req, res, next) => {
 
 // Test
 // Explicitly handle the socket.io path:
-app.use("socket.io", (req, res, next) => {
+app.use("/socket.io", (req, res, next) => {
   next(); // Allow socket.io to handle its own requests
 });
 
