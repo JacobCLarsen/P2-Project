@@ -25,12 +25,8 @@ const io = new Server(server);
 // Use the router for handling routes:
 app.use("/", router);
 
-// Define the path of public content dynamically based on the base URL:
-app.use((req, res, next) => {
-  express.static(path.join(__dirname, "public"))(req, res, next);
-});
-
-//app.use(express.static("pulbic"));
+// Define the path of public content:
+app.use(express.static(path.join(__dirname, "public")));
 
 // Set up Socket Communication:
 setupSocketCommunication(io);
