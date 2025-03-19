@@ -8,25 +8,25 @@ document.addEventListener("DOMContentLoaded", function () {
   const navbarHTML = `
     <nav id="navbar">
     <div id="navbar-link-container">
-        <a href="/startwork" class="link">
+        <a href="startwork" class="link">
             <button>Home</button>
         </a>
-        <a href="/about" class="link">
+        <a href="about" class="link">
             <button>About</button>
         </a>
-        <a href="/converter" class="link">
+        <a href="converter" class="link">
             <button>Converter</button>
         </a>
-        <a href="/dashboard" class="link">
+        <a href="dashboard" class="link">
             <button>Dashboard</button>
         </a>
     </div>
     <div id="navbar-profile-container">
-        <a href="/profile" class="link">
+        <a href="profile" class="link">
             <button>Profile</button>
         </a>
         <div id="dropdown-content">
-            <a id="log-out" href="/login">
+            <a id="log-out" href="login">
                 Log out
             </a>
         </div>
