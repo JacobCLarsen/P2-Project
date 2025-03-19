@@ -27,7 +27,11 @@ app.use("/", router);
 
 // Define the path of public content dynamically based on the base URL:
 app.use((req, res, next) => {
-  express.static(path.join(__dirname, "public"))(req, res, next);
+  if (!req.path.startsWith("/socket.io")) {
+    express.static(path.join(__dirname, "public"))(req, res, next);
+  } else {
+    next(); // Skip static middleware for socket.io paths
+  }
 });
 
 // Test
