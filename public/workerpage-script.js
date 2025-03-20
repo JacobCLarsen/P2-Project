@@ -1,3 +1,5 @@
+import { measureMemory } from "vm";
+
 // Get elements from the HTML-page
 const startBtn = document.getElementById("startBtn");
 const startBtnText = document.getElementById("startBtnContent");
@@ -69,9 +71,7 @@ mySocket.onmessage = (event) => {
       break;
 
     case "no more tasks":
-      stopWork();
-      messageBox.innerText =
-        "No more tasks right now, new tasks appear in the task queue ";
+      stopWork("No more tasks right now, new tasks appear in the task queue");
       break;
 
     case "updateQueue":
@@ -159,15 +159,20 @@ function startWorkUI() {
   });
 }
 
-function stopWork() {
-  stopWorkUI();
+function stopWork(messageBoxMessage) {
+  stopWorkUI(messageBoxMessage);
 }
 
 function stopWorkUI() {
   // Remove the message and the beforeunloadHandler from the window
   window.removeEventListener("beforeunload", beforeReloadHandeler);
   // Hide the messsage box
-  messageBox.style.display = "none";
+  if (!messageBoxMessage) {
+    messageBox.style.display = "none";
+  } else {
+    messageBox.style.display = "block";
+    messageBox.innerText = messageBoxMessage;
+  }
   startBtnText.innerText = "Click to start working";
   startBtnLoad.innerText = "";
   // Revert to default (hover-only)
