@@ -15,20 +15,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const uploadProfilePic = document.getElementById("uploadProfilePic");
   const changeProfilePicBtn = document.getElementById("changeProfilePicBtn");
 
-  const userId = localStorage.getItem("userId"); // Assume userId is stored in localStorage after login
-
   // Fetch the user's profile from the server
   function fetchProfile() {
-    fetch(`/profile/${userId}`)
+    fetch("/profile")
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
           userName.textContent = data.profile.name || "John Doe";
           userEmail.textContent = data.profile.email || "example@example.com";
           userBio.textContent = data.profile.bio || "This is a sample bio.";
-          if (data.profile.profile_pic) {
-            profileImg.src = data.profile.profile_pic;
-          }
+          profileImg.src =
+            data.profile.profile_pic || "assets/DefaultProfileIMG.png";
         } else {
           console.error(data.message);
         }
@@ -39,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Save the user's profile to the server
   saveProfileBtn.addEventListener("click", function () {
     const profileData = {
-      userId,
       name: editName.value,
       email: editEmail.value,
       bio: editBio.value,
@@ -78,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   changeProfilePicBtn.addEventListener("click", function () {
-    uploadProfilePic.click(); //Open file input dialog
+    uploadProfilePic.click(); // Open file input dialog
   });
 
   uploadProfilePic.addEventListener("change", function (event) {
@@ -87,12 +83,11 @@ document.addEventListener("DOMContentLoaded", function () {
       const reader = new FileReader();
       reader.onload = function (e) {
         profileImg.src = e.target.result;
-        localStorage.setItem("profilePic", e.target.result); //Store image as Base64
       };
       reader.readAsDataURL(file);
     }
   });
 
   // Load the profile when the page is loaded
-  document.addEventListener("DOMContentLoaded", fetchProfile);
+  fetchProfile();
 });

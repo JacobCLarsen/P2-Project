@@ -24,6 +24,8 @@ async function validateLogin(e) {
     const data = await response.json();
 
     if (data.success) {
+      // Store userId in localStorage
+      localStorage.setItem("userId", data.userId);
       //If login is successful, display success message
       message.style.color = "green";
       message.textContent = "Log In Successful!";

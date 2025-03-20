@@ -39,7 +39,11 @@ export function setupAuth(app) {
       }
 
       if (results.length > 0) {
-        res.json({ success: true, message: "Login successful!" }); // Respond with success if credentials are valid
+        req.session.userId = results[0].id; // Store userId in the session
+        res.json({
+          success: true,
+          message: "Login successful!",
+        });
       } else {
         res
           .status(401) // Respond with "Unauthorized" if credentials are invalid
@@ -99,11 +103,16 @@ export function setupAuth(app) {
   /* ----- Profile Management ----- */
   /**
    * Method: GET
-   * URL: /profile/:userId
-   * Description: Fetch the profile of a specific user by user ID.
+   * URL: /profile
+   * Description: Fetch the profile of the logged-in user.
    */
-  app.get("/profile/:userId", (req, res) => {
-    const { userId } = req.params;
+  app.get("/profile", (req, res) => {
+    const userId = req.session.userId; // Assume userId is stored in the session after login
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
     const query = "SELECT * FROM profiles WHERE user_id = ?";
     DBConnection.query(query, [userId], (err, results) => {
       if (err) {
@@ -113,9 +122,16 @@ export function setupAuth(app) {
           .json({ success: false, message: "Internal server error" });
       }
       if (results.length === 0) {
-        return res
-          .status(404)
-          .json({ success: false, message: "Profile not found" });
+        // If no profile exists, return default values
+        return res.json({
+          success: true,
+          profile: {
+            name: "John Pork",
+            email: "johnpork@example.com",
+            bio: "This is a sample bio.",
+            profile_pic: "assets/DefaultProfileIMG.png",
+          },
+        });
       }
       res.json({ success: true, profile: results[0] });
     });
@@ -124,10 +140,15 @@ export function setupAuth(app) {
   /**
    * Method: POST
    * URL: /profile
-   * Description: Create or update a user's profile.
+   * Description: Create or update the logged-in user's profile.
    */
   app.post("/profile", (req, res) => {
-    const { userId, name, email, bio, profilePic } = req.body;
+    const userId = req.session.userId; // Assume userId is stored in the session after login
+    const { name, email, bio, profilePic } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
     // Check if the profile already exists
     const checkQuery = "SELECT * FROM profiles WHERE user_id = ?";
