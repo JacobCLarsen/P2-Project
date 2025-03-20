@@ -96,17 +96,17 @@ body {
   text-align: center;
 }
 
-#tasks {
+#latestCompletedTask {
   list-style-type: none;
   padding: 0;
 }
 
-#tasks li {
-  background: #f8f9fa;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 5px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+#latestCompletedTask li {
+  width: 200px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Sidebar for completed tasks */
@@ -130,7 +130,7 @@ body {
 }
 
 #taskqueue li {
-  background: #2e93ff;
+  background: #b6ceff;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
