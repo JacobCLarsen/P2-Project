@@ -61,7 +61,6 @@ connectToDatabase(); // Establishes a connection to the MySQL database and ensur
 // Set up database-related routes
 setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
 
-
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
   res.send("Server is running!");
