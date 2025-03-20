@@ -15,38 +15,62 @@ document.addEventListener("DOMContentLoaded", function () {
   const uploadProfilePic = document.getElementById("uploadProfilePic");
   const changeProfilePicBtn = document.getElementById("changeProfilePicBtn");
 
-  function loadProfile() {
-    const storedName = localStorage.getItem("profileName") || "John Pork";
-    const storedEmail = localStorage.getItem("profileEmail") || "johnpork@example.com";
-    const storedBio = localStorage.getItem("profileBio") || "This is a sample bio.";
+  const userId = localStorage.getItem("userId"); // Assume userId is stored in localStorage after login
 
-    userName.textContent = storedName;
-    userEmail.textContent = storedEmail;
-    userBio.textContent = storedBio;
-
-    const storedProfilePic = localStorage.getItem("profilePic");
-    if (storedProfilePic) {
-      profileImg.src = storedProfilePic;
-    }
+  // Fetch the user's profile from the server
+  function fetchProfile() {
+    fetch(`/profile/${userId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          userName.textContent = data.profile.name || "John Doe";
+          userEmail.textContent = data.profile.email || "example@example.com";
+          userBio.textContent = data.profile.bio || "This is a sample bio.";
+          if (data.profile.profile_pic) {
+            profileImg.src = data.profile.profile_pic;
+          }
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch((error) => console.error("Error fetching profile:", error));
   }
+
+  // Save the user's profile to the server
+  saveProfileBtn.addEventListener("click", function () {
+    const profileData = {
+      userId,
+      name: editName.value,
+      email: editEmail.value,
+      bio: editBio.value,
+      profilePic: profileImg.src,
+    };
+
+    fetch("/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(profileData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          userName.textContent = editName.value;
+          userEmail.textContent = editEmail.value;
+          userBio.textContent = editBio.value;
+          editProfileForm.classList.add("hidden");
+          console.log(data.message);
+        } else {
+          console.error(data.message);
+        }
+      })
+      .catch((error) => console.error("Error saving profile:", error));
+  });
 
   editProfileBtn.addEventListener("click", function () {
     editProfileForm.classList.remove("hidden");
     editName.value = userName.textContent;
     editEmail.value = userEmail.textContent;
     editBio.value = userBio.textContent;
-  });
-
-  saveProfileBtn.addEventListener("click", function () {
-    localStorage.setItem("profileName", editName.value);
-    localStorage.setItem("profileEmail", editEmail.value);
-    localStorage.setItem("profileBio", editBio.value);
-
-    userName.textContent = editName.value;
-    userEmail.textContent = editEmail.value;
-    userBio.textContent = editBio.value;
-
-    editProfileForm.classList.add("hidden");
   });
 
   cancelEditBtn.addEventListener("click", function () {
@@ -69,6 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  loadProfile();
-
+  // Load the profile when the page is loaded
+  document.addEventListener("DOMContentLoaded", fetchProfile);
 });

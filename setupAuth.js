@@ -96,6 +96,96 @@ export function setupAuth(app) {
     });
   });
 
+  /* ----- Profile Management ----- */
+  /**
+   * Method: GET
+   * URL: /profile/:userId
+   * Description: Fetch the profile of a specific user by user ID.
+   */
+  app.get("/profile/:userId", (req, res) => {
+    const { userId } = req.params;
+    const query = "SELECT * FROM profiles WHERE user_id = ?";
+    DBConnection.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error("Error fetching profile:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      }
+      if (results.length === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Profile not found" });
+      }
+      res.json({ success: true, profile: results[0] });
+    });
+  });
+
+  /**
+   * Method: POST
+   * URL: /profile
+   * Description: Create or update a user's profile.
+   */
+  app.post("/profile", (req, res) => {
+    const { userId, name, email, bio, profilePic } = req.body;
+
+    // Check if the profile already exists
+    const checkQuery = "SELECT * FROM profiles WHERE user_id = ?";
+    DBConnection.query(checkQuery, [userId], (err, results) => {
+      if (err) {
+        console.error("Error checking profile:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      }
+
+      if (results.length > 0) {
+        // Update existing profile
+        const updateQuery = `
+          UPDATE profiles
+          SET name = ?, email = ?, bio = ?, profile_pic = ?
+          WHERE user_id = ?`;
+        DBConnection.query(
+          updateQuery,
+          [name, email, bio, profilePic, userId],
+          (err) => {
+            if (err) {
+              console.error("Error updating profile:", err);
+              return res
+                .status(500)
+                .json({ success: false, message: "Internal server error" });
+            }
+            res.json({
+              success: true,
+              message: "Profile updated successfully!",
+            });
+          }
+        );
+      } else {
+        // Insert new profile
+        const insertQuery = `
+          INSERT INTO profiles (user_id, name, email, bio, profile_pic)
+          VALUES (?, ?, ?, ?, ?)`;
+        DBConnection.query(
+          insertQuery,
+          [userId, name, email, bio, profilePic],
+          (err) => {
+            if (err) {
+              console.error("Error creating profile:", err);
+              return res
+                .status(500)
+                .json({ success: false, message: "Internal server error" });
+            }
+            res.json({
+              success: true,
+              message: "Profile created successfully!",
+            });
+          }
+        );
+      }
+    });
+  });
+
   // Log message to indicate that authentication routes have been set up
   console.log("Auth routes set up.");
 }

@@ -4,8 +4,8 @@ import mysql from "mysql";
 const DBConnection = mysql.createConnection({
   host: "localhost", // Database host
   user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "mye7cahHm8/AWd%q",         // Database password
-  database: "cs_25_sw_2_01",            // Database name
+  password: "mye7cahHm8/AWd%q", // Database password
+  database: "cs_25_sw_2_01", // Database name
 });
 
 // Function to connect to the database and initialize tables
@@ -31,6 +31,27 @@ export function connectToDatabase() {
         console.error("Error creating users table:", err); // Log error if table creation fails
       } else {
         console.log("Users table is ready!"); // Log success message if table is created
+      }
+    });
+
+    // Create "profiles" table if it does not already exist
+    const createProfilesTable = `
+      CREATE TABLE IF NOT EXISTS profiles (
+        id INT AUTO_INCREMENT PRIMARY KEY, -- Unique profile ID
+        user_id INT NOT NULL, -- Foreign key to the users table
+        name VARCHAR(255), -- User's name
+        email VARCHAR(255), -- User's email
+        bio TEXT, -- User's bio
+        profile_pic TEXT, -- Base64-encoded profile picture
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )`;
+
+    // Execute the query to create the profiles table
+    DBConnection.query(createProfilesTable, (err, result) => {
+      if (err) {
+        console.error("Error creating profiles table:", err); // Log error if table creation fails
+      } else {
+        console.log("Profiles table is ready!"); // Log success message if table is created
       }
     });
   });
