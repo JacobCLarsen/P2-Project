@@ -20,22 +20,21 @@ export function setupAuth(app) {
    * Response: { success: true/false, message: "Login successful!" / "Invalid username or password" }
    */
   app.post("/login", async (req, res) => {
-    const { username, password } = req.body; // Extract username and password from the request body
+    const { username, password } = req.body;
 
     if (!username || !password) {
       return res
-        .status(400) // Respond with "Bad Request" if username or password is missing
+        .status(400)
         .json({ success: false, message: "Missing username or password" });
     }
 
-    // Query the database to check if the username and password match
     const query = "SELECT * FROM users WHERE username = ? AND password = ?";
     DBConnection.query(query, [username, password], (err, results) => {
       if (err) {
-        console.error("Error validating login:", err); // Log error if query fails
+        console.error("Error validating login:", err);
         return res
           .status(500)
-          .json({ success: false, message: "Internal server error" }); // Respond with "Internal Server Error"
+          .json({ success: false, message: "Internal server error" });
       }
 
       if (results.length > 0) {
@@ -43,11 +42,11 @@ export function setupAuth(app) {
         return res.json({
           success: true,
           message: "Login successful!",
-          userId: results[0].id, // Include userId in the response
+          userId: results[0].id,
         });
       } else {
         return res
-          .status(401) // Respond with "Unauthorized" if credentials are invalid
+          .status(401)
           .json({ success: false, message: "Invalid username or password" });
       }
     });
