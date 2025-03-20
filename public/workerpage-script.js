@@ -1,5 +1,3 @@
-import { measureMemory } from "vm";
-
 // Get elements from the HTML-page
 const startBtn = document.getElementById("startBtn");
 const startBtnText = document.getElementById("startBtnContent");
