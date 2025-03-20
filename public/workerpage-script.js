@@ -25,19 +25,18 @@ mySocket.addEventListener("open", (event) => {
   mySocket.send(JSON.stringify(message));
 });
 
-// On clone send a messag to the server that the client is disconnected
-mySocket.onclose = (event) => {
-  let message = {
-    action: "disconnect",
-    data: null,
-    id: clientId, // Use the generated client ID
-  };
-  mySocket.send(JSON.stringify(message));
-};
-
-window.onbeforeunload = () => {
-  mySocket.close();
-};
+// Send a disconnect message when the page is about to be unloaded
+window.addEventListener("beforeunload", () => {
+  if (mySocket.readyState === WebSocket.OPEN) {
+    mySocket.send(
+      JSON.stringify({
+        action: "disconnect",
+        data: null,
+        id: clientId,
+      })
+    );
+  }
+});
 
 // Listen for messages from the server, switch case to handle different message "action" types
 mySocket.onmessage = (event) => {
