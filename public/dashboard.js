@@ -13,14 +13,13 @@ mySocket.addEventListener("open", () => {
 
 // Get elements from the dom
 const activeWorkersField = document.getElementById("active-workers");
-activeWorkersField.innerText = "Active workers: 0";
 
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
 
   switch (message.action) {
     case "updateOnlineUsers":
-      activeWorkersField.innerText = message.users;
+      activeWorkersField.innerText = `Active Workers: ${message.users}`;
       break;
 
     default:

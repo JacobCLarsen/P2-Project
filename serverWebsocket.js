@@ -1,5 +1,5 @@
 // Keep track of online users and client roles
-let onlineUsers = [];
+let workerClientns = [];
 let dashboardClients = [];
 
 export function WebsocketListen(ws, wss) {
@@ -9,11 +9,12 @@ export function WebsocketListen(ws, wss) {
     switch (message.action) {
       case "connect":
         console.log(`worker connected with id: ${message.id}`);
-        onlineUsers.push(message.id);
 
         // If the client specifies itself as a dashboard, add it to the dashboardClients list
         if (message.role === "dashboard") {
           dashboardClients.push(ws);
+        } else {
+          workerClientns.push(message.id);
         }
 
         // Notify only dashboard clients about the updated number of online users
@@ -22,7 +23,7 @@ export function WebsocketListen(ws, wss) {
             client.send(
               JSON.stringify({
                 action: "updateOnlineUsers",
-                users: onlineUsers.length,
+                users: workerClientns.length,
               })
             );
           }
@@ -43,7 +44,7 @@ export function WebsocketListen(ws, wss) {
 
       case "disconnect":
         console.log("Stopping worker");
-        onlineUsers = onlineUsers.filter((id) => id !== message.id);
+        workerClientns = workerClientns.filter((id) => id !== message.id);
 
         // Remove the client from the dashboardClients list if it disconnects
         dashboardClients = dashboardClients.filter((client) => client !== ws);
