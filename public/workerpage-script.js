@@ -49,7 +49,7 @@ newTaskBtn.addEventListener("click", () => {
 
 // Function to update the queue on page, when a new one is added by any user
 function updateQueue(queue) {
-  taskQueue = "";
+  taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
     taskItem.innerText = `Task id: ${task.id} - task hash: ${task.hash}`;
