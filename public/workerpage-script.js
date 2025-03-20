@@ -13,7 +13,7 @@ const plusTabBtn = document.getElementById("plus-tab-btn");
 //const mySocket = new WebSocket("ws://localhost/ws1/");
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
-const clientId = `client-${Math.random().toString(36).substr(2, 9)}`;
+const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
 // Send the name to the server after connecting
 mySocket.addEventListener("open", (event) => {
