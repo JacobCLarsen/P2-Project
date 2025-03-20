@@ -14,7 +14,8 @@
         "48": "/public/assets/circular-favicon.png"
     },
     "background": {
-        "service_worker": "/public/background.js"
+        "service_worker": "/public/background.js",
+        "type": "module"
     },
     "permissions": ["storage", "alarms"]
 }

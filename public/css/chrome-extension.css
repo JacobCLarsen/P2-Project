@@ -25,10 +25,6 @@ h2 {
     color: #333;
     text-align: center;
 }
-#startBtn:hover {
-    color: #0056b3;
-    border-color: #0056b3;
-}
 #website-link {
     border: #444 solid 2px;
     background-color: white;
