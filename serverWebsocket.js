@@ -7,12 +7,15 @@ let taskQueue = [];
 // For demo, create 5 tasks and add them to the task queue, when a button is clicked
 function addTaskToQueue(task) {
   // TODO: have a task queue on the database
-
   taskQueue.push(task);
 
-  // Show the queue to all clients in the startwork page
-  console.log("Message sent to workers to update queue");
+  // Send a message to clients to update their task queue
+  updateTaskQueue();
+}
 
+// Function to update the task queue
+function updateTaskQueue() {
+  console.log("Message sent to workers to update queue");
   workerClientns.forEach((client) => {
     if (client.readyState === client.OPEN) {
       client.send(
@@ -45,6 +48,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "request task":
+        // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
         if (taskQueue.length >= 1) {
           let task = taskQueue.shift();
           console.log(
@@ -52,8 +56,11 @@ export function WebsocketListen(ws, wss) {
           );
           ws.send(JSON.stringify({ action: "new task", data: task }));
         } else {
+          // TODO: Also send a message to the client that currently are not tasks, and stopr their working session
           console.log("No more tasks in the queue ... ");
         }
+        // Also send a message to all clients to update the taskqeueu, as a task now as been taken
+        updateTaskQueue();
         break;
 
       case "send result":
