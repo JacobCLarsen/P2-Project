@@ -7,6 +7,7 @@ mySocket.addEventListener("open", () => {
     JSON.stringify({
       action: "connect",
       role: "dashboard", // Specify the role
+      id: "dashboard",
     })
   );
 });
