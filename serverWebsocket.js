@@ -57,6 +57,7 @@ export function WebsocketListen(ws, wss) {
           ws.send(JSON.stringify({ action: "new task", data: task }));
         } else {
           // TODO: Also send a message to the client that currently are not tasks, and stopr their working session
+          ws.send(JSON.stringify({ action: "no more tasksk" }));
           console.log("No more tasks in the queue ... ");
         }
         // Also send a message to all clients to update the taskqeueu, as a task now as been taken

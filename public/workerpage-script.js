@@ -68,6 +68,12 @@ mySocket.onmessage = (event) => {
       startWork(message.data);
       break;
 
+    case "no more tasksk":
+      stopWork();
+      messageBox.innerText =
+        "No more tasks right now, new tasks appear in the task queue ";
+      break;
+
     case "updateQueue":
       updateQueue(message.queue);
       break;
