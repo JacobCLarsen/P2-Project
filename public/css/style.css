@@ -51,6 +51,7 @@ body {
   padding: 0px 15px 0px 15px;
   cursor: pointer;
   transition: 0.3s;
+  align-items: center;
 }
 
 #startBtnContent {
@@ -124,9 +125,10 @@ body {
 #newTaskBtn {
   display: flex;
   align-items: center;
-  width: 50px;
-  background-color: rgb(121, 255, 135);
-  border: none;
+  width: fit-content;
+  padding: 2px;
+  background-color: rgb(220, 255, 232);
+  border: #444 solid 1px;
   border-radius: 5px;
   padding: 0px 15px 0px 15px;
   cursor: pointer;
