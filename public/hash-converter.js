@@ -1,5 +1,7 @@
 import { hashSHA512 } from "./hash-functions.js";
 
+const copyBtn = document.getElementById("copy-btn");
+
 // Function converting password to hash using the hashSHA512 function.
 async function convertedPassword() {
     let password = document.getElementById("password").value;
@@ -17,10 +19,20 @@ document.querySelector(".btn").addEventListener("click", convertedPassword);
 
 
 // Copy to clipboard function
-document.getElementById("copy-btn").addEventListener("click", function () {
+copyBtn.addEventListener("click", function () {
     // Gets element from the id "output" and excludes the "Hashed Output: " part.
     let hashText = document.getElementById("output").innerText.replace("Hashed Output: ", "");
     // Copies the elemtent to system clipboard.
     navigator.clipboard.writeText(hashText);
+
+    // Changes the button text to "Copied!" when the button is clicked.
+    if (copyBtn.innerHTML == "Copy") {
+        copyBtn.innerHTML = "Copied!";
+    }
+    setTimeout(() => {
+        copyBtn.innerHTML = "Copy";
+    }, 2000);
 });
+
+
 
