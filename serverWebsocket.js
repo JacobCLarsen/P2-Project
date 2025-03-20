@@ -71,7 +71,7 @@ export function WebsocketListen(ws, wss) {
 // function to create a random task to use in this file
 export function createTask() {
   let task = {};
-  task.id = Math.floor(Math.random().toString(36).slice(2, 9));
+  task.id = Math.floor(Math.random() * 1000);
   task.hash = `0x${Math.random().toString(36).slice(2, 11)}`;
   return task;
 }
