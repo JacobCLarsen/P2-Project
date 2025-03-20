@@ -11,9 +11,7 @@ const plusTabBtn = document.getElementById("plus-tab-btn");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
 //const mySocket = new WebSocket("ws://localhost/ws1/");
-const mySocket = new WebSocket(
-  "wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/node1/ws1/"
-);
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 const clientId = `client-${Math.random().toString(36).substr(2, 9)}`;
 
