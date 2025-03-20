@@ -11,8 +11,11 @@ import { Server } from "socket.io";
 
 // Custom modules
 import router from "./router.js";
-import { setupSocketCommunication } from "./setupSocketCommunication.js";
 import { setupAuth } from "./setupAuth.js";
+
+import { WebSocketServer } from "ws";
+import { WebsocketListen } from "./serverWebsocket.js";
+
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
@@ -37,10 +40,16 @@ app.use(express.json());
 // Use the router for handling routes
 app.use("/", router);
 
-// Set up WebSocket communication:
-const io = new Server(server);
-setupSocketCommunication(io);
+// Websockets:
 
+const wss = new WebSocketServer({ port: 4311 });
+
+
+wss.on("connection", function connection(ws) {
+  console.log("connected");
+  // See which messages the websocket server is listening for in serverWebsocket.js
+  WebsocketListen(ws);
+});
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
@@ -52,11 +61,14 @@ connectToDatabase(); // Establishes a connection to the MySQL database and ensur
 // Set up database-related routes
 setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
 
-/* ----- ROUTES ----- */
 
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
   res.send("Server is running!");
+
+// Port for the Server:
+server.listen(3311, "0.0.0.0", () => {
+  console.log("listening on http://localhost:3000");
 });
 
 // Test WebSocket proxy route (example usage)
