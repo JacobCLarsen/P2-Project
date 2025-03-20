@@ -12,5 +12,9 @@
         "128": "/public/assets/circular-favicon.png",
         "16": "/public/assets/circular-favicon.png",
         "48": "/public/assets/circular-favicon.png"
-    }
+    },
+    "background": {
+        "service_worker": "/public/background.js"
+    },
+    "permissions": ["storage", "alarms"]
 }

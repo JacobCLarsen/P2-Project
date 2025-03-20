@@ -26,7 +26,7 @@ copyBtn.addEventListener("click", function () {
     navigator.clipboard.writeText(hashText);
 
     // Changes the button text to "Copied!" when the button is clicked.
-    if (copyBtn.innerHTML == "Copy") {
+    if (copyBtn.innerHTML === "Copy") {
         copyBtn.innerHTML = "Copied!";
     }
     setTimeout(() => {
