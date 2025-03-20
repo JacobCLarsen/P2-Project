@@ -46,8 +46,8 @@ const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
-  // See which messages the websocket server is listening for in serverWebsocket.js
-  WebsocketListen(ws);
+  // Pass the WebSocket server instance to WebsocketListen
+  WebsocketListen(ws, wss);
 });
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
