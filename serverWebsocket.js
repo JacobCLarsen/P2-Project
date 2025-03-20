@@ -43,7 +43,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "disconnect":
-        console.log("Stopping worker");
+        console.log(`worker disconnected with id: ${message.id}`);
         workerClientns = workerClientns.filter((id) => id !== message.id);
 
         // Remove the client from the dashboardClients list if it disconnects
@@ -55,7 +55,7 @@ export function WebsocketListen(ws, wss) {
             client.send(
               JSON.stringify({
                 action: "updateOnlineUsers",
-                users: onlineUsers.length,
+                users: workerClientns.length,
               })
             );
           }
