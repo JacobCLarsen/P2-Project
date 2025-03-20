@@ -25,6 +25,16 @@ mySocket.addEventListener("open", (event) => {
   mySocket.send(JSON.stringify(message));
 });
 
+// On clone send a messag to the server that the client is disconnected
+mySocket.addEventListener("close", (event) => {
+  let message = {
+    action: "disconnect",
+    data: null,
+    id: clientId, // Use the generated client ID
+  };
+  mySocket.send(JSON.stringify(message));
+});
+
 // Listen for messages from the server, switch case to handle different message "action" types
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
