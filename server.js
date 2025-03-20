@@ -25,7 +25,7 @@ app.use("/", router);
 app.use(express.static("public"));
 
 // Websockets:
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -37,6 +37,6 @@ wss.on("connection", function connection(ws) {
 // setupAuth(app); // Calls the function to add login/signup routes
 
 // Port for the Server:
-server.listen(3000, "0.0.0.0", () => {
+server.listen(3311, "0.0.0.0", () => {
   console.log("listening on http://localhost:3000");
 });
