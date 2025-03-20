@@ -28,7 +28,8 @@ body {
 #main-section-container {
   margin-top: 200px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #plus-tab-btn {
