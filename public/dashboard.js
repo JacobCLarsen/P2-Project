@@ -3,6 +3,7 @@ const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 // Get elements from the dom
 const activeWorkersField = document.getElementById("active-workers");
+activeWorkersField.innerText = "0";
 
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
