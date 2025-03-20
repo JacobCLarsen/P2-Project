@@ -2,6 +2,26 @@
 let workerClientns = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
+let taskQueue = [];
+
+// For demo, create 5 tasks and add them to the task queue, when a button is clicked
+function addTaskToQueue(task) {
+  // TODO: have a task queue on the database
+
+  taskQueue.push(task);
+
+  // Show the queue to all clients in the startwork page
+  workerClientns.forEach((client) => {
+    if (client.readyState === client.OPEN) {
+      client.send(
+        JSON.stringify({
+          action: "updateQueue",
+          queue: taskQueue,
+        })
+      );
+    }
+  });
+}
 
 export function WebsocketListen(ws, wss) {
   ws.onmessage = (event) => {
@@ -23,11 +43,15 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "request task":
-        let task = createTask();
-        console.log(
-          `sending a task to worker: ${message.id}, with task id: ${task.id}`
-        );
-        ws.send(JSON.stringify({ action: "new task", data: task }));
+        if (taskQueue.length >= 1) {
+          let task = taskQueue.shift();
+          console.log(
+            `sending a task to worker: ${message.id}, with task id: ${task.id}`
+          );
+          ws.send(JSON.stringify({ action: "new task", data: task }));
+        } else {
+          console.log("No more tasks in the queue ... ");
+        }
         break;
 
       case "send result":
@@ -35,6 +59,11 @@ export function WebsocketListen(ws, wss) {
         // TODO: Add a check to see if the task was completed correctly or not
         completedTaskCount++;
         updateCompletedTasks();
+        break;
+
+      case "addTask":
+        let newTask = createTask();
+        addTaskToQueue(newTask);
         break;
 
       case "disconnect":

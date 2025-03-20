@@ -3,11 +3,12 @@ const startBtn = document.getElementById("startBtn");
 const startBtnText = document.getElementById("startBtnContent");
 const startBtnLoad = document.getElementById("startBtnLoad");
 const messageBox = document.getElementById("messageBox");
-const taskList = document.getElementById("tasks");
+const taskQueue = document.getElementById("taskqueue");
 const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const hashingText = document.getElementById("hashingText");
 const plusTabBtn = document.getElementById("plus-tab-btn");
+const newTaskBtn = document.getElementById("newTaskBtn");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
 //const mySocket = new WebSocket("ws://localhost/ws1/");
@@ -39,6 +40,21 @@ window.addEventListener("beforeunload", () => {
   }
 });
 
+// When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
+newTaskBtn.addEventListener = ("click", () => {
+  mySocket.send(JSON.stringify({ action: "addTask" }));
+});
+
+// Function to update the queue on page, when a new one is added by any user
+function updateQueue(queue) {
+  taskQueue = "";
+  queue.forEach((task) => {
+    let taskItem = document.createElement("li");
+    taskItem.innerText = `Task id: ${task.id} - task hash: ${task.hash}`;
+    taskQueue.append(taskItem);
+  });
+}
+
 // Listen for messages from the server, switch case to handle different message "action" types
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
@@ -47,6 +63,10 @@ mySocket.onmessage = (event) => {
     case "new task":
       console.log("Received new task:", message.data);
       startWork(message.data);
+      break;
+
+    case "updateQueue":
+      updateQueue(message.queue);
       break;
 
     default:
