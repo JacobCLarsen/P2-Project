@@ -7,15 +7,12 @@ import { fileURLToPath } from "url";
 // Third-party modules
 import express from "express";
 import { createServer } from "http";
-import { Server } from "socket.io";
 
 // Custom modules
 import router from "./router.js";
 import { setupAuth } from "./setupAuth.js";
-
 import { WebSocketServer } from "ws";
 import { WebsocketListen } from "./serverWebsocket.js";
-
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
@@ -40,25 +37,20 @@ app.use(express.json());
 // Use the router for handling routes
 app.use("/", router);
 
-// Websockets:
+/* ----- WEBSOCKETS ----- */
 const wss = new WebSocketServer({ port: 4315 });
 
 wss.on("connection", function connection(ws) {
-  console.log("connected");
-  // See which messages the websocket server is listening for in serverWebsocket.js
-  WebsocketListen(ws);
+  console.log("WebSocket connected");
+  WebsocketListen(ws); // Handle WebSocket messages
 });
 
-// Set up authentication routes (e.g., login/signup):
-setupAuth(app);
+/* ----- AUTHENTICATION ROUTES ----- */
+setupAuth(app); // Set up login and signup routes
 
 /* ----- DATABASE SETUP ----- */
-
-// Connect to the database and initialize tables
-connectToDatabase(); // Establishes a connection to the MySQL database and ensures the "users" table exists
-
-// Set up database-related routes
-setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
+connectToDatabase(); // Connect to the database and initialize tables
+setupDatabaseRoutes(app); // Add database-related routes
 
 /* ----- ROUTES ----- */
 
@@ -67,8 +59,10 @@ app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
-let x = 1;
+/* ----- START SERVER ----- */
+
+// Start the server on the specified port
+let x = 1; // Change this value to switch between production and localhost
 if (x === 1) {
   const PORT = 3315;
   server.listen(PORT, "0.0.0.0", () => {
