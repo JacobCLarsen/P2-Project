@@ -35,6 +35,10 @@ mySocket.onclose = (event) => {
   mySocket.send(JSON.stringify(message));
 };
 
+window.onbeforeunload = () => {
+  mySocket.close();
+};
+
 // Listen for messages from the server, switch case to handle different message "action" types
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
