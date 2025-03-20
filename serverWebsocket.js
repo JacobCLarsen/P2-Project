@@ -4,30 +4,6 @@ let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
 
-// For demo, create 5 tasks and add them to the task queue, when a button is clicked
-function addTaskToQueue(task) {
-  // TODO: have a task queue on the database
-  taskQueue.push(task);
-
-  // Send a message to clients to update their task queue
-  updateTaskQueue();
-}
-
-// Function to update the task queue
-function updateTaskQueue() {
-  console.log("Message sent to workers to update queue");
-  workerClientns.forEach((client) => {
-    if (client.readyState === client.OPEN) {
-      client.send(
-        JSON.stringify({
-          action: "updateQueue",
-          queue: taskQueue,
-        })
-      );
-    }
-  });
-}
-
 export function WebsocketListen(ws, wss) {
   ws.onmessage = (event) => {
     let message = JSON.parse(event.data);
@@ -45,7 +21,7 @@ export function WebsocketListen(ws, wss) {
           ws.send(JSON.stringify({ action: "updateQueue", queue: taskQueue }));
         }
 
-        updateOnlineUsers(ws, message);
+        updateOnlineUsers();
         break;
 
       case "request task":
@@ -57,7 +33,6 @@ export function WebsocketListen(ws, wss) {
           );
           ws.send(JSON.stringify({ action: "new task", data: task }));
         } else {
-          // TODO: Also send a message to the client that currently are not tasks, and stopr their working session
           ws.send(JSON.stringify({ action: "no more tasksk" }));
           console.log("No more tasks in the queue ... ");
         }
@@ -149,4 +124,28 @@ function loadDashBoard(ws) {
       completedTasks: completedTaskCount,
     })
   );
+}
+
+// For demo, create 5 tasks and add them to the task queue, when a button is clicked
+function addTaskToQueue(task) {
+  // TODO: have a task queue on the database
+  taskQueue.push(task);
+
+  // Send a message to clients to update their task queue
+  updateTaskQueue();
+}
+
+// Function to update the task queue
+function updateTaskQueue() {
+  console.log("Message sent to workers to update queue");
+  workerClientns.forEach((client) => {
+    if (client.readyState === client.OPEN) {
+      client.send(
+        JSON.stringify({
+          action: "updateQueue",
+          queue: taskQueue,
+        })
+      );
+    }
+  });
 }
