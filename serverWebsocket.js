@@ -11,6 +11,8 @@ function addTaskToQueue(task) {
   taskQueue.push(task);
 
   // Show the queue to all clients in the startwork page
+  console.log("Message sent to workers to update queue");
+
   workerClientns.forEach((client) => {
     if (client.readyState === client.OPEN) {
       client.send(
@@ -62,6 +64,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "addTask":
+        console.log("new task is being created");
         let newTask = createTask();
         addTaskToQueue(newTask);
         break;

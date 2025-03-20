@@ -41,9 +41,13 @@ window.addEventListener("beforeunload", () => {
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
-newTaskBtn.addEventListener = ("click", () => {
-  mySocket.send(JSON.stringify({ action: "addTask" }));
-});
+newTaskBtn.addEventListener =
+  ("click",
+  () => {
+    console.log("asked for new task to be created");
+
+    mySocket.send(JSON.stringify({ action: "addTask" }));
+  });
 
 // Function to update the queue on page, when a new one is added by any user
 function updateQueue(queue) {
