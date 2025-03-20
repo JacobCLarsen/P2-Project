@@ -38,7 +38,7 @@ export function WebsocketListen(ws, wss) {
           // When a dashboard joins, send all the info to it (online users, active workers, tasks completd)
           loadDashBoard(ws);
         } else {
-          workerClientns.push(message.id);
+          workerClientns.push(ws);
         }
 
         updateOnlineUsers(ws, message);
@@ -71,7 +71,7 @@ export function WebsocketListen(ws, wss) {
 
       case "disconnect":
         console.log(`worker disconnected with id: ${message.id}`);
-        workerClientns = workerClientns.filter((id) => id !== message.id);
+        workerClientns = workerClientns.filter((client) => client !== ws);
 
         // Remove the client from the dashboardClients list if it disconnects
         dashboardClients = dashboardClients.filter((client) => client !== ws);
