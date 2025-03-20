@@ -10,7 +10,7 @@ export function WebsocketListen(ws, wss) {
     switch (message.action) {
       case "connect":
         console.log(`worker connected with id: ${message.id}`);
-        updateOnlineUsers();
+        updateOnlineUsers(message);
         break;
 
       case "request task":
@@ -63,7 +63,7 @@ function createTask() {
 }
 
 // Function to update the number of online users and send it to the dashboard clients
-function updateOnlineUsers() {
+function updateOnlineUsers(message) {
   if (message.role === "dashboard") {
     dashboardClients.push(ws);
   } else {
