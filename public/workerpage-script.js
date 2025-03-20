@@ -127,7 +127,7 @@ function startWork(task) {
 }
 
 // Animate the work button, when working.
-function startWorkUI() {
+function startWorkUI(messageBoxMessage) {
   // Distaplay the message "Please dont leave the page when working, and also adds a beforeunloadHandeler to the window
   window.addEventListener("beforeunload", beforeReloadHandeler);
   messageBox.style.display = "block";
