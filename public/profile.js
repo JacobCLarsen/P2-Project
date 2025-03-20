@@ -76,7 +76,11 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        console.log("Profile data:", data.profiles);
+        if (data.profiles.length === 0) {
+          console.warn("No profiles found in the database.");
+        } else {
+          console.log("Profile data:", data.profiles);
+        }
       } else {
         console.error("Failed to fetch profile data:", data.error);
       }
