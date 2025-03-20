@@ -10,6 +10,15 @@ export function WebsocketListen(ws, wss) {
     switch (message.action) {
       case "connect":
         console.log(`worker connected with id: ${message.id}`);
+        // Add dashboard and worker clients to an array
+        if (message.role === "dashboard") {
+          dashboardClients.push(ws);
+          // When a dashboard joins, send all the info to it (online users, active workers, tasks completd)
+          loadDashBoard(ws);
+        } else {
+          workerClientns.push(message.id);
+        }
+
         updateOnlineUsers(ws, message);
         break;
 
@@ -63,13 +72,7 @@ function createTask() {
 }
 
 // Function to update the number of online users and send it to the dashboard clients
-function updateOnlineUsers(ws, message) {
-  if (message.role === "dashboard") {
-    dashboardClients.push(ws);
-  } else {
-    workerClientns.push(message.id);
-  }
-
+function updateOnlineUsers() {
   // Notify only dashboard clients about the updated number of online users
   dashboardClients.forEach((client) => {
     if (client.readyState === client.OPEN) {
@@ -95,4 +98,14 @@ function updateCompletedTasks() {
       );
     }
   });
+}
+
+function loadDashBoard(ws) {
+  ws.send(
+    JSON.stringify({
+      action: "loadDashboard",
+      onlineClients: workerClientns.length,
+      completedTasks: completedTaskCount,
+    })
+  );
 }

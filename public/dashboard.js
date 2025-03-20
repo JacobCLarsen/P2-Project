@@ -33,6 +33,11 @@ mySocket.onmessage = (event) => {
       completedTasksField.innerText = `Completed tasks since restart: ${message.count}`;
       break;
 
+    case "loadDashboard":
+      onlineWorkersField.innerText = `Online workers: ${message.onlineClients}`;
+      completedTasksField.innerText = `Completed tasks since restart: ${message.completedTasks}`;
+      break;
+
     default:
       console.warn("Unknown message type:", type);
   }
