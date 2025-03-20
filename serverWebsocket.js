@@ -33,7 +33,7 @@ export function WebsocketListen(ws, wss) {
           );
           ws.send(JSON.stringify({ action: "new task", data: task }));
         } else {
-          ws.send(JSON.stringify({ action: "no more tasksk" }));
+          ws.send(JSON.stringify({ action: "no more tasks" }));
           console.log("No more tasks in the queue ... ");
         }
         // Also send a message to all clients to update the taskqeueu, as a task now as been taken
@@ -137,7 +137,6 @@ function addTaskToQueue(task) {
 
 // Function to update the task queue
 function updateTaskQueue() {
-  console.log("Message sent to workers to update queue");
   workerClientns.forEach((client) => {
     if (client.readyState === client.OPEN) {
       client.send(

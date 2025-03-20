@@ -68,7 +68,7 @@ mySocket.onmessage = (event) => {
       startWork(message.data);
       break;
 
-    case "no more tasksk":
+    case "no more tasks":
       stopWork();
       messageBox.innerText =
         "No more tasks right now, new tasks appear in the task queue ";
@@ -79,7 +79,9 @@ mySocket.onmessage = (event) => {
       break;
 
     default:
-      console.warn("Unknown message type:", type);
+      console.log(
+        `message not action not defined in listener: ${message.action}`
+      );
   }
 };
 

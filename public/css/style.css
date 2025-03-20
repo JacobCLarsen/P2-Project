@@ -29,6 +29,7 @@ body {
   margin-top: 200px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -43,10 +44,7 @@ body {
 }
 
 #startBtn {
-  display: flex;
-  margin-right: 20px;
-  align-items: center;
-  width: 290px;
+  width: 100%;
   height: 100px;
   border: #444 solid 2px;
   border-radius: 20px;
@@ -119,6 +117,20 @@ body {
   padding: 20px;
   overflow-y: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 10px;
+}
+
+#newTaskBtn {
+  display: flex;
+  align-items: center;
+  width: 50px;
+  background-color: rgb(121, 255, 135);
+  border: none;
+  border-radius: 5px;
+  padding: 0px 15px 0px 15px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .sidebar h3 {
