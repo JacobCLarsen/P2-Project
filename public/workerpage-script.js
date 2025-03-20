@@ -9,7 +9,7 @@ const statusMessage = document.getElementById("workstatus");
 const hashingText = document.getElementById("hashingText");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 const newTaskBtn = document.getElementById("newTaskBtn");
-const lasestCompletedTask = document.getElementById("latestCompletedTask");
+const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
 //const mySocket = new WebSocket("ws://localhost/ws1/");
@@ -106,8 +106,8 @@ function startWork(task) {
 
     let item = document.createElement("li");
     item.innerText = `You completed task ${task.id} with result ${e.data}`;
-    taskList.innerHTML = "";
-    taskList.append(item);
+    latestCompletedTask.innerHTML = "";
+    latestCompletedTask.append(item);
 
     mySocket.send(JSON.stringify(taskresult));
   };
