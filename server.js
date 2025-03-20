@@ -48,6 +48,7 @@ wss.on("connection", function connection(ws) {
   // See which messages the websocket server is listening for in serverWebsocket.js
   WebsocketListen(ws);
 });
+
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 

@@ -40,12 +40,13 @@ export function setupAuth(app) {
 
       if (results.length > 0) {
         req.session.userId = results[0].id; // Store userId in the session
-        res.json({
+        return res.json({
           success: true,
           message: "Login successful!",
+          userId: results[0].id, // Include userId in the response
         });
       } else {
-        res
+        return res
           .status(401) // Respond with "Unauthorized" if credentials are invalid
           .json({ success: false, message: "Invalid username or password" });
       }

@@ -11,7 +11,7 @@ async function validateLogin(e) {
 
   try {
     //Send a POST request to the server with login credentials
-    const response = await fetch("login", {
+    const response = await fetch("/login", {
       method: "POST", //HTTP method
       headers: { "Content-Type": "application/json" }, //Specify JSON format
       body: JSON.stringify({
@@ -19,6 +19,11 @@ async function validateLogin(e) {
         password: enteredPassword,
       }), //Convert user input into a JSON string
     });
+
+    if (!response.ok) {
+      // If the response is not OK, throw an error with the status text
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
 
     //Awaits response from server before moving on:
     const data = await response.json();
