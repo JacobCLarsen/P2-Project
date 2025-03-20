@@ -124,13 +124,13 @@ body {
   margin-bottom: 20px;
 }
 
-#taskResults {
+#latestCompletedTask {
   list-style-type: none;
   padding: 0;
 }
 
-#taskResults li {
-  background: #c5edce;
+#latestCompletedTask li {
+  background: #2e93ff;
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
