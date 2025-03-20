@@ -41,7 +41,9 @@ app.use(express.json());
 app.use("/", router);
 
 // Websockets:
-const wss = new WebSocketServer({ port: 4310 });
+
+const wss = new WebSocketServer({ port: 4311 });
+
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -59,11 +61,14 @@ connectToDatabase(); // Establishes a connection to the MySQL database and ensur
 // Set up database-related routes
 setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
 
-/* ----- ROUTES ----- */
 
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
   res.send("Server is running!");
+
+// Port for the Server:
+server.listen(3311, "0.0.0.0", () => {
+  console.log("listening on http://localhost:3000");
 });
 
 // Test WebSocket proxy route (example usage)

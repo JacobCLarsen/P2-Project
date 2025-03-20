@@ -10,7 +10,9 @@ const hashingText = document.getElementById("hashingText");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
+
 const mySocket = new WebSocket("ws://127.0.0.1:ws0/");
+
 const clientId = `client-${Math.random().toString(36).substr(2, 9)}`;
 
 // Send the name to the server after connecting
