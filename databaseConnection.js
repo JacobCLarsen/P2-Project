@@ -106,6 +106,35 @@ export function setupDatabaseRoutes(app) {
       }
     });
   });
+
+  // Route to insert a new profile into the database
+  app.post("/profiles", (req, res) => {
+    const { name, email, bio } = req.body; // Extract name, email, and bio from the request body
+
+    if (!name || !email || !bio) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing fields" });
+    }
+
+    const query = "INSERT INTO profile (name, email, bio) VALUES (?, ?, ?)";
+    DBConnection.query(query, [name, email, bio], (err, result) => {
+      if (err) {
+        console.error("Error inserting profile:", err);
+        res
+          .status(500)
+          .json({ success: false, message: "Failed to insert profile" });
+      } else {
+        console.log("Profile inserted:", {
+          id: result.insertId,
+          name,
+          email,
+          bio,
+        });
+        res.json({ success: true, message: "Profile inserted successfully" });
+      }
+    });
+  });
 }
 
 // Export the database connection object
