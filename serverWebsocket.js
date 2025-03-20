@@ -60,7 +60,6 @@ export function WebsocketListen(ws, wss) {
             );
           }
         });
-        self.close(); // Terminates the worker
         break;
 
       default:

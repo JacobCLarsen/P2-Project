@@ -35,6 +35,7 @@ window.addEventListener("beforeunload", () => {
         id: clientId,
       })
     );
+    mySocket.close();
   }
 });
 
