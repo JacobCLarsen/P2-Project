@@ -42,7 +42,7 @@ app.use("/", router);
 
 // Websockets:
 
-const wss = new WebSocketServer({ port: 4312 });
+const wss = new WebSocketServer({ port: 4310 });
 
 
 wss.on("connection", function connection(ws) {
@@ -67,18 +67,13 @@ app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Test WebSocket proxy route (example usage)
-app.use("/ws0", (req, res) =>
-  proxy.web(req, res, { target: "ws://localhost:4310" })
-);
-
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3312;
+  const PORT = 3310;
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node2/"
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
     );
   });
 } else if (x === 2) {
