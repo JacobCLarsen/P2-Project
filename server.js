@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
 
 // Test WebSocket proxy route (example usage)
 app.use("/ws1", (req, res) =>
-  proxy.web(req, res, { target: "ws://localhost:4311" })
+  proxy.web(req, res, { target: "ws://localhost/ws1/" })
 );
 
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
