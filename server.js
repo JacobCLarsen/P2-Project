@@ -42,7 +42,7 @@ app.use("/", router);
 
 // Websockets:
 
-const wss = new WebSocketServer({ port: 4311 });
+const wss = new WebSocketServer({ port: 4312 });
 
 
 wss.on("connection", function connection(ws) {
@@ -65,10 +65,6 @@ setupDatabaseRoutes(app); // Adds routes for testing the database connection and
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
   res.send("Server is running!");
-
-// Port for the Server:
-server.listen(3311, "0.0.0.0", () => {
-  console.log("listening on http://localhost:3000");
 });
 
 // Test WebSocket proxy route (example usage)
@@ -79,7 +75,7 @@ app.use("/ws0", (req, res) =>
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3310;
+  const PORT = 3312;
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
       "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
