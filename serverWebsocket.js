@@ -42,6 +42,7 @@ export function WebsocketListen(ws, wss) {
           loadDashBoard(ws);
         } else {
           workerClientns.push(ws);
+          ws.send(JSON.stringify({ action: "updateQueue", queue: taskQueue }));
         }
 
         updateOnlineUsers(ws, message);
