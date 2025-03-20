@@ -11,14 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="startwork" class="link">
             <button>Home</button>
         </a>
-        <a href="about" class="link">
-            <button>About</button>
+        <a href="dashboard" class="link">
+            <button>Dashboard</button>
         </a>
         <a href="converter" class="link">
             <button>Converter</button>
         </a>
-        <a href="dashboard" class="link">
-            <button>Dashboard</button>
+        <a href="about" class="link">
+            <button>About</button>
         </a>
     </div>
     <div id="navbar-profile-container">
