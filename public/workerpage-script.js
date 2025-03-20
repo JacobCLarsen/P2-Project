@@ -42,7 +42,6 @@ mySocket.onmessage = (event) => {
 
 // Send a message to the server to fetch a task
 function fetchTask() {
-  startWorkUI();
   let message = {
     action: "request task",
     data: null,
@@ -147,6 +146,7 @@ function beforeReloadHandeler(event) {
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to start working") {
     fetchTask();
+    startWorkUI();
   } else {
     stopWork();
   }
