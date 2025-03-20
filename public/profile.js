@@ -17,8 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function loadProfile() {
     const storedName = localStorage.getItem("profileName") || "John Pork";
-    const storedEmail = localStorage.getItem("profileEmail") || "johnpork@example.com";
-    const storedBio = localStorage.getItem("profileBio") || "This is a sample bio.";
+    const storedEmail =
+      localStorage.getItem("profileEmail") || "johnpork@example.com";
+    const storedBio =
+      localStorage.getItem("profileBio") || "This is a sample bio.";
 
     userName.textContent = storedName;
     userEmail.textContent = storedEmail;
@@ -69,6 +71,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  loadProfile();
+  // Fetch and log profile data from the server
+  fetch("/profiles")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        console.log("Profile data:", data.profiles);
+      } else {
+        console.error("Failed to fetch profile data:", data.error);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching profile data:", error);
+    });
 
+  loadProfile();
 });
