@@ -130,15 +130,21 @@ body {
 }
 
 #newTaskBtn {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  background-color: rgb(220, 255, 232);
-  border: #444 solid 1px;
-  border-radius: 5px;
-  padding: 10px;
+  width: 290px;
+  height: 100px;
+  border: #444 solid 2px;
+  border-radius: 20px;
+  padding: 10px 15px 10px 15px;
   cursor: pointer;
   transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#startBtn:hover {
+  border: #007bff solid 2px;
+  color: #007bff;
 }
 
 .sidebar h3 {
