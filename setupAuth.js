@@ -147,6 +147,14 @@ export function setupAuth(app) {
     const userId = req.session.userId; // Assume userId is stored in the session after login
     const { name, email, bio, profilePic } = req.body;
 
+    console.log("POST /profile called with data:", {
+      userId,
+      name,
+      email,
+      bio,
+      profilePic,
+    });
+
     if (!userId) {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }

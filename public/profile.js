@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
       profilePic: profileImg.src,
     };
 
+    console.log("Saving profile with data:", profileData);
+
     fetch("/profile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

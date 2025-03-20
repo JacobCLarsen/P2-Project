@@ -41,7 +41,7 @@ app.use(express.json());
 app.use("/", router);
 
 // Websockets:
-const wss = new WebSocketServer({ port: 4310 });
+const wss = new WebSocketServer({ port: 4315 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -75,10 +75,10 @@ app.use("/ws0", (req, res) =>
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3310;
+  const PORT = 3315;
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node5/"
     );
   });
 } else if (x === 2) {
