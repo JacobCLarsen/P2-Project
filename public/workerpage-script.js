@@ -130,6 +130,7 @@ function startWork(task) {
 function startWorkUI() {
   // Distaplay the message "Please dont leave the page when working, and also adds a beforeunloadHandeler to the window
   window.addEventListener("beforeunload", beforeReloadHandeler);
+  messageBox.innerText = "Please don't leave the page while working";
   messageBox.style.display = "block";
   startBtnText.innerText = "Hashing passwords";
 
