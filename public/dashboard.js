@@ -1,11 +1,18 @@
-// Create a socket client using io()
-const socket = io();
+// Create a socket client and connect to the server
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 // Get elements from the dom
 const activeWorkersField = document.getElementById("active-workers");
 
-socket.on("worker amount change", (activeWorkers) => {
-  console.log("worker changed");
+mySocket.onmessage = (event) => {
+  let message = JSON.parse(event.data);
 
-  activeWorkersField.innerText = `Active workers: ${activeWorkers}`;
-});
+  switch (message.action) {
+    case "updateOnlineUsers":
+      activeWorkersField.innerText = message.users;
+      break;
+
+    default:
+      console.warn("Unknown message type:", type);
+  }
+};

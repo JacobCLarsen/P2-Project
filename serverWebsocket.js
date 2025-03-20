@@ -1,3 +1,6 @@
+// Keep track of online users
+let onlineUsers = [];
+
 export function WebsocketListen(ws) {
   ws.onmessage = (event) => {
     let message = JSON.parse(event.data);
@@ -5,6 +8,13 @@ export function WebsocketListen(ws) {
     switch (message.action) {
       case "connect":
         console.log(`worker connected with id: ${message.id}`);
+        onlineUsers.push(message.id);
+        ws.send(
+          JSON.stringify({
+            action: "updateOnlineUsers",
+            users: onlineUsers.length,
+          })
+        );
         break;
       case "request task":
         let task = createTask();
@@ -20,6 +30,7 @@ export function WebsocketListen(ws) {
 
       case "disconnect":
         console.log("Stopping worker");
+        onlineUsers = onlineUsers.filter((id) => id !== message.id);
         self.close(); // Terminates the worker
         break;
 
