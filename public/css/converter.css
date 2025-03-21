@@ -36,14 +36,18 @@ h2 {
   outline: none;
   text-align: center;
 }
-#password {
-  width: 10%;
+.input-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .input-group input:focus {
   border-color: #007bff;
 }
 .btn-container {
   margin-top: 20px;
+  width: 100%;
 }
 .btn {
   width: 100%;
