@@ -6,7 +6,6 @@ const messageBox = document.getElementById("messageBox");
 const taskQueue = document.getElementById("taskqueue");
 const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
-const hashingText = document.getElementById("hashingText");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 const newTaskBtn = document.getElementById("newTaskBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
