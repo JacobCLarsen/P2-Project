@@ -8,6 +8,7 @@ const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 const newTaskBtn = document.getElementById("newTaskBtn");
+const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
@@ -45,6 +46,13 @@ newTaskBtn.addEventListener("click", () => {
   console.log("asked for new task to be created");
 
   mySocket.send(JSON.stringify({ action: "addTask" }));
+});
+
+// Functio to clear the queue
+clearQueueBtn.addEventListener("click", () => {
+  console.log("Clearing the task queue");
+
+  mySocket.send(JSON.stringify({ action: "clearQueue" }));
 });
 
 // Function to update the queue on page, when a new one is added by any user

@@ -53,6 +53,11 @@ export function WebsocketListen(ws, wss) {
         addTaskToQueue(newTask);
         break;
 
+      case "clearQueue":
+        taskQueue = [];
+        updateTaskQueue();
+        break;
+
       case "disconnect":
         console.log(`worker disconnected with id: ${message.id}`);
         workerClientns = workerClientns.filter((client) => client !== ws);
