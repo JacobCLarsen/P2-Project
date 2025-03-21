@@ -2,7 +2,7 @@
 
 let isTaskRunning = false;
 import { fetchTask, startWork } from "./extension-tasks.js";
-const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws0/");
 
 // Script for receiving tasks
 mySocket.onmessage = (event) => {
