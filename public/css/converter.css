@@ -37,7 +37,7 @@ h2 {
   text-align: center;
 }
 #password {
-  display: flex;
+  width: 100%;
 }
 .input-group input:focus {
   border-color: #007bff;
