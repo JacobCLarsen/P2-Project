@@ -3,17 +3,19 @@ const startBtn = document.getElementById("startBtn");
 const startBtnText = document.getElementById("startBtnContent");
 const startBtnLoad = document.getElementById("startBtnLoad");
 const messageBox = document.getElementById("messageBox");
-const taskList = document.getElementById("tasks");
+const taskQueue = document.getElementById("taskqueue");
 const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const hashingText = document.getElementById("hashingText");
 const plusTabBtn = document.getElementById("plus-tab-btn");
+const newTaskBtn = document.getElementById("newTaskBtn");
+const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
+//const mySocket = new WebSocket("ws://localhost/ws1/");
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
-const mySocket = new WebSocket("ws://127.0.0.1:ws0/");
-
-const clientId = `client-${Math.random().toString(36).substr(2, 9)}`;
+const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
 // Send the name to the server after connecting
 mySocket.addEventListener("open", (event) => {
@@ -25,6 +27,37 @@ mySocket.addEventListener("open", (event) => {
   mySocket.send(JSON.stringify(message));
 });
 
+// Send a disconnect message when the page is about to be unloaded
+window.addEventListener("beforeunload", () => {
+  if (mySocket.readyState === WebSocket.OPEN) {
+    mySocket.send(
+      JSON.stringify({
+        action: "disconnect",
+        data: null,
+        id: clientId,
+      })
+    );
+    mySocket.close();
+  }
+});
+
+// When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
+newTaskBtn.addEventListener("click", () => {
+  console.log("asked for new task to be created");
+
+  mySocket.send(JSON.stringify({ action: "addTask" }));
+});
+
+// Function to update the queue on page, when a new one is added by any user
+function updateQueue(queue) {
+  taskQueue.innerHTML = "";
+  queue.forEach((task) => {
+    let taskItem = document.createElement("li");
+    taskItem.innerText = `Task id: ${task.id} - task hash: ${task.hash}`;
+    taskQueue.append(taskItem);
+  });
+}
+
 // Listen for messages from the server, switch case to handle different message "action" types
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
@@ -35,14 +68,23 @@ mySocket.onmessage = (event) => {
       startWork(message.data);
       break;
 
+    case "no more tasks":
+      stopWork("No more tasks right now, new tasks appear in the task queue");
+      break;
+
+    case "updateQueue":
+      updateQueue(message.queue);
+      break;
+
     default:
-      console.warn("Unknown message type:", type);
+      console.log(
+        `message not action not defined in listener: ${message.action}`
+      );
   }
 };
 
 // Send a message to the server to fetch a task
 function fetchTask() {
-  startWorkUI();
   let message = {
     action: "request task",
     data: null,
@@ -70,8 +112,8 @@ function startWork(task) {
 
     let item = document.createElement("li");
     item.innerText = `You completed task ${task.id} with result ${e.data}`;
-    taskList.innerHTML = "";
-    taskList.append(item);
+    latestCompletedTask.innerHTML = "";
+    latestCompletedTask.append(item);
 
     mySocket.send(JSON.stringify(taskresult));
   };
@@ -88,6 +130,7 @@ function startWork(task) {
 function startWorkUI() {
   // Distaplay the message "Please dont leave the page when working, and also adds a beforeunloadHandeler to the window
   window.addEventListener("beforeunload", beforeReloadHandeler);
+  messageBox.innerText = "Please don't leave the page while working";
   messageBox.style.display = "block";
   startBtnText.innerText = "Hashing passwords";
 
@@ -115,15 +158,20 @@ function startWorkUI() {
   });
 }
 
-function stopWork() {
-  stopWorkUI();
+function stopWork(messageBoxMessage) {
+  stopWorkUI(messageBoxMessage);
 }
 
-function stopWorkUI() {
+function stopWorkUI(messageBoxMessage) {
   // Remove the message and the beforeunloadHandler from the window
   window.removeEventListener("beforeunload", beforeReloadHandeler);
   // Hide the messsage box
-  messageBox.style.display = "none";
+  if (!messageBoxMessage) {
+    messageBox.style.display = "none";
+  } else {
+    messageBox.style.display = "block";
+    messageBox.innerText = messageBoxMessage;
+  }
   startBtnText.innerText = "Click to start working";
   startBtnLoad.innerText = "";
   // Revert to default (hover-only)
@@ -147,6 +195,7 @@ function beforeReloadHandeler(event) {
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to start working") {
     fetchTask();
+    startWorkUI();
   } else {
     stopWork();
   }
