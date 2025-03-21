@@ -20,24 +20,23 @@
             <p id="startBtnContent">Click to start working</p>
             <p id="startBtnLoad"></p>
           </div>
+          <p id="messageBox">Please leave this page open to continue working</p>
+          <section id="activeTasks">
+            <!-- <h4>Latest Completed Task</h4> -->
+            <ul id="latestCompletedTask"></ul>
+          </section>
         </div>
-        <p id="messageBox">Please leave this page open to continue working</p>
 
         <!-- Active tasks -->
-        <section id="activeTasks">
-          <!-- <h4>Latest Completed Task</h4> -->
-          <ul id="tasks"></ul>
-        </section>
       </div>
 
       <!-- Sidebar for completed tasks -->
       <aside class="sidebar">
-        <h3>Completed Tasks From All Users</h3>
-        <ul id="taskResults"></ul>
+        <button id="newTaskBtn">Add</button>
+        <h3>Task queue</h3>
+        <ul id="taskqueue"></ul>
       </aside>
     </div>
-
-    <script src="socket.io/socket.io.js"></script>
     <script type="module" src="workerpage-script.js"></script>
   </body>
 </html>

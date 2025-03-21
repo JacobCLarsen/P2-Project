@@ -1,4 +1,5 @@
 /* ----- IMPORTS ----- */
+// TODO; We should use node Fetch
 
 // Core modules
 import path from "path";
@@ -44,11 +45,10 @@ app.use("/", router);
 
 const wss = new WebSocketServer({ port: 4310 });
 
-
 wss.on("connection", function connection(ws) {
   console.log("connected");
-  // See which messages the websocket server is listening for in serverWebsocket.js
-  WebsocketListen(ws);
+  // Pass the WebSocket server instance to WebsocketListen
+  WebsocketListen(ws, wss);
 });
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
