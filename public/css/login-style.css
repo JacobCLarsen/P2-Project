@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: "Arial", sans-serif;
   background-color: #f0f2f5;
@@ -12,13 +11,11 @@ body {
   align-items: center;
   height: 100vh;
 }
-
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .login-box {
   background-color: white;
   border-radius: 10px;
@@ -27,25 +24,21 @@ body {
   padding: 40px;
   text-align: center;
 }
-
 h2 {
   margin-bottom: 30px;
   color: #333;
   font-size: 2rem;
 }
-
 .input-group {
   margin-bottom: 20px;
   text-align: left;
 }
-
 .input-group label {
   font-size: 1rem;
   color: #333;
   margin-bottom: 5px;
   display: block;
 }
-
 .input-group input {
   width: 100%;
   padding: 10px;
@@ -54,21 +47,17 @@ h2 {
   border-radius: 5px;
   outline: none;
 }
-
 .input-group input:focus {
   border-color: #007bff;
 }
-
 .message {
   margin-top: 10px;
   font-size: 1rem;
   color: red;
 }
-
 .btn-container {
   margin-top: 20px;
 }
-
 .btn {
   width: 100%;
   padding: 12px;
@@ -80,24 +69,19 @@ h2 {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .btn:hover {
   background-color: #0056b3;
 }
-
 .footer {
   margin-top: 20px;
 }
-
 .footer p {
   font-size: 0.9rem;
 }
-
 .footer a {
   color: #007bff;
   text-decoration: none;
 }
-
 .footer a:hover {
   text-decoration: underline;
 }

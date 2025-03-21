@@ -42,7 +42,7 @@ app.use("/", router);
 
 // Websockets:
 
-const wss = new WebSocketServer({ port: 4311 });
+const wss = new WebSocketServer({ port: 4310 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -65,10 +65,6 @@ app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Test WebSocket proxy route (example usage)
-app.use("/ws1", (req, res) =>
-  proxy.web(req, res, { target: "ws://localhost/ws1/" })
-);
 
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;

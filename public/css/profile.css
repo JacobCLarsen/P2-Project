@@ -4,12 +4,10 @@ body {
 .hidden {
   display: none;
 }
-
 .container {
   text-align: center;
   margin-top: 20px;
 }
-
 .profileCard {
   background-color: #f8f9fa;
   padding: 20px;
@@ -19,14 +17,12 @@ body {
   display: inline-block;
   text-align: center;
 }
-
 #profileImg {
   width: 150px;
   height: 150px;
   border-radius: 50%;
   margin-bottom: 10px;
 }
-
 input,
 textarea {
   width: 80%;
@@ -34,9 +30,8 @@ textarea {
   margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  resize: none; /* Prevent resizing of the textarea */
+  resize: none;
 }
-
 button {
   padding: 8px 12px;
   background-color: #007bff;
@@ -46,15 +41,12 @@ button {
   cursor: pointer;
   margin-top: 5px;
 }
-
 button:hover {
   background-color: #0056b3;
 }
-
 #cancelEditBtn {
   background-color: #dc3545;
 }
-
 #cancelEditBtn:hover {
   background-color: #c82333;
 }
