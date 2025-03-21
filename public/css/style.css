@@ -128,7 +128,7 @@ body {
   background-color: transparent;
   border: #444 solid 2px;
   border-radius: 8px;
-  padding: 10px 0px 10px 0px;
+  padding: 10px 10px 10px 10px;
   cursor: pointer;
   transition: 0.3s;
   text-align: center;
@@ -140,8 +140,8 @@ body {
 }
 
 #clearQueueBtn:hover {
-  border: #c62727 solid 2px;
-  color: #c62727;
+  border: #f05656 solid 2px;
+  color: #f05656;
 }
 .sidebar h3 {
   text-align: center;
