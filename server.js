@@ -1,4 +1,5 @@
 /* ----- IMPORTS ----- */
+// TODO; We should use node Fetch
 
 // Core modules
 import path from "path";
@@ -64,7 +65,6 @@ setupDatabaseRoutes(app); // Adds routes for testing the database connection and
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
-
 
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
