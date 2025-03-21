@@ -60,7 +60,7 @@ function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} - task hash: ${task.hash}`;
+    taskItem.innerText = `Task id: ${task.id} - Task Hash: ${task.hash}`;
     taskQueue.append(taskItem);
   });
 }
@@ -179,7 +179,7 @@ function stopWorkUI(messageBoxMessage) {
     messageBox.style.display = "block";
     messageBox.innerText = messageBoxMessage;
   }
-  startBtnText.innerText = "Click to start working";
+  startBtnText.innerText = "Click to Start Working";
   startBtnLoad.innerText = "";
   // Revert to default (hover-only)
   startBtn.style.border = "";
@@ -200,7 +200,7 @@ function beforeReloadHandeler(event) {
 
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
-  if (startBtnText.innerText == "Click to start working") {
+  if (startBtnText.innerText == "Click to Start Working") {
     fetchTask();
     startWorkUI();
   } else {
