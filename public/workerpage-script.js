@@ -8,6 +8,7 @@ const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 const newTaskBtn = document.getElementById("newTaskBtn");
+const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 // Create a websocket client and generate a random ID for it. Later to be replaced with a user id from mySQL
@@ -47,12 +48,19 @@ newTaskBtn.addEventListener("click", () => {
   mySocket.send(JSON.stringify({ action: "addTask" }));
 });
 
+// Functio to clear the queue
+clearQueueBtn.addEventListener("click", () => {
+  console.log("Clearing the task queue");
+
+  mySocket.send(JSON.stringify({ action: "clearQueue" }));
+});
+
 // Function to update the queue on page, when a new one is added by any user
 function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} - task hash: ${task.hash}`;
+    taskItem.innerText = `Task id: ${task.id} - Task Hash: ${task.hash}`;
     taskQueue.append(taskItem);
   });
 }
@@ -171,7 +179,7 @@ function stopWorkUI(messageBoxMessage) {
     messageBox.style.display = "block";
     messageBox.innerText = messageBoxMessage;
   }
-  startBtnText.innerText = "Click to start working";
+  startBtnText.innerText = "Click to Start Working";
   startBtnLoad.innerText = "";
   // Revert to default (hover-only)
   startBtn.style.border = "";
@@ -192,7 +200,7 @@ function beforeReloadHandeler(event) {
 
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
-  if (startBtnText.innerText == "Click to start working") {
+  if (startBtnText.innerText == "Click to Start Working") {
     fetchTask();
     startWorkUI();
   } else {

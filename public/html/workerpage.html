@@ -7,9 +7,10 @@
     <title>Home</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <!-- Navbar with links -->
+  <nav>
     <script src="navbar.js"></script>
+  </nav>
+  <body>
 
     <!-- Main content and sidebar -->
     <div class="container">
@@ -17,7 +18,7 @@
       <div class="main">
         <div id="main-section-container">
           <div id="startBtn">
-            <p id="startBtnContent">Click to start working</p>
+            <p id="startBtnContent">Click to Start Working</p>
             <p id="startBtnLoad"></p>
           </div>
           <p id="messageBox">Please leave this page open to continue working</p>
@@ -32,8 +33,10 @@
 
       <!-- Sidebar for completed tasks -->
       <aside class="sidebar">
+        <div id="sidebarBtns"></div>
         <button id="newTaskBtn">Add</button>
-        <h3>Task queue</h3>
+        <button id="clearQueueBtn">Clear</button>
+        <h3>Task Queue</h3>
         <ul id="taskqueue"></ul>
       </aside>
     </div>
