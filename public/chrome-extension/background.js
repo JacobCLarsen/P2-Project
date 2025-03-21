@@ -1,4 +1,5 @@
-// Script for allowing chrome extension to run in background
+// Script for receiving and running tasks in background
+
 let isTaskRunning = false;
 import { fetchTask, startWork } from "./extension-tasks.js";
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");

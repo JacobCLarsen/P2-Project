@@ -1,6 +1,8 @@
+// Script for the basic functionality of the physical button in the extension.
+
 const startBtn = document.getElementById("startBtn");
 
-// Restore the button state when the popup is opened
+// Ensure the button doesn't reset, when the extension window is closed.
 chrome.storage.local.get("isWorking", (data) => {
     if (data.isWorking) {
         startBtn.innerHTML = "Hashing passwords ...";
@@ -29,9 +31,10 @@ chrome.storage.local.get("isWorking", (data) => {
     }
 });
 
-// Event listener for startBtn to start and stop work
-const port = chrome.runtime.connect({ name: "popup" });
+// When the extension is opened a message appears in console
+const port = chrome.runtime.connect({ name: "Extension" });
 
+// Event listener for startBtn to start and stop work
 startBtn.addEventListener("click", function () {
     chrome.storage.local.get("isWorking", (data) => {
         const isWorking = data.isWorking || false;
@@ -52,7 +55,7 @@ startBtn.addEventListener("click", function () {
                 startBtn.style.border = "green 2px solid";
             });
 
-            // Save the state to chrome.storage
+            // Save the state of the button to chrome.storage
             chrome.storage.local.set({ isWorking: true });
         } else {
             port.postMessage({ action: "stopTask" });
@@ -71,7 +74,7 @@ startBtn.addEventListener("click", function () {
             });
 
 
-            // Save the state to chrome.storage
+            // Save the state of the button to chrome.storage
             chrome.storage.local.set({ isWorking: false });
         }
     });
