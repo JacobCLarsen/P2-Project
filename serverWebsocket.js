@@ -31,7 +31,7 @@ export function WebsocketListen(ws, wss) {
       case "request task":
         // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
         if (taskQueue.length >= 1) {
-          let task = taskQueue.shift();
+          let task = createTask(targetHash, dictionaryPath);
           console.log(
             `sending a task to worker: ${message.id}, with task id: ${task.id}`
           );
@@ -56,17 +56,6 @@ export function WebsocketListen(ws, wss) {
         }
         completedTaskCount++;
         updateCompletedTasks();
-        break;
-
-      case "addTask":
-        console.log("new task is being created");
-        let newTask = createTask();
-        addTaskToQueue(newTask);
-        break;
-
-      case "clearQueue":
-        taskQueue = [];
-        updateTaskQueue();
         break;
 
       case "disconnect":
