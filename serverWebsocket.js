@@ -60,8 +60,7 @@ export function WebsocketListen(ws, wss) {
 
       case "addTask":
         console.log("new task is being created");
-        let newTask = createTask(targetHash, dictionaryPath);
-        addTaskToQueue(newTask);
+        createTask(targetHash, dictionaryPath);
         break;
 
       case "clearQueue":
@@ -100,7 +99,7 @@ function createTask(targetHash, dictionaryPath) {
   const data = fs.readFileSync(dictionaryPath, 'utf8');
   const passwords = data.split('\n'). map(password => password.trim());
 
-  password.forEach((password, index) => {
+  passwords.forEach((password, index) => {
     let task = {
       id: index + 1,
       targetHash: targetHash,
