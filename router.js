@@ -1,7 +1,7 @@
 import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { authenticateJWT } from ".middleware_jwt.js";
+import { authenticateJWT } from "./middleware_jwt.js";
 
 const router = Router();
 
