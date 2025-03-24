@@ -5,7 +5,7 @@ let workerClientns = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
-const dictionaryPath = "./public/dictionary.txt";
+const dictionaryPath = "/public/dictionary.txt";
 const targetHash = "3c9909afec25354d551dae21590bb26e38d53f2173b8d3dc3eee4c047e7ab1c1eb8b85103e3be7ba613b31bb5c9c36214dc9f14a42fd7a2fdb84856bca5c44c2";
 
 export function WebsocketListen(ws, wss) {
@@ -31,7 +31,7 @@ export function WebsocketListen(ws, wss) {
       case "request task":
         // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
         if (taskQueue.length >= 1) {
-          let task = createTask(targetHash, dictionaryPath);
+          let task = taskQueue.shift();
           console.log(
             `sending a task to worker: ${message.id}, with task id: ${task.id}`
           );
@@ -56,6 +56,17 @@ export function WebsocketListen(ws, wss) {
         }
         completedTaskCount++;
         updateCompletedTasks();
+        break;
+
+      case "addTask":
+        console.log("new task is being created");
+        let newTask = createTask(targetHash, dictionaryPath);
+        addTaskToQueue(newTask);
+        break;
+
+      case "clearQueue":
+        taskQueue = [];
+        updateTaskQueue();
         break;
 
       case "disconnect":
