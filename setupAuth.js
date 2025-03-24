@@ -3,6 +3,10 @@
 // - Import the database connection
 import express from "express";
 import DBConnection from "./databaseConnection.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * Function to set up authentication-related routes in the Express app.
@@ -39,7 +43,10 @@ export function setupAuth(app) {
       }
 
       if (results.length > 0) {
-        res.json({ success: true, message: "Login successful!" }); // Respond with success if credentials are valid
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+          expiresIn: process.env.JWT_EXPIRES_IN,
+        });
+        res.json({ success: true, message: "Login successful!", token });
       } else {
         res
           .status(401) // Respond with "Unauthorized" if credentials are invalid

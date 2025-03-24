@@ -1,6 +1,7 @@
 import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import { authenticateJWT } from "./server";
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get("/login", (req, res) => {
 });
 
 // Route for the worker page
-router.get("/startwork", (req, res) => {
+router.get("/startwork", authenticateJWT, (req, res) => {
   res.sendFile(path.join(basePath, "workerpage.html"));
 });
 
