@@ -13,11 +13,11 @@ async function validateLogin(e) {
     //Send a POST request to the server with login credentials
     const response = await fetch("login", {
       method: "POST", //HTTP method
-      headers: { "Content-Type": "application/json" }, //Specify JSON format
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: enteredUsername,
         password: enteredPassword,
-      }), //Convert user input into a JSON string
+      }),
     });
 
     //Awaits response from server before moving on:

@@ -3,7 +3,7 @@ import { hashSHA512 } from './hash-functions.js';
 import fs from 'fs';
 
 // Function for comparing dictionary with the target hashed password.
-async function dictionaryAttack(targetHash, filePath) {
+export async function dictionaryAttack(targetHash, filePath) {
     // Reads the file and returns as a string. utf8 is the type of character encoding used in the file.
     const data = fs.readFileSync(filePath, 'utf8');
     // data.split splits const data into array of lines. password.trim removes extra spaces ad empty lines.
@@ -22,7 +22,7 @@ async function dictionaryAttack(targetHash, filePath) {
     // Prints if password is not contained in the dictionary.
     console.log("Password not found in dictionary.");
     return null;
-}
+};
 
 // Const for the dictionary.txt file and the target hash.
 const filePath = "./public/dictionary.txt";

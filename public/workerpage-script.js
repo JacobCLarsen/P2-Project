@@ -48,14 +48,14 @@ newTaskBtn.addEventListener("click", () => {
   mySocket.send(JSON.stringify({ action: "addTask" }));
 });
 
-// Functio to clear the queue
+// Function to clear the queue
 clearQueueBtn.addEventListener("click", () => {
   console.log("Clearing the task queue");
 
   mySocket.send(JSON.stringify({ action: "clearQueue" }));
 });
 
-// Function to update the queue on page, when a new one is added by any user
+// Function to update the queue on page, when a new task is added by any user
 function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {

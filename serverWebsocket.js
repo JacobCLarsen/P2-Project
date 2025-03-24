@@ -1,8 +1,11 @@
+import fs from 'fs';
+
 // Keep track of online users and client roles
 let workerClientns = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
+const dictionaryPath = "./public/dictionary.txt";
 
 export function WebsocketListen(ws, wss) {
   ws.onmessage = (event) => {
@@ -42,7 +45,14 @@ export function WebsocketListen(ws, wss) {
 
       case "send result":
         console.log(`Result from worker received: ${message.data}`);
-        // TODO: Add a check to see if the task was completed correctly or not
+        if (message.data.success) {
+          console.log(`Password found: ${message.data.password}`);
+
+          taskQueue = [];
+          updateTaskQueue();
+        } else {
+          console.log("Password not found in this task.");
+        }
         completedTaskCount++;
         updateCompletedTasks();
         break;
@@ -85,11 +95,20 @@ export function WebsocketListen(ws, wss) {
 }
 
 // function to create a random task to use in this file
-function createTask() {
-  let task = {};
-  task.id = Math.floor(Math.random() * 1000);
-  task.hash = `0x${Math.random().toString(36).slice(2, 11)}`;
-  return task;
+function createTask(targetHash, dictionaryPath) {
+  const data = fs.readFileSync(dictionaryPath, 'utf8');
+  const passwords = data.split('\n'). map(password => password.trim());
+
+  password.forEach((password, index) => {
+    let task = {
+      id: index + 1,
+      targetHash: targetHash,
+      password: password,
+    };
+    addTaskToQueue(task);
+  });
+
+  console.log(`${passwords.length} tasks created from the dictionary.`);
 }
 
 // Function to update the number of online users and send it to the dashboard clients

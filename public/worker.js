@@ -1,8 +1,15 @@
-// This worker script takes
-onmessage = (e) => {
-  console.log(`Message received from main script: ${e.data}`);
+import { hashSHA512 } from "./hash-functions";
 
-  const workerResult = `${e.data} \n (solved)`;
-  console.log("Posting message back to main script");
-  postMessage(workerResult);
+// This worker script takes
+onmessage = async (e) => {
+  const task = e.data;
+  console.log(`Worker received task: ${JSON.stringify(task)}`);
+
+  const hashedPassword = await hashSHA512(task.password);
+  if (hashedPassword === task.targetHash) {
+    console.log(`Password found: ${task.password}`);
+    postMessage({ success: true, password: task.password });
+  } else {
+    postMessage({ success: false });
+  }
 };

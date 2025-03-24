@@ -5,6 +5,8 @@ const startBtn = document.getElementById("startBtn");
 // Ensure the button doesn't reset, when the extension window is closed.
 chrome.storage.local.get("isWorking", (data) => {
     if (data.isWorking) {
+
+        // Update button state
         startBtn.innerHTML = "Hashing passwords ...";
         startBtn.style.color = "green";
         startBtn.style.border = "green 2px solid";
