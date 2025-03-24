@@ -1,7 +1,7 @@
 import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { authenticateJWT } from "./server";
+import { authenticateJWT } from "./server.js";
 
 const router = Router();
 
