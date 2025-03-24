@@ -72,7 +72,7 @@ if (x === 1) {
   const PORT = 3319;
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node1/"
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node9/"
     );
   });
 } else if (x === 2) {
