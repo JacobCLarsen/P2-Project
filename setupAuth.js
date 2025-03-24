@@ -43,9 +43,13 @@ export function setupAuth(app) {
       }
 
       if (results.length > 0) {
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXPIRES_IN,
-        });
+        const token = jwt.sign(
+          { userId: results[0].id },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: process.env.JWT_EXPIRES_IN,
+          }
+        );
         res.json({ success: true, message: "Login successful!", token });
       } else {
         res
