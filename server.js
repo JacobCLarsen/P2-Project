@@ -72,17 +72,6 @@ wss.on("connection", function connection(ws) {
   });
 });
 
-// Authentication function
-function authenticateWebSocket(token, callback) {
-  if (!token) return callback(new Error("No token provided"));
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return callback(new Error("Invalid or expired token"));
-
-    callback(null, decoded); // Return decoded user data
-  });
-}
-
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
