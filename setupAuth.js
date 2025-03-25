@@ -51,7 +51,7 @@ export function setupAuth(app) {
           }
         );
         console.log("Token created:", token);
-        res.json({ success: true, message: "Login successful!", token });
+        res.json({ success: true, message: "Login successful!", token: token });
       } else {
         res
           .status(401) // Respond with "Unauthorized" if credentials are invalid
