@@ -55,15 +55,17 @@ wss.on("connection", function connection(ws) {
           if (err) {
             ws.send(JSON.stringify({ action: "error", message: err.message }));
             ws.close();
-          } else {
-            ws.user = user;
-            ws.send(JSON.stringify({ action: "connected" }));
+            return;
           }
+
+          console.log("User authenticated:", user);
+          ws.user = user; // Store user info in WebSocket instance
+          ws.send(JSON.stringify({ action: "authenticated", user }));
         });
       }
     } catch (error) {
       ws.send(
-        JSON.stringify({ action: "error", message: "Invalid data format" })
+        JSON.stringify({ action: "error", message: "Invalid message format" })
       );
       ws.close();
     }
