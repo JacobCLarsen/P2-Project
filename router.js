@@ -23,7 +23,7 @@ router.get("/login", (req, res) => {
 });
 
 // Route for the worker page
-router.get("/startwork", authenticateJWT, (req, res) => {
+router.get("/startwork", (req, res) => {
   res.sendFile(path.join(basePath, "workerpage.html"));
 });
 
