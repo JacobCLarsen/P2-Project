@@ -30,7 +30,6 @@ async function validateLogin(e) {
 
       // Store the token in local storage
       localStorage.setItem("token", data.token);
-      console.log("Token stored in local storage", data.token);
 
       //Redirect user to the start work page after a short delay
       setTimeout(() => {

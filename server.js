@@ -52,7 +52,6 @@ wss.on("connection", function connection(ws) {
 
       if (message.action === "connect") {
         const token = message.token;
-        console.log("Token received:", token); // Log the token for debugging
 
         try {
           // Authenticate JWT token and get the user information
