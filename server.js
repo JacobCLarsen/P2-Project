@@ -43,28 +43,45 @@ app.use(express.json());
 app.use("/", router);
 
 // Websockets:
-
 const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
   ws.on("message", function incoming(data) {
-    const message = JSON.parse(data);
+    try {
+      const message = JSON.parse(data);
 
-    if (message.action === "connect") {
-      authenticateWebSocket(message, (err, authenticatedMessage) => {
-        if (err) {
-          ws.send(JSON.stringify({ action: "error", message: err.message }));
-          ws.close();
-        } else {
-          console.log("User authenticated:", authenticatedMessage.user);
-          // Handle authenticated connection
-        }
-      });
+      if (message.action === "connect") {
+        authenticateWebSocket(message.token, (err, user) => {
+          if (err) {
+            ws.send(JSON.stringify({ action: "error", message: err.message }));
+            ws.close(); // Close connection if authentication fails
+            return;
+          }
+
+          console.log("User authenticated:", user);
+          ws.user = user; // Attach user to the WebSocket instance
+          ws.send(JSON.stringify({ action: "authenticated", user }));
+        });
+      }
+    } catch (error) {
+      ws.send(
+        JSON.stringify({ action: "error", message: "Invalid data format" })
+      );
+      ws.close();
     }
-
-    // Handle other actions
   });
 });
+
+// Authentication function
+function authenticateWebSocket(token, callback) {
+  if (!token) return callback(new Error("No token provided"));
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return callback(new Error("Invalid or expired token"));
+
+    callback(null, decoded); // Return decoded user data
+  });
+}
 
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
