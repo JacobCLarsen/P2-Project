@@ -51,6 +51,7 @@ wss.on("connection", function connection(ws) {
       const message = JSON.parse(data);
 
       if (message.action === "connect") {
+        console.log("token:", message.token);
         authenticateJWT(message.token, (err, user) => {
           if (err) {
             ws.send(JSON.stringify({ action: "error", message: err.message }));
