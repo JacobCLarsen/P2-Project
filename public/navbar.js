@@ -36,4 +36,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Insert navbar at the top of the body
   document.body.insertAdjacentHTML("afterbegin", navbarHTML);
+
+  // Add event listener to logout button
+  document
+    .getElementById("log-out")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent default link behavior
+
+      // Remove token from localStorage
+      localStorage.removeItem("token");
+
+      // Redirect to login page
+      window.location.href = "login";
+    });
 });
