@@ -1,14 +1,16 @@
 import jwt from "jsonwebtoken";
 
-export const authenticateJWT = (token, callback) => {
-  if (!token) {
-    return callback(new Error("No token provided"), null);
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return callback(new Error("Invalid or expired token."));
+export const authenticateJWT = (token) => {
+  return new Promise((resolve, reject) => {
+    if (!token) {
+      return reject(new Error("No token provided"));
     }
-    callback(null, decoded); // Successfully authenticated
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return reject(new Error("Invalid or expired token."));
+      }
+      resolve(decoded); // Successfully authenticated
+    });
   });
 };

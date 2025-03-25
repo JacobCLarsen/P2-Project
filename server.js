@@ -46,24 +46,22 @@ app.use("/", router);
 const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
-  ws.on("message", function incoming(data) {
+  ws.on("message", async function incoming(data) {
     try {
       const message = JSON.parse(data);
       console.log("token:", message.token);
 
       if (message.action === "connect") {
-        authenticateJWT(message.token, (err, user) => {
-          if (err) {
-            ws.send(JSON.stringify({ action: "error", message: err.message }));
-            ws.close();
-            return;
-          }
-
+        try {
+          const user = await authenticateJWT(message.token);
           console.log("User authenticated:", user);
           console.log("Token:", message.token);
           ws.user = user; // Store user info in WebSocket instance
           ws.send(JSON.stringify({ action: "authenticated", user }));
-        });
+        } catch (err) {
+          ws.send(JSON.stringify({ action: "error", message: err.message }));
+          ws.close();
+        }
       }
     } catch (error) {
       ws.send(
