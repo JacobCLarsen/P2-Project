@@ -50,7 +50,6 @@ export function setupAuth(app) {
             expiresIn: process.env.JWT_EXPIRES_IN,
           }
         );
-        console.log("Token:", token);
         res.json({ success: true, message: "Login successful!", token });
       } else {
         res

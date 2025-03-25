@@ -16,6 +16,7 @@ import { setupAuth } from "./setupAuth.js";
 
 import { WebSocketServer } from "ws";
 import { WebsocketListen } from "./serverWebsocket.js";
+import { authenticateWebSocket } from "./middleware_jwt.js";
 
 import DBConnection, {
   connectToDatabase,
@@ -46,10 +47,25 @@ app.use("/", router);
 const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
-  console.log("connected");
-  // Pass the WebSocket server instance to WebsocketListen
-  WebsocketListen(ws, wss);
+  ws.on("message", function incoming(data) {
+    const message = JSON.parse(data);
+
+    if (message.action === "connect") {
+      authenticateWebSocket(message, (err, authenticatedMessage) => {
+        if (err) {
+          ws.send(JSON.stringify({ action: "error", message: err.message }));
+          ws.close();
+        } else {
+          console.log("User authenticated:", authenticatedMessage.user);
+          // Handle authenticated connection
+        }
+      });
+    }
+
+    // Handle other actions
+  });
 });
+
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
