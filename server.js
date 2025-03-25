@@ -59,6 +59,7 @@ wss.on("connection", function connection(ws) {
           }
 
           console.log("User authenticated:", user);
+          console.log("Token:", message.token);
           ws.user = user; // Store user info in WebSocket instance
           ws.send(JSON.stringify({ action: "authenticated", user }));
         });

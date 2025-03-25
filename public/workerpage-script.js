@@ -19,6 +19,7 @@ const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
 // Retrieve the token from localStorage
 const token = localStorage.getItem("token");
+console.log("Token retrieved from local storage:", token);
 
 // Send the name to the server after connecting
 mySocket.addEventListener("open", (event) => {
