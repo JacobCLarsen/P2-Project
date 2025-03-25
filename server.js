@@ -16,7 +16,7 @@ import { setupAuth } from "./setupAuth.js";
 
 import { WebSocketServer } from "ws";
 import { WebsocketListen } from "./serverWebsocket.js";
-import { authenticateWebSocket } from "./middleware_jwt.js";
+import { authenticateJWT } from "./middleware_jwt.js";
 
 import DBConnection, {
   connectToDatabase,
@@ -51,7 +51,7 @@ wss.on("connection", function connection(ws) {
       const message = JSON.parse(data);
 
       if (message.action === "connect") {
-        authenticateWebSocket(message.token, (err, user) => {
+        authenticateJWT(message.token, (err, user) => {
           if (err) {
             ws.send(JSON.stringify({ action: "error", message: err.message }));
             ws.close();
