@@ -54,13 +54,11 @@ wss.on("connection", function connection(ws) {
         authenticateWebSocket(message.token, (err, user) => {
           if (err) {
             ws.send(JSON.stringify({ action: "error", message: err.message }));
-            ws.close(); // Close connection if authentication fails
-            return;
+            ws.close();
+          } else {
+            ws.user = user;
+            ws.send(JSON.stringify({ action: "connected" }));
           }
-
-          console.log("User authenticated:", user);
-          ws.user = user; // Attach user to the WebSocket instance
-          ws.send(JSON.stringify({ action: "authenticated", user }));
         });
       }
     } catch (error) {
