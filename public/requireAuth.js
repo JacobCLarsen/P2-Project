@@ -3,6 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!token) {
     // Redirect to login if no token is found
-    window.location.href = "/login.html";
+    window.location.href = "/login";
   }
 });
