@@ -28,6 +28,9 @@ async function validateLogin(e) {
       message.style.color = "green";
       message.textContent = "Log In Successful!";
 
+      // Store the token in local storage
+      localStorage.setItem("token", data.token);
+
       //Redirect user to the start work page after a short delay
       setTimeout(() => {
         window.location.href = "startwork"; //Redirect to work page after success

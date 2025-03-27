@@ -16,6 +16,7 @@ import { setupAuth } from "./setupAuth.js";
 
 import { WebSocketServer } from "ws";
 import { WebsocketListen } from "./serverWebsocket.js";
+import { authenticateJWT } from "./middleware_jwt.js";
 
 import DBConnection, {
   connectToDatabase,
@@ -42,14 +43,44 @@ app.use(express.json());
 app.use("/", router);
 
 // Websockets:
-
 const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
-  console.log("connected");
-  // Pass the WebSocket server instance to WebsocketListen
-  WebsocketListen(ws, wss);
+  ws.on("message", async function incoming(data) {
+    try {
+      const message = JSON.parse(data);
+
+      if (message.action === "connect") {
+        const token = message.token;
+
+        try {
+          // Authenticate JWT token and get the user information
+          const user = await authenticateJWT(token); // Using the async authenticateJWT
+          console.log("User authenticated:", user);
+
+          // Store the user information in the WebSocket instance
+          ws.user = user;
+
+          // Send a confirmation response back to the client
+          ws.send(JSON.stringify({ action: "authenticated", user }));
+        } catch (err) {
+          console.error("Authentication failed:", err.message);
+          // Send error message back to the client and close the WebSocket
+          ws.send(JSON.stringify({ action: "error", message: err.message }));
+          ws.close();
+        }
+      }
+    } catch (error) {
+      console.error("Invalid message format:", error);
+      // Send error message back to the client and close the WebSocket
+      ws.send(
+        JSON.stringify({ action: "error", message: "Invalid message format" })
+      );
+      ws.close();
+    }
+  });
 });
+
 // Set up authentication routes (e.g., login/signup):
 setupAuth(app);
 
@@ -69,10 +100,10 @@ app.get("/", (req, res) => {
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3311;
+  const PORT = 3319;
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node1/"
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node9/"
     );
   });
 } else if (x === 2) {
