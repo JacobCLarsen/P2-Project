@@ -22,16 +22,6 @@ sendMessage({
   id: clientId, // Use the generated client ID
 });
 
-// Send the name to the server after connecting
-mySocket.addEventListener("open", (event) => {
-  let message = {
-    action: "connect",
-    data: null,
-    id: clientId, // Use the generated client ID
-  };
-  mySocket.send(JSON.stringify(message));
-});
-
 // Send a disconnect message when the page is about to be unloaded
 window.addEventListener("beforeunload", () => {
   if (mySocket.readyState === WebSocket.OPEN) {
