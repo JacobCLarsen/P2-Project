@@ -1,47 +1,36 @@
-// Hide the page initially
-document.documentElement.style.display = "none";
+const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
-// Function to redirect to login if authentication fails
-function redirectToLogin() {
-  const basePath = window.location.pathname.split("/").slice(0, 2).join("/");
-  window.location.href = `${basePath}/login`;
+socket.addEventListener("open", () => {
+  console.log("WebSocket connected");
+
+  // Authenticate immediately if token exists
+  const token = localStorage.getItem("token");
+  if (token) {
+    socket.send(JSON.stringify({ action: "authenticate", token }));
+  }
+});
+
+socket.addEventListener("message", (event) => {
+  const response = JSON.parse(event.data);
+
+  if (response.action === "authenticated") {
+    console.log("User authenticated:", response.user);
+    document.documentElement.style.display = "block"; // Show page
+  } else if (response.action === "error") {
+    console.error("Error:", response.message);
+    if (response.message === "Invalid token") {
+      window.location.href = "/login";
+    }
+  }
+});
+
+// Function to send messages
+function sendMessage(data) {
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify(data));
+  } else {
+    console.warn("WebSocket not open yet");
+  }
 }
 
-// Wait for the DOM to load before running authentication
-document.addEventListener("DOMContentLoaded", () => {
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    redirectToLogin();
-    return;
-  }
-
-  // Create WebSocket connection for authentication
-  const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
-
-  authSocket.addEventListener("open", () => {
-    authSocket.send(JSON.stringify({ action: "auth", token }));
-  });
-
-  authSocket.addEventListener("auth", (event) => {
-    const response = JSON.parse(event.data);
-
-    if (response.action === "authenticated") {
-      console.log("User authenticated:", response.user);
-      document.documentElement.style.display = "block"; // Show the page
-    } else if (response.action === "error") {
-      console.error("Authentication failed:", response.message);
-      redirectToLogin();
-    }
-  });
-
-  authSocket.addEventListener("error", () => {
-    console.error("WebSocket error");
-    redirectToLogin();
-  });
-
-  authSocket.addEventListener("close", () => {
-    console.warn("Authentication WebSocket closed");
-    redirectToLogin();
-  });
-});
+export { socket, sendMessage };
