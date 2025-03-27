@@ -7,6 +7,9 @@ socket.addEventListener("open", () => {
   const token = localStorage.getItem("token");
   if (token) {
     socket.send(JSON.stringify({ action: "authenticate", token }));
+  } else {
+    console.log("No token found, redirecting to login.");
+    window.location.href = "/login"; // Redirect if no token is found
   }
 });
 
@@ -15,13 +18,24 @@ socket.addEventListener("message", (event) => {
 
   if (response.action === "authenticated") {
     console.log("User authenticated:", response.user);
-    document.documentElement.style.display = "block"; // Show page
+    document.documentElement.style.display = "block"; // Show the page after successful authentication
   } else if (response.action === "error") {
     console.error("Error:", response.message);
     if (response.message === "Invalid token") {
+      // If the token is invalid, redirect to login
       window.location.href = "/login";
+    } else {
+      // Handle other errors as needed
+      alert("Authentication error: " + response.message);
     }
   }
+});
+
+// Handle WebSocket errors
+socket.addEventListener("error", (event) => {
+  console.error("WebSocket error:", event);
+  alert("WebSocket error. Please try again later.");
+  window.location.href = "/login"; // Optionally, redirect to login on WebSocket error
 });
 
 // Function to send messages
