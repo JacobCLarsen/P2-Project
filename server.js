@@ -50,7 +50,7 @@ wss.on("connection", function connection(ws) {
     try {
       const message = JSON.parse(data);
 
-      if (message.action === "connect") {
+      if (message.action === "auth") {
         const token = message.token;
 
         try {
