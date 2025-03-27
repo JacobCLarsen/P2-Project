@@ -11,7 +11,7 @@ const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
-import { sendMessage } from "./requireAuth";
+import { sendMessage } from "./requireAuth.js";
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
