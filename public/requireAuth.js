@@ -1,5 +1,11 @@
 const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
+// Function to redirect to login if authentication fails
+function redirectToLogin() {
+  const basePath = window.location.pathname.split("/").slice(0, 2).join("/");
+  window.location.href = `${basePath}/login`;
+}
+
 socket.addEventListener("open", () => {
   console.log("WebSocket connected");
 
@@ -9,7 +15,7 @@ socket.addEventListener("open", () => {
     socket.send(JSON.stringify({ action: "authenticate", token }));
   } else {
     console.log("No token found, redirecting to login.");
-    window.location.href = "/login"; // Redirect if no token is found
+    redirectToLogin();
   }
 });
 
@@ -23,7 +29,7 @@ socket.addEventListener("message", (event) => {
     console.error("Error:", response.message);
     if (response.message === "Invalid token") {
       // If the token is invalid, redirect to login
-      window.location.href = "/login";
+      redirectToLogin();
     } else {
       // Handle other errors as needed
       alert("Authentication error: " + response.message);
@@ -35,7 +41,7 @@ socket.addEventListener("message", (event) => {
 socket.addEventListener("error", (event) => {
   console.error("WebSocket error:", event);
   alert("WebSocket error. Please try again later.");
-  window.location.href = "/login"; // Optionally, redirect to login on WebSocket error
+  redirectToLogin();
 });
 
 // Function to send messages
