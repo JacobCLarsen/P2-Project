@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     authSocket.send(JSON.stringify({ action: "auth", token }));
   });
 
-  authSocket.addEventListener("message", (event) => {
+  authSocket.addEventListener("auth", (event) => {
     const response = JSON.parse(event.data);
 
     if (response.action === "authenticated") {
