@@ -17,17 +17,12 @@ const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
-// Retrieve the token from localStorage
-const token = localStorage.getItem("token");
-console.log("Token retrieved from local storage:", token);
-
 // Send the name to the server after connecting
 mySocket.addEventListener("open", (event) => {
   let message = {
     action: "connect",
     data: null,
     id: clientId, // Use the generated client ID
-    token: token, // Include the token in the message
   };
   mySocket.send(JSON.stringify(message));
 });
