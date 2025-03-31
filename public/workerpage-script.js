@@ -13,7 +13,7 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 import { socket } from "./requireAuth.js";
 
-const mySocket = socket;
+const mySocket = socket; // use socket object from require auth
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
@@ -81,6 +81,10 @@ mySocket.onmessage = (event) => {
 
     case "updateQueue":
       updateQueue(message.queue);
+      break;
+
+    case "authenticate":
+      "Auth token sent";
       break;
 
     default:
