@@ -13,8 +13,8 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 import { socket } from "./requireAuth.js";
 
-//const mySocket = socket; // use socket object from require auth
-const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
+const mySocket = socket; // use socket object from require auth
+//const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
@@ -46,7 +46,11 @@ window.addEventListener("beforeunload", () => {
 newTaskBtn.addEventListener("click", () => {
   console.log("asked for new task to be created");
 
-  mySocket.send(JSON.stringify({ action: "addTask" }));
+  if (mySocket.readyState === WebSocket.OPEN) {
+    mySocket.send(JSON.stringify({ action: "addTask" }));
+  } else {
+    console.error("WebSocket is not open yet.");
+  }
 });
 
 // Functio to clear the queue
