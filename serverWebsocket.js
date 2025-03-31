@@ -1,3 +1,5 @@
+import { authenticateJWT } from "./middleware_jwt.js";
+
 // Keep track of online users and client roles
 let workerClientns = [];
 let dashboardClients = [];

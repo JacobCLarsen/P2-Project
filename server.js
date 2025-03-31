@@ -16,7 +16,6 @@ import { setupAuth } from "./setupAuth.js";
 
 import { WebSocketServer } from "ws";
 import { WebsocketListen } from "./serverWebsocket.js";
-import { authenticateJWT } from "./middleware_jwt.js";
 
 import DBConnection, {
   connectToDatabase,
