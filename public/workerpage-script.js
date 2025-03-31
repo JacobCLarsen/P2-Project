@@ -13,7 +13,7 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 import { socket } from "./requireAuth.js";
 
-mySocket = socket;
+const mySocket = socket;
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
