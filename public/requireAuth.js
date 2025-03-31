@@ -45,13 +45,4 @@ socket.addEventListener("error", (event) => {
   redirectToLogin();
 });
 
-// Function to send messages
-function sendMessage(data) {
-  if (socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify(data));
-  } else {
-    console.warn("WebSocket not open yet");
-  }
-}
-
-export { socket, sendMessage };
+export { socket };

@@ -11,15 +11,20 @@ const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
-import { sendMessage } from "./requireAuth.js";
+import { socket } from "./requireAuth.js";
+
+mySocket = socket;
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
-// Use imported sendMessage function
-sendMessage({
-  action: "connect",
-  data: null,
-  id: clientId, // Use the generated client ID
+// Send the name to the server after connecting
+mySocket.addEventListener("open", (event) => {
+  let message = {
+    action: "connect",
+    data: null,
+    id: clientId, // Use the generated client ID
+  };
+  mySocket.send(JSON.stringify(message));
 });
 
 // Send a disconnect message when the page is about to be unloaded
