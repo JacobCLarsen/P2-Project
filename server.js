@@ -46,39 +46,9 @@ app.use("/", router);
 const wss = new WebSocketServer({ port: 4311 });
 
 wss.on("connection", function connection(ws) {
-  ws.on("message", async function incoming(data) {
-    try {
-      const message = JSON.parse(data);
+  console.log("connected");
 
-      if (message.action === "authenticate") {
-        const token = message.token;
-
-        try {
-          // Authenticate JWT token and get the user information
-          const user = await authenticateJWT(token); // Using the async authenticateJWT
-          console.log("User authenticated:", user);
-
-          // Store the user information in the WebSocket instance
-          ws.user = user;
-
-          // Send a confirmation response back to the client
-          ws.send(JSON.stringify({ action: "authenticated", user }));
-        } catch (err) {
-          console.error("Authentication failed:", err.message);
-          // Send error message back to the client and close the WebSocket
-          ws.send(JSON.stringify({ action: "error", message: err.message }));
-          ws.close();
-        }
-      }
-    } catch (error) {
-      console.error("Invalid message format:", error);
-      // Send error message back to the client and close the WebSocket
-      ws.send(
-        JSON.stringify({ action: "error", message: "Invalid message format" })
-      );
-      ws.close();
-    }
-  });
+  WebsocketListen(ws, wss);
 });
 
 // Set up authentication routes (e.g., login/signup):

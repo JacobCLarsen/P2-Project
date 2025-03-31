@@ -46,11 +46,7 @@ window.addEventListener("beforeunload", () => {
 newTaskBtn.addEventListener("click", () => {
   console.log("asked for new task to be created");
 
-  if (mySocket.readyState === WebSocket.OPEN) {
-    mySocket.send(JSON.stringify({ action: "addTask" }));
-  } else {
-    console.error("WebSocket is not open yet.");
-  }
+  mySocket.send(JSON.stringify({ action: "addTask" }));
 });
 
 // Functio to clear the queue

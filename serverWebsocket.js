@@ -5,7 +5,7 @@ let completedTaskCount = 0;
 let taskQueue = [];
 
 export function WebsocketListen(ws, wss) {
-  ws.onmessage = (event) => {
+  ws.onmessage = async (event) => {
     let message = JSON.parse(event.data);
 
     switch (message.action) {
@@ -76,6 +76,21 @@ export function WebsocketListen(ws, wss) {
             );
           }
         });
+        break;
+
+      case "authenticate":
+        const token = message.token;
+
+        // Authenticate JWT token and get the user information
+        const user = await authenticateJWT(token); // Using the async authenticateJWT
+        console.log("User authenticated:", user);
+
+        // Store the user information in the WebSocket instance
+        ws.user = user;
+
+        // Send a confirmation response back to the client
+        ws.send(JSON.stringify({ action: "authenticated", user }));
+
         break;
 
       default:
