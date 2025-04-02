@@ -4,8 +4,8 @@ import mysql from "mysql";
 const DBConnection = mysql.createConnection({
   host: "localhost", // Database host
   user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "hashing", // Database password
-  database: "cs_25_sw_2_01", // Database name
+  password: "mye7cahHm8/AWd%q",         // Database password
+  database: "cs_25_sw_2_01",            // Database name
 });
 
 // Function to connect to the database and initialize tables
