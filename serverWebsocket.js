@@ -98,8 +98,7 @@ export function WebsocketListen(ws, wss) {
           taskBatches.forEach((batch, index) => {
             const task = {
               id: `Task ${taskcounter} - batch-${index + 1}`,
-              assignedUser:
-                activeWorkers[index].user?.id || `Worker-${index + 1}`,
+              assignedUser: message.id,
               data: batch,
             };
             addTaskToQueue(task);
