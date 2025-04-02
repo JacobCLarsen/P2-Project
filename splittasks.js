@@ -5,7 +5,7 @@ import path from "path";
 const dictionaryPath = path.join(process.cwd(), "dictionary.txt");
 
 // Number of active workers
-const activeWorkers = 4;
+const activeWorkers = 4; // Just for test
 
 // Function to split the list into equal batches
 function splitTasks(filePath, workers) {

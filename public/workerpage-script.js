@@ -62,7 +62,7 @@ function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} - Task Hash: ${task.hash}`;
+    taskItem.innerText = `Task id: ${task.id} - Task Hash: ${task.data}`;
     taskQueue.append(taskItem);
   });
 }

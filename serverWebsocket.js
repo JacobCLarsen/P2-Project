@@ -7,6 +7,7 @@ let activeWorkers = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
+let taskcounter = 0;
 
 export function WebsocketListen(ws, wss) {
   ws.onmessage = async (event) => {
@@ -93,9 +94,10 @@ export function WebsocketListen(ws, wss) {
         console.log("Splitting tasks based on active workers...");
         if (activeWorkers.length > 0) {
           const taskBatches = splitTasks(dictionaryPath, activeWorkers.length);
+          taskcounter++;
           taskBatches.forEach((batch, index) => {
             const task = {
-              id: `batch-${index + 1}`,
+              id: `Task ${taskcounter} - batch-${index + 1}`,
               data: batch,
             };
             addTaskToQueue(task);
