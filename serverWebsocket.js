@@ -1,5 +1,5 @@
 import { authenticateJWT } from "./middleware_jwt.js";
-import { splitTasks, dictionaryPath } from "./splittasks.js";
+import { splitTasks, dictionaryPath } from "./split-dictionary.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
@@ -98,6 +98,7 @@ export function WebsocketListen(ws, wss) {
           taskBatches.forEach((batch, index) => {
             const task = {
               id: `Task ${taskcounter} - batch-${index + 1}`,
+              assignedUser: activeWorkers[index].user?.id || `Worker-${index + 1}`,
               data: batch,
             };
             addTaskToQueue(task);
