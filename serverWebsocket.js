@@ -140,7 +140,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
-          workers: activeWorkers.map((worker) => worker.user?.id || "unknown"), // Send worker IDs or placeholders
+          workers: activeWorkers.length, // Send only the length
         })
       );
     }
@@ -166,7 +166,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
-      workers: activeWorkers.map((worker) => worker.user?.id || "unknown"), // Send worker IDs or placeholders
+      workers: activeWorkers.length, // Send only the length
       completedTasks: completedTaskCount,
     })
   );

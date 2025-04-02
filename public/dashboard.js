@@ -24,8 +24,8 @@ mySocket.onmessage = (event) => {
   switch (message.action) {
     case "updateOnlineUsers":
       onlineWorkersField.innerText = `Online workers: ${message.users}`;
-      activeWorkersField.innerText = `Active workers: ${message.workers.length}`;
-      console.log("Active Workers Array:", message.workers); // Log the array for debugging
+      activeWorkersField.innerText = `Active workers: ${message.workers}`;
+      console.log("Active Workers Count:", message.workers); // Log the count for debugging
       break;
 
     case "updateCompletedTasks":
@@ -34,9 +34,9 @@ mySocket.onmessage = (event) => {
 
     case "loadDashboard":
       onlineWorkersField.innerText = `Online workers: ${message.onlineClients}`;
-      activeWorkersField.innerText = `Active workers: ${message.workers.length}`;
+      activeWorkersField.innerText = `Active workers: ${message.workers}`;
       completedTasksField.innerText = `Completed tasks since restart: ${message.completedTasks}`;
-      console.log("Active Workers Array (Dashboard):", message.workers); // Log for debugging
+      console.log("Active Workers Count (Dashboard):", message.workers); // Log for debugging
       break;
 
     default:
