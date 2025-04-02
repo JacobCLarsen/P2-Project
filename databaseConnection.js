@@ -74,6 +74,7 @@ export function setupDatabaseRoutes(app) {
   // Profile route with token authentication
   app.get("/profile", async (req, res) => {
     const token = req.headers["authorization"]?.split(" ")[1]; // Extract the token from the "Authorization" header
+    console.log("Extracted Token:", token);
 
     try {
       // Validate the JWT token

@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchData() {
     try {
       //Send a POST request to the server with login credentials
+      console.log(localStorage.getItem("token"));
+
       const response = await fetch("profile", {
         method: "GET", //HTTP method
         headers: {
