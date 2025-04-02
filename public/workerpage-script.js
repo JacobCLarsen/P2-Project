@@ -22,6 +22,7 @@ const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 mySocket.addEventListener("open", (event) => {
   let message = {
     action: "connect",
+    role: "worker",
     data: null,
     id: clientId, // Use the generated client ID
   };

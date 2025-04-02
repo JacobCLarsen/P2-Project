@@ -28,7 +28,7 @@ export function WebsocketListen(ws, wss) {
           }
           // When a dashboard joins, send all the info to it (online users, active workers, tasks completed)
           loadDashBoard(ws);
-        } else {
+        } else if (message.role === "worker") {
           if (!workerClientns.includes(ws)) {
             workerClientns.push(ws);
             console.log(
@@ -37,6 +37,9 @@ export function WebsocketListen(ws, wss) {
             );
           }
           ws.send(JSON.stringify({ action: "updateQueue", queue: taskQueue }));
+        } else {
+          console.log("User tried to connect with unknow role. Kicking....");
+          ws.close();
         }
 
         updateOnlineUsers();
