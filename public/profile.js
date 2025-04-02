@@ -15,10 +15,40 @@ document.addEventListener("DOMContentLoaded", function () {
   const uploadProfilePic = document.getElementById("uploadProfilePic");
   const changeProfilePicBtn = document.getElementById("changeProfilePicBtn");
 
-  function loadProfile() {
-    const storedName = localStorage.getItem("profileName") || "John Pork";
-    const storedEmail = localStorage.getItem("profileEmail") || "johnpork@example.com";
-    const storedBio = localStorage.getItem("profileBio") || "This is a sample bio.";
+  async function fetchData() {
+    try {
+      //Send a POST request to the server with login credentials
+      const response = await fetch("profile", {
+        method: "POST", //HTTP method
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, //Include the token in the request header
+          "Content-Type": "application/json",
+        }, //Specify JSON format
+      });
+
+      //Awaits response from server before moving on:
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("Profile loaded successfully:");
+        loadProfile(data.user);
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error("Error loading profile:", error); //Log error if query fails
+      alert("Error loading profile. Please try again later.");
+    }
+  }
+
+  fetchData(); //Call the function to fetch data when the page loads
+
+  async function loadProfile(user) {
+    const storedName = user.username;
+    const storedEmail =
+      localStorage.getItem("profileEmail") || "johnpork@example.com";
+    const storedBio =
+      localStorage.getItem("profileBio") || "This is a sample bio.";
 
     userName.textContent = storedName;
     userEmail.textContent = storedEmail;
@@ -68,7 +98,4 @@ document.addEventListener("DOMContentLoaded", function () {
       reader.readAsDataURL(file);
     }
   });
-
-  loadProfile();
-
 });

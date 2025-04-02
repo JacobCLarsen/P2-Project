@@ -4,8 +4,8 @@ import mysql from "mysql";
 const DBConnection = mysql.createConnection({
   host: "localhost", // Database host
   user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "mye7cahHm8/AWd%q",         // Database password
-  database: "cs_25_sw_2_01",            // Database name
+  password: "mye7cahHm8/AWd%q", // Database password
+  database: "cs_25_sw_2_01", // Database name
 });
 
 // Function to connect to the database and initialize tables
@@ -70,6 +70,50 @@ export function setupDatabaseRoutes(app) {
     });
   });
 }
+
+import express from "express";
+import { authenticateJWT } from "./middleware/authenticateJWT"; // Adjust the path as needed
+import mysql from "mysql2/promise";
+
+const app = express();
+
+// Database connection
+const db = mysql.createPool({
+  host: "your-db-host",
+  user: "your-db-user",
+  password: "your-db-password",
+  database: "your-db-name",
+});
+
+// Profile route with token authentication
+app.get("/profile", async (req, res) => {
+  const token = req.headers["authorization"]?.split(" ")[1]; // Extract the token from the "Authorization" header
+
+  try {
+    // Validate the JWT token
+    const user = await authenticateJWT(token);
+
+    // The `user` variable will hold the decoded JWT data
+    const userId = user.id;
+
+    // Query the database to retrieve the user's profile data
+    const [rows] = await db.query("SELECT username FROM users WHERE id = ?", [
+      userId,
+    ]);
+
+    if (rows.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    // Send the profile data back to the client
+    res.json({ success: true, user: rows[0] });
+  } catch (error) {
+    console.error("Error loading profile:", error);
+    res.status(401).json({ success: false, message: error.message });
+  }
+});
 
 // Export the database connection object
 export default DBConnection;
