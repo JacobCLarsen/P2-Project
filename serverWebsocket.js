@@ -48,8 +48,10 @@ export function WebsocketListen(ws, wss) {
 
         activeWorkers.push(ws);
         console.log("active workers:");
+        let i = 1;
         activeWorkers.forEach((worker) => {
-          console.log(worker);
+          console.log(i);
+          i++;
         });
         updateOnlineUsers();
         break;
