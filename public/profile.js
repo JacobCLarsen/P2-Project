@@ -18,13 +18,17 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchData() {
     try {
       //Send a POST request to the server with login credentials
-      const response = await fetch("/profile", {
+      const response = await fetch("profile", {
         method: "GET", //HTTP method
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, //Include the token in the request header
           "Content-Type": "application/json",
         }, //Specify JSON format
       });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
 
       //Awaits response from server before moving on:
       const data = await response.json();
