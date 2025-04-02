@@ -164,7 +164,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
-      activeWorkers: activeWorkers,
+      activeWorkers: activeWorkers.length,
       completedTasks: completedTaskCount,
     })
   );
