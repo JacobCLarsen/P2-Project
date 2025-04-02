@@ -83,9 +83,10 @@ export function setupDatabaseRoutes(app) {
       const userId = user.id;
 
       // Query the database to retrieve the user's profile data
-      const [rows] = await db.query("SELECT username FROM users WHERE id = ?", [
-        userId,
-      ]);
+      const [rows] = await DBConnection.query(
+        "SELECT username FROM users WHERE id = ?",
+        [userId]
+      );
 
       if (rows.length === 0) {
         return res
