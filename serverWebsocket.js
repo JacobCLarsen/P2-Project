@@ -1,4 +1,5 @@
 import { authenticateJWT } from "./middleware_jwt.js";
+import { splitTasks, dictionaryPath } from "./splittasks.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
@@ -89,9 +90,20 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "addTask":
-        console.log("new task is being created");
-        let newTask = createTask();
-        addTaskToQueue(newTask);
+        console.log("Splitting tasks based on active workers...");
+        if (activeWorkers.length > 0) {
+          const taskBatches = splitTasks(dictionaryPath, activeWorkers.length);
+          taskBatches.forEach((batch, index) => {
+            const task = {
+              id: `batch-${index + 1}`,
+              data: batch,
+            };
+            addTaskToQueue(task);
+          });
+          console.log("Tasks split and added to the queue.");
+        } else {
+          console.warn("No active workers available to split tasks.");
+        }
         break;
 
       case "clearQueue":
