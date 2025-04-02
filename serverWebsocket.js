@@ -2,7 +2,7 @@ import { authenticateJWT } from "./middleware_jwt.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
-let activeWorkers = [1, 2, 3];
+let activeWorkers = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
@@ -46,18 +46,19 @@ export function WebsocketListen(ws, wss) {
       case "start work":
         console.log(`${message.id} started working`);
 
-        activeWorkers.push(ws);
-        console.log("active workers:");
-        let i = 1;
-        activeWorkers.forEach((worker) => {
-          console.log(i);
-          i++;
-        });
+        // Add the worker WebSocket to the activeWorkers array
+        if (!activeWorkers.includes(ws)) {
+          activeWorkers.push(ws);
+        }
+
+        console.log("active workers:", activeWorkers.length);
         updateOnlineUsers();
         break;
 
       case "stop work":
         console.log(`${message.id} stopped working`);
+
+        // Remove the worker WebSocket from the activeWorkers array
         activeWorkers = activeWorkers.filter((client) => client !== ws);
         updateOnlineUsers();
         break;
@@ -82,6 +83,8 @@ export function WebsocketListen(ws, wss) {
 
       case "disconnect":
         console.log(`worker disconnected with id: ${message.id}`);
+
+        // Remove the worker WebSocket from both workerClientns and activeWorkers
         workerClientns = workerClientns.filter((client) => client !== ws);
         activeWorkers = activeWorkers.filter((client) => client !== ws);
 
@@ -89,17 +92,7 @@ export function WebsocketListen(ws, wss) {
         dashboardClients = dashboardClients.filter((client) => client !== ws);
 
         // Notify only dashboard clients about the updated number of online users
-        dashboardClients.forEach((client) => {
-          if (client.readyState === client.OPEN) {
-            client.send(
-              JSON.stringify({
-                action: "updateOnlineUsers",
-                users: workerClientns.length,
-                activeWorkers: activeWorkers,
-              })
-            );
-          }
-        });
+        updateOnlineUsers();
         break;
 
       case "authenticate":
