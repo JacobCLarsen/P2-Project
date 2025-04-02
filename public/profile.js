@@ -18,9 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   async function fetchData() {
     try {
       //Send a POST request to the server with login credentials
-      console.log(localStorage.getItem("token"));
-
-      const response = await fetch("profile", {
+      const response = await fetch("/profile", {
         method: "GET", //HTTP method
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`, //Include the token in the request header
