@@ -138,7 +138,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
-          activeWorkers: activeWorkers,
+          activeWorkers: activeWorkers.length,
         })
       );
     }
