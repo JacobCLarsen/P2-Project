@@ -206,9 +206,31 @@ function beforeReloadHandeler(event) {
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to Start Working") {
-    fetchTask();
+    //fetchTask(); for when we want a task right away
+    setStateActive();
     startWorkUI();
   } else {
     stopWork();
+    setStateInactive();
   }
 });
+
+// Set the working state to active
+function setStateActive() {
+  let message = {
+    action: "start work",
+    data: null,
+    id: clientId,
+  };
+  mySocket.send(JSON.stringify(message));
+}
+
+// Set the working state to inactive
+function setStateInactive() {
+  let message = {
+    action: "stop work",
+    data: null,
+    id: clientId,
+  };
+  mySocket.send(JSON.stringify(message));
+}

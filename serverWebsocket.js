@@ -2,6 +2,7 @@ import { authenticateJWT } from "./middleware_jwt.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
+let activeWorkers = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
@@ -42,6 +43,16 @@ export function WebsocketListen(ws, wss) {
         updateTaskQueue();
         break;
 
+      case "start work":
+        activeWorkers.push(ws);
+        updateOnlineUsers()
+        break;
+
+      case "stop work":
+        activeWorkers = activeWorkers.filter((client) => client !== ws);
+        updateOnlineUsers()
+        break;
+
       case "send result":
         console.log(`Result from worker received: ${message.data}`);
         // TODO: Add a check to see if the task was completed correctly or not
@@ -63,6 +74,7 @@ export function WebsocketListen(ws, wss) {
       case "disconnect":
         console.log(`worker disconnected with id: ${message.id}`);
         workerClientns = workerClientns.filter((client) => client !== ws);
+        activeWorkers = activeWorkers.filter((client) => client !== ws);
 
         // Remove the client from the dashboardClients list if it disconnects
         dashboardClients = dashboardClients.filter((client) => client !== ws);
@@ -74,6 +86,7 @@ export function WebsocketListen(ws, wss) {
               JSON.stringify({
                 action: "updateOnlineUsers",
                 users: workerClientns.length,
+                activeWorkers: activeWorkers,
               })
             );
           }
@@ -118,6 +131,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
+          activeWorkers: activeWorkers,
         })
       );
     }
@@ -143,6 +157,8 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
+      activeWorkers,
+      activeWorkers,
       completedTasks: completedTaskCount,
     })
   );
