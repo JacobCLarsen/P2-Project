@@ -24,7 +24,7 @@ mySocket.onmessage = (event) => {
   switch (message.action) {
     case "updateOnlineUsers":
       onlineWorkersField.innerText = `Online workers: ${message.users}`;
-      activeWorkersField.innerText = `Active workers: ${message.activeWorkers}`;
+      activeWorkersField.innerText = `Active workers: ${message.workers}`;
 
       console.log(message.activeWorkers);
       console.log(message.users);
@@ -37,7 +37,7 @@ mySocket.onmessage = (event) => {
     case "loadDashboard":
       onlineWorkersField.innerText = `Online workers: ${message.onlineClients}`;
       completedTasksField.innerText = `Completed tasks since restart: ${message.completedTasks}`;
-      activeWorkersField.innerText = `Active workers: ${message.activeWorkers}`;
+      activeWorkersField.innerText = `Active workers: ${message.workers}`;
       break;
 
     default:

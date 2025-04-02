@@ -138,7 +138,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
-          activeWorkers: activeWorkers.length,
+          workers: activeWorkers.length,
         })
       );
     }
@@ -164,7 +164,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
-      activeWorkers: activeWorkers.length,
+      workers: activeWorkers.length,
       completedTasks: completedTaskCount,
     })
   );
