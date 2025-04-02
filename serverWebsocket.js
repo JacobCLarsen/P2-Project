@@ -13,14 +13,29 @@ export function WebsocketListen(ws, wss) {
 
     switch (message.action) {
       case "connect":
-        console.log(`worker connected with id: ${message.id}`);
-        // Add dashboard and worker clients to an array
+        console.log(
+          `Client connected with id: ${message.id} and role: ${message.role}`
+        );
+
+        // Add dashboard and worker clients to their respective arrays
         if (message.role === "dashboard") {
-          dashboardClients.push(ws);
-          // When a dashboard joins, send all the info to it (online users, active workers, tasks completd)
+          if (!dashboardClients.includes(ws)) {
+            dashboardClients.push(ws);
+            console.log(
+              "Dashboard client added. Total dashboards:",
+              dashboardClients.length
+            );
+          }
+          // When a dashboard joins, send all the info to it (online users, active workers, tasks completed)
           loadDashBoard(ws);
         } else {
-          workerClientns.push(ws);
+          if (!workerClientns.includes(ws)) {
+            workerClientns.push(ws);
+            console.log(
+              "Worker client added. Total workers:",
+              workerClientns.length
+            );
+          }
           ws.send(JSON.stringify({ action: "updateQueue", queue: taskQueue }));
         }
 
