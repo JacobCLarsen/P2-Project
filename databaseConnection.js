@@ -70,37 +70,37 @@ export function setupDatabaseRoutes(app) {
       }
     });
   });
-}
 
-// Profile route with token authentication
-app.get("/profile", async (req, res) => {
-  const token = req.headers["authorization"]?.split(" ")[1]; // Extract the token from the "Authorization" header
+  // Profile route with token authentication
+  app.get("/profile", async (req, res) => {
+    const token = req.headers["authorization"]?.split(" ")[1]; // Extract the token from the "Authorization" header
 
-  try {
-    // Validate the JWT token
-    const user = await authenticateJWT(token);
+    try {
+      // Validate the JWT token
+      const user = await authenticateJWT(token);
 
-    // The `user` variable will hold the decoded JWT data
-    const userId = user.id;
+      // The `user` variable will hold the decoded JWT data
+      const userId = user.id;
 
-    // Query the database to retrieve the user's profile data
-    const [rows] = await db.query("SELECT username FROM users WHERE id = ?", [
-      userId,
-    ]);
+      // Query the database to retrieve the user's profile data
+      const [rows] = await db.query("SELECT username FROM users WHERE id = ?", [
+        userId,
+      ]);
 
-    if (rows.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      if (rows.length === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "User not found" });
+      }
+
+      // Send the profile data back to the client
+      res.json({ success: true, user: rows[0] });
+    } catch (error) {
+      console.error("Error loading profile:", error);
+      res.status(401).json({ success: false, message: error.message });
     }
-
-    // Send the profile data back to the client
-    res.json({ success: true, user: rows[0] });
-  } catch (error) {
-    console.error("Error loading profile:", error);
-    res.status(401).json({ success: false, message: error.message });
-  }
-});
+  });
+}
 
 // Export the database connection object
 export default DBConnection;
