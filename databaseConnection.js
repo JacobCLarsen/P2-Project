@@ -1,4 +1,5 @@
 import mysql from "mysql";
+import { authenticateJWT } from "./middleware_jwt.js";
 
 // Database connection configuration
 const DBConnection = mysql.createConnection({
@@ -70,10 +71,6 @@ export function setupDatabaseRoutes(app) {
     });
   });
 }
-
-import express from "express";
-import { authenticateJWT } from "./middleware/authenticateJWT"; // Adjust the path as needed
-import mysql from "mysql2/promise";
 
 const app = express();
 
