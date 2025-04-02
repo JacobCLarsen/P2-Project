@@ -44,13 +44,15 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "start work":
+        console.log(`${message.id} started working`);
         activeWorkers.push(ws);
-        updateOnlineUsers()
+        updateOnlineUsers();
         break;
 
       case "stop work":
+        console.log(`${message.id} stopped working`);
         activeWorkers = activeWorkers.filter((client) => client !== ws);
-        updateOnlineUsers()
+        updateOnlineUsers();
         break;
 
       case "send result":
