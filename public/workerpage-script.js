@@ -62,7 +62,7 @@ function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} Batches assigned: 0/ ${task.tasks.length}`;
+    taskItem.innerText = `Task id: ${task.id} Batches assigned: ${task.completed}/${task.tasks.length}`;
     taskQueue.append(taskItem);
   });
 }
@@ -112,8 +112,8 @@ function fetchTask() {
 function startWork(task) {
   const myWorker = new Worker("worker.js");
   console.log("worker connected!");
-  myWorker.postMessage(task.hash);
-  console.log(`Message containing ${task.hash} was send to the a worker`);
+  myWorker.postMessage(task.data);
+  console.log(`Message containing ${task.data} was send to the a worker`);
 
   myWorker.onmessage = (e) => {
     let taskresult = {
@@ -207,7 +207,7 @@ function beforeReloadHandeler(event) {
 // clicking "Start working " will start work form this client
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to Start Working") {
-    //fetchTask(); for when we want a task right away
+    fetchTask();
     setStateActive();
     startWorkUI();
   } else {

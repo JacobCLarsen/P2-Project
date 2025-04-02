@@ -50,18 +50,35 @@ export function WebsocketListen(ws, wss) {
 
       case "request task":
         // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
+        // if (taskQueue.length >= 1) {
+        //   let task = taskQueue.shift();
+        //   console.log(
+        //     `sending a task to worker: ${message.id}, with task id: ${task.id}`
+        //   );
+        //   ws.send(JSON.stringify({ action: "new task", data: task }));
+        // } else {
+        //   ws.send(JSON.stringify({ action: "no more tasks" }));
+        //   console.log("No more tasks in the queue ... ");
+        // }
+        // // Also send a message to all clients to update the taskqeueu, as a task now as been taken
+        // updateTaskQueue();
+
         if (taskQueue.length >= 1) {
-          let task = taskQueue.shift();
-          console.log(
-            `sending a task to worker: ${message.id}, with task id: ${task.id}`
-          );
-          ws.send(JSON.stringify({ action: "new task", data: task }));
-        } else {
-          ws.send(JSON.stringify({ action: "no more tasks" }));
-          console.log("No more tasks in the queue ... ");
+          let task = taskQueue[0];
+          if (task.completed === task.tasks.length) {
+            let completedTask = taskQueue.shift();
+          } else {
+            let subtask = task.tasks[task.completed];
+            console.log(
+              `sending a task to worker: ${message.id}, task ${
+                task.id
+              }: batch ${task.completed + 1}`
+            );
+
+            ws.send(JSON.stringify({ action: "new task", data: subtask }));
+          }
         }
-        // Also send a message to all clients to update the taskqeueu, as a task now as been taken
-        updateTaskQueue();
+
         break;
 
       case "start work":
@@ -98,6 +115,7 @@ export function WebsocketListen(ws, wss) {
           taskcounter++;
           let task = {
             id: taskcounter,
+            completed: 0,
             tasks: [],
           };
           taskBatches.forEach((batchContent, index) => {
