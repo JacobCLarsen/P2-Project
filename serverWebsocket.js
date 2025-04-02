@@ -15,6 +15,7 @@ export function WebsocketListen(ws, wss) {
 
     switch (message.action) {
       case "connect":
+        ws.id = message.id;
         console.log(
           `Client connected with id: ${message.id} and role: ${message.role}`
         );
@@ -98,7 +99,7 @@ export function WebsocketListen(ws, wss) {
           taskBatches.forEach((batch, index) => {
             const task = {
               id: `Task ${taskcounter} - batch-${index + 1}`,
-              assignedUser: message.id,
+              assignedUser: activeWorkers[index].id,
               data: batch,
             };
             addTaskToQueue(task);
