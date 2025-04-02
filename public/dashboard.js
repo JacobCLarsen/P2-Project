@@ -25,6 +25,9 @@ mySocket.onmessage = (event) => {
     case "updateOnlineUsers":
       onlineWorkersField.innerText = `Online workers: ${message.users}`;
       activeWorkersField.innerText = `Active workers: ${message.activeWorkers}`;
+
+      console.log(message.activeWorkers);
+      console.log(message.users);
       break;
 
     case "updateCompletedTasks":
