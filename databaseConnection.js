@@ -72,16 +72,6 @@ export function setupDatabaseRoutes(app) {
   });
 }
 
-const app = express();
-
-// Database connection
-const db = mysql.createPool({
-  host: "your-db-host",
-  user: "your-db-user",
-  password: "your-db-password",
-  database: "your-db-name",
-});
-
 // Profile route with token authentication
 app.get("/profile", async (req, res) => {
   const token = req.headers["authorization"]?.split(" ")[1]; // Extract the token from the "Authorization" header
