@@ -96,14 +96,18 @@ export function WebsocketListen(ws, wss) {
         if (activeWorkers.length > 0) {
           const taskBatches = splitTasks(dictionaryPath, activeWorkers.length);
           taskcounter++;
-          taskBatches.forEach((batch, index) => {
-            const task = {
-              id: `Task ${taskcounter} - batch-${index + 1}`,
-              assignedUser: activeWorkers[index].id,
-              data: batch,
+          let task = {
+            id: taskcounter,
+            tasks: [],
+          };
+          taskBatches.forEach((batchContent, index) => {
+            const batch = {
+              id: `batch-${index + 1}`,
+              data: batchContent,
             };
-            addTaskToQueue(task);
+            task.tasks.push(batch);
           });
+          addTaskToQueue(task);
           console.log("Tasks split and added to the queue.");
         } else {
           console.warn("No active workers available to split tasks.");
