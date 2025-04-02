@@ -17,31 +17,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchData() {
     try {
-      //Send a POST request to the server with login credentials
+      const token = localStorage.getItem("token");
+      console.log("Using token:", token); // Debug log
+
       const response = await fetch("profile", {
-        method: "GET", //HTTP method
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, //Include the token in the request header
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
-        }, //Specify JSON format
+        },
       });
 
-      if (!response.ok) {
-        throw new Error(`Request failed with status: ${response.status}`);
-      }
+      console.log("Response status:", response.status); // Debug log
 
-      //Awaits response from server before moving on:
       const data = await response.json();
+      console.log("Response data:", data); // Debug log
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || `Request failed with status: ${response.status}`
+        );
+      }
 
       if (data.success) {
-        console.log("Profile loaded successfully:");
+        console.log("Profile loaded successfully:", data.user);
         loadProfile(data.user);
       } else {
-        throw new Error(data.message);
+        throw new Error(data.message || "Failed to load profile data");
       }
     } catch (error) {
-      console.error("Error loading profile:", error); //Log error if query fails
-      alert("Error loading profile. Please try again later.");
+      console.error("Error loading profile:", error);
+      alert(`Error loading profile: ${error.message}`);
     }
   }
 
