@@ -45,7 +45,12 @@ export function WebsocketListen(ws, wss) {
 
       case "start work":
         console.log(`${message.id} started working`);
+
         activeWorkers.push(ws);
+        console.log("active workers:");
+        activeWorkers.forEach((worker) => {
+          console.log(worker);
+        });
         updateOnlineUsers();
         break;
 
@@ -159,8 +164,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
-      activeWorkers,
-      activeWorkers,
+      activeWorkers: activeWorkers,
       completedTasks: completedTaskCount,
     })
   );
