@@ -26,7 +26,7 @@ mySocket.onmessage = (event) => {
       onlineWorkersField.innerText = `Online workers: ${message.users}`;
       activeWorkersField.innerText = `Active workers: ${message.workers}`;
 
-      console.log(message.activeWorkers);
+      console.log(message.workers);
       console.log(message.users);
       break;
 
