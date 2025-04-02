@@ -140,7 +140,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
-          workers: activeWorkers.length, // Send only the length
+          workers: activeWorkers.length, // Ensure workers is sent as a number
         })
       );
     }
@@ -166,7 +166,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
-      workers: activeWorkers.length, // Send only the length
+      workers: activeWorkers.length, // Ensure workers is sent as a number
       completedTasks: completedTaskCount,
     })
   );
