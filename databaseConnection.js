@@ -73,33 +73,50 @@ export function setupDatabaseRoutes(app) {
 
   // Profile route with token authentication
   app.get("/profile", async (req, res) => {
-    const token = req.headers["authorization"]?.split(" ")[1]; // Extract the token from the "Authorization" header
-    console.log("Extracted Token:", token);
-
     try {
-      // Validate the JWT token
-      const user = await authenticateJWT(token);
+      const token = req.headers.authorization?.split(" ")[1];
+      console.log("Token received:", token); // Debug log
 
-      // The `user` variable will hold the decoded JWT data
-      const userId = user.id;
-
-      // Query the database to retrieve the user's profile data
-      const [rows] = await DBConnection.query(
-        "SELECT username FROM users WHERE id = ?",
-        [userId]
-      );
-
-      if (rows.length === 0) {
-        return res
-          .status(404)
-          .json({ success: false, message: "User not found" });
+      if (!token) {
+        return res.status(401).json({
+          success: false,
+          message: "No token provided",
+        });
       }
 
-      // Send the profile data back to the client
-      res.json({ success: true, user: rows[0] });
+      const decoded = await authenticateJWT(token);
+      console.log("Decoded token:", decoded); // Debug log
+
+      // Use a Promise-based query instead of callback
+      const query = "SELECT username FROM users WHERE id = ?";
+      DBConnection.query(query, [decoded.userId], (err, results) => {
+        if (err) {
+          console.error("Database query error:", err);
+          return res.status(500).json({
+            success: false,
+            message: "Database query failed",
+          });
+        }
+
+        if (results.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        console.log("Query results:", results); // Debug log
+        res.json({
+          success: true,
+          user: results[0],
+        });
+      });
     } catch (error) {
-      console.error("Error loading profile:", error);
-      res.status(401).json({ success: false, message: error.message });
+      console.error("Profile route error:", error);
+      res.status(401).json({
+        success: false,
+        message: error.message,
+      });
     }
   });
 }
