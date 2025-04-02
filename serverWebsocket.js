@@ -126,6 +126,11 @@ function createTask() {
 
 // Function to update the number of online users and send it to the dashboard clients
 function updateOnlineUsers() {
+  console.log("Updating online users..."); // Log when the function is called
+  console.log("Worker Clients:", workerClientns.length);
+  console.log("Active Workers:", activeWorkers.length);
+  console.log("Dashboards:", dashboardClients.length);
+
   // Notify only dashboard clients about the updated number of online users
   dashboardClients.forEach((client) => {
     if (client.readyState === client.OPEN) {
@@ -133,7 +138,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
-          workers: activeWorkers.length, // Ensure workers is sent as a number
+          workers: activeWorkers.length,
         })
       );
     }
@@ -159,7 +164,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
-      workers: activeWorkers.length, // Ensure workers is sent as a number
+      workers: activeWorkers.length,
       completedTasks: completedTaskCount,
     })
   );
