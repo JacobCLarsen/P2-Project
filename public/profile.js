@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const token = localStorage.getItem("token");
       console.log("Using token:", token); // Debug log
 
-      const response = await fetch("profile", {
+      const response = await fetch("profile-data", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
