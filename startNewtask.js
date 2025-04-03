@@ -4,7 +4,7 @@ import { splitDictionary, dictionaryPath } from "./split-dictionary.js";
 class SubTask {
   constructor(dictionary, hashes) {
     this.dictionary = dictionary;
-    this.hasehs = hashes;
+    this.hashes = hashes;
     this.completed = 0;
     this.id = Math.floor(10000000 + Math.random() * 90000000);
   }
