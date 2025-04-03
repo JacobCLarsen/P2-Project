@@ -15,10 +15,48 @@ document.addEventListener("DOMContentLoaded", function () {
   const uploadProfilePic = document.getElementById("uploadProfilePic");
   const changeProfilePicBtn = document.getElementById("changeProfilePicBtn");
 
-  function loadProfile() {
-    const storedName = localStorage.getItem("profileName") || "John Pork";
-    const storedEmail = localStorage.getItem("profileEmail") || "johnpork@example.com";
-    const storedBio = localStorage.getItem("profileBio") || "This is a sample bio.";
+  async function fetchData() {
+    try {
+      const token = localStorage.getItem("token");
+      console.log("Using token:", token); // Debug log
+
+      const response = await fetch("profile-data", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Response status:", response.status); // Debug log
+
+      const data = await response.json();
+      console.log("Response data:", data); // Debug log
+
+      if (!response.ok) {
+        throw new Error(
+          data.message || `Request failed with status: ${response.status}`
+        );
+      }
+
+      if (data.success) {
+        console.log("Profile loaded successfully:", data.user);
+        loadProfile(data.user);
+      } else {
+        throw new Error(data.message || "Failed to load profile data");
+      }
+    } catch (error) {
+      console.error("Error loading profile:", error);
+      alert(`Error loading profile: ${error.message}`);
+    }
+  }
+
+  fetchData(); //Call the function to fetch data when the page loads
+
+  async function loadProfile(user) {
+    const storedName = user.username;
+    const storedEmail = user.email;
+    const storedBio = user.bio;
 
     userName.textContent = storedName;
     userEmail.textContent = storedEmail;
@@ -31,21 +69,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   editProfileBtn.addEventListener("click", function () {
-    editProfileForm.classList.remove("hidden");
-    editName.value = userName.textContent;
-    editEmail.value = userEmail.textContent;
-    editBio.value = userBio.textContent;
+    if (editProfileForm.classList.contains("hidden")) {
+      editProfileForm.classList.remove("hidden");
+    } else {
+      editProfileForm.classList.add("hidden");
+    }
   });
 
   saveProfileBtn.addEventListener("click", function () {
-    localStorage.setItem("profileName", editName.value);
-    localStorage.setItem("profileEmail", editEmail.value);
-    localStorage.setItem("profileBio", editBio.value);
-
-    userName.textContent = editName.value;
-    userEmail.textContent = editEmail.value;
-    userBio.textContent = editBio.value;
-
     editProfileForm.classList.add("hidden");
   });
 
@@ -68,7 +99,39 @@ document.addEventListener("DOMContentLoaded", function () {
       reader.readAsDataURL(file);
     }
   });
-
-  loadProfile();
-
 });
+
+document
+  .getElementById("saveProfileBtn")
+  .addEventListener("click", async () => {
+    const token = localStorage.getItem("token");
+
+    const updatedData = {
+      username: document.getElementById("editName").value.trim(),
+      email: document.getElementById("editEmail").value.trim(),
+      bio: document.getElementById("editBio").value.trim(),
+    };
+
+    try {
+      const response = await fetch("profile-update", {
+        method: "PUT", // Updating user data
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || `Error ${response.status}`);
+      }
+
+      console.log("Updated Profile:", data);
+      location.reload();
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert(`Error updating profile: ${error.message}`);
+    }
+  });

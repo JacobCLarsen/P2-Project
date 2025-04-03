@@ -1,11 +1,12 @@
 import mysql from "mysql";
+import { authenticateJWT } from "./middleware_jwt.js";
 
 // Database connection configuration
 const DBConnection = mysql.createConnection({
   host: "localhost", // Database host
   user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "mye7cahHm8/AWd%q",         // Database password
-  database: "cs_25_sw_2_01",            // Database name
+  password: "mye7cahHm8/AWd%q", // Database password
+  database: "cs_25_sw_2_01", // Database name
 });
 
 // Function to connect to the database and initialize tables
@@ -68,6 +69,106 @@ export function setupDatabaseRoutes(app) {
         res.json({ success: true, users: results });
       }
     });
+  });
+
+  // Profile route with token authentication
+  app.get("/profile-data", async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(" ")[1];
+      console.log("Token received:", token); // Debug log
+
+      if (!token) {
+        return res.status(401).json({
+          success: false,
+          message: "No token provided",
+        });
+      }
+
+      const decoded = await authenticateJWT(token);
+      console.log("Decoded token:", decoded); // Debug log
+
+      // Use a Promise-based query instead of callback
+      const query =
+        "SELECT username, tasks, email, bio FROM users WHERE id = ?";
+      DBConnection.query(query, [decoded.userId], (err, results) => {
+        if (err) {
+          console.error("Database query error:", err);
+          return res.status(500).json({
+            success: false,
+            message: "Database query failed",
+          });
+        }
+
+        if (results.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found",
+          });
+        }
+
+        console.log("Query results:", results); // Debug log
+        res.json({
+          success: true,
+          user: results[0],
+        });
+      });
+    } catch (error) {
+      console.error("Profile route error:", error);
+      res.status(401).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  });
+  app.put("/profile-update", async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(" ")[1];
+
+      if (!token) {
+        return res
+          .status(401)
+          .json({ success: false, message: "No token provided" });
+      }
+
+      const decoded = await authenticateJWT(token);
+      const userId = decoded.userId;
+
+      const { username, email, bio } = req.body;
+
+      // Validate input
+      if (!username || !email || !bio) {
+        return res
+          .status(400)
+          .json({ success: false, message: "All fields are required" });
+      }
+
+      // Update user data in the database
+      const query =
+        "UPDATE users SET username = ?, email = ?, bio = ? WHERE id = ?";
+      DBConnection.query(
+        query,
+        [username, email, bio, userId],
+        (err, result) => {
+          if (err) {
+            console.error("Database update error:", err);
+            return res
+              .status(500)
+              .json({ success: false, message: "Database update failed" });
+          }
+
+          if (result.affectedRows === 0) {
+            return res
+              .status(404)
+              .json({ success: false, message: "User not found" });
+          }
+
+          res.json({ success: true, message: "Profile updated successfully" });
+        }
+      );
+    } catch (error) {
+      console.error("Profile update error:", error);
+      res.status(401).json({ success: false, message: error.message });
+    }
   });
 }
 
