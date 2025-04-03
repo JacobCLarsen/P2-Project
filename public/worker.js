@@ -25,7 +25,7 @@ function dictionaryAttack(targetHashes, dictionaryBatch) {
   for (let dictionaryWord of dictionaryBatch) {
     for (let targetHash of targetHashes) {
       // Hashes the current password and assigns it to the const hashedPassword.
-      const hashedWord = hashSSA512(dictionaryWord);
+      const hashedWord = hashSHA512(dictionaryWord);
       // If hashedPassword is equal to the target hashed password, then returns correct password.
       if (hashedWord === targetHash) {
         console.log(`password found: ${dictionaryWord}`);
