@@ -63,8 +63,9 @@ export function WebsocketListen(ws, wss) {
             "no more tasks in current queue, checking main queue ... "
           );
           if (mainTaskQueue.length === 0) {
-            // If no more tasks, print a message
+            // If no more tasks, print a message and let the users know
             console.log("No more tasks in the main queue");
+            s.send(JSON.stringify("no more tasks"));
           } else {
             console.log("Task found - starting new task from main queue");
             let task = mainTaskQueue[0];
