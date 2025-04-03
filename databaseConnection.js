@@ -29,9 +29,9 @@ export function connectToDatabase() {
     const createWeakPasswordsTable = `
         CREATE TABLE IF NOT EXISTS weak_passwords (
           id INT AUTO_INCREMENT PRIMARY KEY, -- Unique result ID
-          password_hash INT NOT NULL, -- The hash of the weak password
+          password_hash VARCHAR(255) NOT NULL, -- The hash of the weak password
           task_id INT NOT NULL, -- Id to the task assosiated with the user
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the result was created
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of when the result was created
         )`;
 
     // Execute the query to create the "users" table
