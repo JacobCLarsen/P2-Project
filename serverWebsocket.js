@@ -141,6 +141,17 @@ export function WebsocketListen(ws, wss) {
 
             // Update the number of completed subtasks of the main task
             mainTaskQueue[0].subTasksCompleted++;
+
+            if (
+              mainTaskQueue[0].subTasksCompleted ===
+              mainTaskQueue[0].numberBatches
+            ) {
+              // Use this completed task and store it somewhere
+              let completed_task = mainTaskQueue.shift();
+              console.log(
+                `Task was complete with id: ${completed_task.id} and result ${completed_task.result}`
+              );
+            }
           }
 
           console.log(`Task with ID ${message.taskId} marked as complete.`);
