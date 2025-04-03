@@ -58,10 +58,14 @@ export function WebsocketListen(ws, wss) {
 
         // If there are no more subtasks for the current task, start working on the next task in the main queue
         if (currentTaskQueue.length === 0) {
+          console.log(
+            "no more tasks in current queue, checking main queue ... "
+          );
           if (mainTaskQueue.length === 0) {
             // If no more tasks, print a message
             console.log("No more tasks in the main queue");
           } else {
+            console.log("Task found - starting new task from main queue");
             let task = mainTaskQueue.shift();
             currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
           }
