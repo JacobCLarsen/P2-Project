@@ -24,7 +24,7 @@ function startNewTask(task, numberBatches) {
   }
 
   // Split dictionary into batches
-  const batchesArray = splitDictionary(numberBatches);
+  const batchesArray = splitDictionary(dictionaryPath, numberBatches);
   if (!Array.isArray(batchesArray)) {
     throw new Error("splitDictionary must return an array.");
   }
