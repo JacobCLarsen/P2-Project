@@ -1,13 +1,16 @@
 import { authenticateJWT } from "./middleware_jwt.js";
-import { splitTasks, dictionaryPath } from "./split-dictionary.js";
+import { Task } from "./createTask.js";
+import { startNewTask } from "./startNewtask.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
 let activeWorkers = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
-let taskQueue = [];
+let mainTaskQueue = [];
+let currentTaskQueue = [];
 let taskcounter = 0;
+let dictionaryNumberOfBatches = 5;
 
 export function WebsocketListen(ws, wss) {
   ws.onmessage = async (event) => {
@@ -39,7 +42,9 @@ export function WebsocketListen(ws, wss) {
               workerClientns.length
             );
           }
-          ws.send(JSON.stringify({ action: "updateQueue", queue: taskQueue }));
+          ws.send(
+            JSON.stringify({ action: "updateQueue", queue: mainTaskQueue })
+          );
         } else {
           console.log("User tried to connect with unknow role. Kicking....");
           ws.close();
@@ -49,35 +54,31 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "request task":
-        // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
-        // if (taskQueue.length >= 1) {
-        //   let task = taskQueue.shift();
-        //   console.log(
-        //     `sending a task to worker: ${message.id}, with task id: ${task.id}`
-        //   );
-        //   ws.send(JSON.stringify({ action: "new task", data: task }));
-        // } else {
-        //   ws.send(JSON.stringify({ action: "no more tasks" }));
-        //   console.log("No more tasks in the queue ... ");
-        // }
-        // // Also send a message to all clients to update the taskqeueu, as a task now as been taken
-        // updateTaskQueue();
-
-        if (taskQueue.length >= 1) {
-          let task = taskQueue[0];
-          if (task.completed === task.tasks.length) {
-            let completedTask = taskQueue.shift();
+        // TODO: Instead of sending the hashlist again to the same worker, we should check if the last task completed by the worker was using the same hashlist and reuse if we can
+        // If there are no more subtasks for the current task, start working on the next task in the main queue
+        if (currentTaskQueue.length === 0) {
+          if (mainTaskQueue.length === 0) {
+            // If no more tasks, print a message
+            console.log("No more tasks in the main queue");
           } else {
-            let subtask = task.tasks[task.completed];
-            console.log(
-              `sending a task to worker: ${message.id}, task ${
-                task.id
-              }: batch ${task.completed + 1}`
-            );
-
-            ws.send(JSON.stringify({ action: "new task", data: subtask }));
+            let task = mainTaskQueue.shift();
+            currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
           }
         }
+
+        // Remove the task from the top of the queue and send it to the user
+        let messageTask = currentTaskQueue.shift();
+        let message = {
+          action: "new task",
+          task: messageTask,
+        };
+
+        // Send the message to the cliet
+        ws.send(JSON.stringify(message));
+
+        console.log(
+          `Task send to the user with hashes: ${messageTask.hashes}, and dictionary list ${messageTask.dictionary} and id: ${messageTask.id}`
+        );
 
         break;
 
@@ -109,31 +110,20 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "addTask":
-        console.log("Splitting tasks based on active workers...");
-        if (activeWorkers.length > 0) {
-          const taskBatches = splitTasks(dictionaryPath, activeWorkers.length);
-          taskcounter++;
-          let task = {
-            id: taskcounter,
-            completed: 0,
-            tasks: [],
-          };
-          taskBatches.forEach((batchContent, index) => {
-            const batch = {
-              id: `batch-${index + 1}`,
-              data: batchContent,
-            };
-            task.tasks.push(batch);
-          });
-          addTaskToQueue(task);
-          console.log("Tasks split and added to the queue.");
-        } else {
-          console.warn("No active workers available to split tasks.");
-        }
+        let testHashes = [
+          "letmein",
+          "password",
+          "123456",
+          "hello",
+          "actualStrongPassword!!55",
+        ];
+        const task = new Task(testHashes);
+
+        addTaskToQueue(task);
         break;
 
       case "clearQueue":
-        taskQueue = [];
+        mainTaskQueue = [];
         updateTaskQueue();
         break;
 
@@ -229,7 +219,7 @@ function loadDashBoard(ws) {
 // For demo, create 5 tasks and add them to the task queue, when a button is clicked
 function addTaskToQueue(task) {
   // TODO: have a task queue on the database
-  taskQueue.push(task);
+  mainTaskQueue.push(task);
 
   // Send a message to clients to update their task queue
   updateTaskQueue();
@@ -242,7 +232,7 @@ function updateTaskQueue() {
       client.send(
         JSON.stringify({
           action: "updateQueue",
-          queue: taskQueue,
+          queue: mainTaskQueue,
         })
       );
     }
