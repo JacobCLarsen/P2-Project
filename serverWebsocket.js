@@ -1,6 +1,7 @@
 import { authenticateJWT } from "./middleware_jwt.js";
 import { Task } from "./createTask.js";
 import { startNewTask } from "./startNewtask.js";
+import { storeResult } from "./storeResults.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
@@ -149,8 +150,11 @@ export function WebsocketListen(ws, wss) {
               // Use this completed task and store it somewhere
               let completed_task = mainTaskQueue.shift();
               console.log(
-                `Task was complete with id: ${completed_task.id} and result ${completed_task.result}`
+                `Task was completed with id: ${completed_task.id} and result ${completed_task.result}`
               );
+
+              // Send the results of the task to the server
+              storeResult(completed_task);
             }
           }
 
