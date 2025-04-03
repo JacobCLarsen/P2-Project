@@ -10,7 +10,7 @@ onmessage = (e) => {
   // Crack hashes
   let weakPasswords = dictionaryAttack(e.data.hashes, e.data.dictionary);
 
-  if (weakPasswords) {
+  if (weakPasswords.length > 0) {
     const workerResult = weakPasswords;
     console.log(`weak passwords found: ${weakPasswords}`);
 
@@ -29,6 +29,10 @@ function dictionaryAttack(targetHashes, dictionaryBatch) {
       // Hashes the current password and assigns it to the const hashedPassword.
       const hashedWord = hashSHA512(dictionaryWord);
       // If hashedPassword is equal to the target hashed password, then returns correct password.
+      console.log(
+        `checking for a match between ${hashedWord} and ${targetHash}`
+      );
+
       if (hashedWord === targetHash) {
         console.log(`password found: ${dictionaryWord}`);
         weakPasswordArray.push(dictionaryWord);
