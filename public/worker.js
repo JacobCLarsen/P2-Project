@@ -2,9 +2,7 @@
 
 // This worker script takes
 onmessage = async (e) => {
-  console.log(
-    `Message received from main script: ${JSON.stringify(e.data, null, 2)}` // used to capture the object state a the time of logging
-  );
+  console.log("Message received from main script:");
 
   // Crack hashes
   let weakPasswords = await dictionaryAttack(e.data.hashes, e.data.dictionary);
