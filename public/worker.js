@@ -2,7 +2,7 @@ import { dictionaryAttack } from "./dictionary-attack";
 
 // This worker script takes
 onmessage = (e) => {
-  console.log(`Message received from main script: ${e.data}`);
+  console.log(`Message received from main script: ${e.data.hashes}`);
 
   // Crack hashes
   let weakPasswords = dictionaryAttack(e.data.hashes, e.data.dictionary);
