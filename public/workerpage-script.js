@@ -104,6 +104,8 @@ function fetchTask() {
     id: clientId,
   };
 
+  console.log("Asking for a new task");
+
   // When the server receives the message, it will send a task back to the client which will be received in the onmessage eventlistener above
   mySocket.send(JSON.stringify(message));
 }

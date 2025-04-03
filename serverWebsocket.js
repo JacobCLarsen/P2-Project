@@ -54,6 +54,8 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "request task":
+        console.log(`Client ${ws.id} requested a task`);
+
         // If there are no more subtasks for the current task, start working on the next task in the main queue
         if (currentTaskQueue.length === 0) {
           if (mainTaskQueue.length === 0) {
@@ -66,18 +68,22 @@ export function WebsocketListen(ws, wss) {
         }
 
         // Remove the task from the top of the queue and send it to the user
-        let taskToSend = currentTaskQueue.shift(); // Renamed from `messageTask` to avoid conflict
-        let taskMessage = {
-          action: "new task",
-          task: taskToSend,
-        };
+        if (currentTaskQueue.length > 0) {
+          let taskToSend = currentTaskQueue.shift(); // Renamed from `messageTask` to avoid conflict
+          let taskMessage = {
+            action: "new task",
+            task: taskToSend,
+          };
 
-        // Send the message to the client
-        ws.send(JSON.stringify(taskMessage));
+          // Send the message to the client
+          ws.send(JSON.stringify(taskMessage));
 
-        console.log(
-          `Task sent to the user with hashes: ${taskToSend.hashes}, dictionary list: ${taskToSend.dictionary}, and id: ${taskToSend.id}`
-        );
+          console.log(
+            `Task sent to the user with hashes: ${taskToSend.hashes}, dictionary list: ${taskToSend.dictionary}, and id: ${taskToSend.id}`
+          );
+        } else {
+          console.log("No tasks available in the current task queue to send.");
+        }
 
         break;
 
