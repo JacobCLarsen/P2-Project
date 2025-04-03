@@ -25,7 +25,7 @@ function dictionaryAttack(targetHashes, dictionaryBatch) {
   for (let dictionaryWord of dictionaryBatch) {
     for (let targetHash of targetHashes) {
       // Hashes the current password and assigns it to the const hashedPassword.
-      const hashedWord = hashSHA512(dictionaryWord);
+      const hashedWord = hashSSA512(dictionaryWord);
       // If hashedPassword is equal to the target hashed password, then returns correct password.
       if (hashedWord === targetHash) {
         console.log(`password found: ${dictionaryWord}`);
@@ -35,4 +35,20 @@ function dictionaryAttack(targetHashes, dictionaryBatch) {
   }
 
   return weakPasswordArray;
+}
+
+async function hashSHA512(message) {
+  // Converts string into binary format
+  const encoder = new TextEncoder();
+  // Transfors the text into bytes
+  const data = encoder.encode(message);
+  // Computes the SHA-512 hash of the input
+  const hashBuffer = await crypto.subtle.digest("SHA-512", data);
+  // Converts hashBuffer to hex string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  // Converts each byte into hexadecimal
+  const hashHex = hashArray
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+  return hashHex;
 }
