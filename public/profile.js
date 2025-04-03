@@ -69,18 +69,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   editProfileBtn.addEventListener("click", function () {
-    editProfileForm.classList.remove("hidden");
-    editName.value = userName.textContent;
-    editEmail.value = userEmail.textContent;
-    editBio.value = userBio.textContent;
-  });
-
-  saveProfileBtn.addEventListener("click", function () {
     if (editProfileForm.classList.contains("hidden")) {
       editProfileForm.classList.remove("hidden");
     } else {
       editProfileForm.classList.add("hidden");
     }
+  });
+
+  saveProfileBtn.addEventListener("click", function () {
+    editProfileForm.classList.add("hidden");
   });
 
   cancelEditBtn.addEventListener("click", function () {
