@@ -2,6 +2,8 @@ import { dictionaryAttack } from "./dictionary-attack";
 
 // This worker script takes
 onmessage = (e) => {
+  console.log("hello from the worker");
+
   console.log(`Message received from main script: ${e.data.hashes}`);
 
   // Crack hashes
