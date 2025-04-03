@@ -4,8 +4,8 @@ import mysql from "mysql";
 const DBConnection = mysql.createConnection({
   host: "localhost", // Database host
   user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "mye7cahHm8/AWd%q",         // Database password
-  database: "cs_25_sw_2_01",            // Database name
+  password: "mye7cahHm8/AWd%q", // Database password
+  database: "cs_25_sw_2_01", // Database name
 });
 
 // Function to connect to the database and initialize tables
@@ -17,7 +17,7 @@ export function connectToDatabase() {
     }
     console.log("MySQL Connected!"); // Log success message if connection is successful
 
-    // Create "users" table if it does not already exist
+    // Create "users" table
     const createUsersTable = `
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY, -- Unique user ID
@@ -25,12 +25,30 @@ export function connectToDatabase() {
                 password VARCHAR(255) NOT NULL -- Password
             )`;
 
-    // Execute the query to create the table
+    // Create "results" table
+    const createWeakPasswordsTable = `
+        CREATE TABLE IF NOT EXISTS weak_passwords (
+          id INT AUTO_INCREMENT PRIMARY KEY, -- Unique result ID
+          password_hash INT NOT NULL, -- The hash of the weak password
+          task_id INT NOT NULL, -- Id to the task assosiated with the user
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp of when the result was created
+        )`;
+
+    // Execute the query to create the "users" table
     DBConnection.query(createUsersTable, (err, result) => {
       if (err) {
         console.error("Error creating users table:", err); // Log error if table creation fails
       } else {
         console.log("Users table is ready!"); // Log success message if table is created
+      }
+    });
+
+    // Execute the query to create the "results" table
+    DBConnection.query(createResultsTable, (err, result) => {
+      if (err) {
+        console.error("Error creating results table:", err); // Log error if table creation fails
+      } else {
+        console.log("Results table is ready!"); // Log success message if table is created
       }
     });
   });
