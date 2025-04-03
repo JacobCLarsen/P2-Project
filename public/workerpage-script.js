@@ -73,7 +73,7 @@ mySocket.onmessage = (event) => {
 
   switch (message.action) {
     case "new task":
-      console.log("Received new task:", message.data);
+      console.log("Received new task:", message.subTask.id);
       startWork(message.subTask);
       break;
 
@@ -116,7 +116,7 @@ function startWork(subTask) {
   console.log("worker connected!");
   myWorker.postMessage(subTask);
   console.log(
-    `Message containing a dictionary batch and hashes: ${subTask.hashes} was send to the a worker`
+    "Message containing a dictionary batch and hashes send to the worker"
   );
 
   myWorker.onmessage = (e) => {
@@ -129,7 +129,9 @@ function startWork(subTask) {
     myWorker.terminate();
 
     let item = document.createElement("li");
-    item.innerText = `You completed task ${subTask.id} with result ${e.data}`;
+    item.innerText = `You completed task ${subTask.id} with result ${
+      e.data ? e.data : "no weak passwords"
+    }`;
     latestCompletedTask.innerHTML = "";
     latestCompletedTask.append(item);
 
