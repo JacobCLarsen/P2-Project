@@ -90,9 +90,7 @@ export function WebsocketListen(ws, wss) {
           // Send the message to the client
           ws.send(JSON.stringify(taskMessage));
 
-          console.log(
-            `Task sent to the user with hashes: ${taskToSend.hashes}, dictionary list: ${taskToSend.dictionary}, and id: ${taskToSend.id}`
-          );
+          console.log(`Task sent to the user`);
         } else {
           console.log("No tasks available in the current task queue to send.");
         }

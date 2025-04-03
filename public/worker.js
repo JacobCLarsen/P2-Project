@@ -12,7 +12,9 @@ onmessage = async (e) => {
 
   if (weakPasswords.length > 0) {
     const workerResult = weakPasswords;
-    console.log(`weak passwords found: ${weakPasswords}`);
+    console.log(
+      `weak passwords found: ${weakPasswords} in subtask ${e.data.id}`
+    );
 
     console.log("Posting message back to main script");
     postMessage(workerResult);
@@ -29,11 +31,7 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
     for (let targetHash of targetHashes) {
       // Hashes the current password and assigns it to the const hashedPassword.
       const hashedWord = await hashSHA512(dictionaryWord);
-      // If hashedPassword is equal to the target hashed password, then returns correct password.
-      console.log(
-        `checking for a match between ${hashedWord} and ${targetHash}`
-      );
-
+      // If hashedPassword is equal to the target hashed password, then returns correct password
       if (hashedWord === targetHash) {
         console.log(`password found: ${dictionaryWord}`);
         weakPasswordArray.push(dictionaryWord);
