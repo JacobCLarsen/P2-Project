@@ -21,13 +21,13 @@ onmessage = (e) => {
   }
 };
 
-function dictionaryAttack(targetHashes, dictionaryBatch) {
+async function dictionaryAttack(targetHashes, dictionaryBatch) {
   let weakPasswordArray = [];
   // "For of" loop that goes through each password of the dictionary.
   for (let dictionaryWord of dictionaryBatch) {
     for (let targetHash of targetHashes) {
       // Hashes the current password and assigns it to the const hashedPassword.
-      const hashedWord = hashSHA512(dictionaryWord);
+      const hashedWord = await hashSHA512(dictionaryWord);
       // If hashedPassword is equal to the target hashed password, then returns correct password.
       console.log(
         `checking for a match between ${hashedWord} and ${targetHash}`
