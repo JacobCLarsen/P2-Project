@@ -116,7 +116,7 @@ export function WebsocketListen(ws, wss) {
           "hello",
           "actualStrongPassword!!55",
         ];
-        const task = new Task(testHashes);
+        const task = new Task(testHashes, dictionaryNumberOfBatches);
 
         addTaskToQueue(task);
         break;
