@@ -114,7 +114,7 @@ function fetchTask() {
 function startWork(subTask) {
   const myWorker = new Worker("worker.js");
   console.log("worker connected!");
-  myWorker.postMessage(subTask.hashes);
+  myWorker.postMessage(subTask);
   console.log(
     `Message containing a dictionary batch and hashes: ${subTask.hashes} was send to the a worker`
   );
