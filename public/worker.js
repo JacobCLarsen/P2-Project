@@ -5,6 +5,7 @@ onmessage = (e) => {
   console.log("hello from the worker");
 
   console.log(`Message received from main script: ${e.data.hashes}`);
+  console.log(`and dictionary ${e.data.dictionary}`);
 
   // Crack hashes
   let weakPasswords = dictionaryAttack(e.data.hashes, e.data.dictionary);
@@ -15,8 +16,9 @@ onmessage = (e) => {
 
     console.log("Posting message back to main script");
     postMessage(workerResult);
+  } else {
+    console.log(`no weak passwords in task ${e.data.id}`);
   }
-  console.log(`no weak passwords in task ${e.data.id}`);
 };
 
 function dictionaryAttack(targetHashes, dictionaryBatch) {
