@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 // Filepath to text element
-const filepath = "./results.txt";
+const filepath = path.join(process.cwd(), "./results.txt");
 
 function storeResult(task) {
   // Pull the results from the task
