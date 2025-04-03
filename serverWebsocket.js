@@ -140,6 +140,9 @@ export function WebsocketListen(ws, wss) {
               (task) => task.id !== matchingTask.id
             );
 
+            // Push results to the task object's array for results
+            mainTaskQueue[0].results.push(message.result);
+
             // Update the number of completed subtasks of the main task
             mainTaskQueue[0].subTasksCompleted++;
 
