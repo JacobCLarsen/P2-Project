@@ -88,7 +88,8 @@ export function setupDatabaseRoutes(app) {
       console.log("Decoded token:", decoded); // Debug log
 
       // Use a Promise-based query instead of callback
-      const query = "SELECT username FROM users WHERE id = ?";
+      const query =
+        "SELECT username, tasks, email, bio FROM users WHERE id = ?";
       DBConnection.query(query, [decoded.userId], (err, results) => {
         if (err) {
           console.error("Database query error:", err);

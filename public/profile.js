@@ -55,10 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function loadProfile(user) {
     const storedName = user.username;
-    const storedEmail =
-      localStorage.getItem("profileEmail") || "johnpork@example.com";
-    const storedBio =
-      localStorage.getItem("profileBio") || "This is a sample bio.";
+    const storedEmail = user.email;
+    const storedBio = user.bio;
 
     userName.textContent = storedName;
     userEmail.textContent = storedEmail;
