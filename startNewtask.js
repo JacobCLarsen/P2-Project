@@ -15,15 +15,22 @@ class SubTask {
 
 // Function to create a subtask for each dictionary batch and pair it with the hashlist
 function startNewTask(task, numberBatches) {
-  let subTaskArray = [];
-  let bachesArray = splitDictionary(numberBatches);
+  // Validate input parameters
+  if (!task || !Array.isArray(task.hashes)) {
+    throw new Error("Invalid task object. 'hashes' must be an array.");
+  }
+  if (typeof numberBatches !== "number" || numberBatches <= 0) {
+    throw new Error("Invalid numberBatches. It must be a positive number.");
+  }
 
-  bachesArray.forEach((batch) => {
-    const subTask = new SubTask(batch, task.hashes);
-    subTaskArray.push(subTask);
-  });
+  // Split dictionary into batches
+  const batchesArray = splitDictionary(numberBatches);
+  if (!Array.isArray(batchesArray)) {
+    throw new Error("splitDictionary must return an array.");
+  }
 
-  return subTaskArray;
+  // Create sub-tasks using map for cleaner code
+  return batchesArray.map((batch) => new SubTask(batch, task.hashes));
 }
 
 export { startNewTask };
