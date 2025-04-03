@@ -32,3 +32,7 @@ document
       alert(`Error updating profile: ${error.message}`);
     }
   });
+
+document.getElementById("cancelEditBtn").addEventListener("click", () => {
+  document.getElementById("editProfileForm").classList.add("hidden");
+});
