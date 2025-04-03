@@ -65,7 +65,7 @@ export function WebsocketListen(ws, wss) {
           if (mainTaskQueue.length === 0) {
             // If no more tasks, print a message and let the users know
             console.log("No more tasks in the main queue");
-            s.send(JSON.stringify("no more tasks"));
+            ws.send(JSON.stringify("no more tasks"));
           } else {
             console.log("Task found - starting new task from main queue");
             let task = mainTaskQueue[0];
@@ -193,6 +193,7 @@ export function WebsocketListen(ws, wss) {
           "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
           "9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca72323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043",
           "9b908be092ca0b280236d5335597b4b8502d408d3b09809c2aea7f3922ff355050bf9c498c2e4940cfb1b8cb13cc0671e95de7e38475e296ccb4ad1eb64a61f2",
+          "2e8be0a37186094db6e2c7111385917a49d9dc34ec121d96caaddd49833d971ad1b12400a49b125166e2a1f1a7c06925bbbfb7f1c0e2fa625fd86fe84bd6982d",
         ];
         const task = new Task(testHashes, dictionaryNumberOfBatches);
 
