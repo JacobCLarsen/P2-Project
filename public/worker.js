@@ -2,9 +2,10 @@
 
 // This worker script takes
 onmessage = async (e) => {
-  console.log("hello from the worker");
-
-  console.log(`Message received from main script: ${e.data.hashes}`);
+  console.log(
+    `Message received from main script:`,
+    Array.isArray(e.data.hashes) ? e.data.hashes : [e.data.hashes]
+  );
   console.log(`and dictionary ${e.data.dictionary}`);
 
   // Crack hashes
@@ -33,7 +34,6 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
       const hashedWord = await hashSHA512(dictionaryWord);
       // If hashedPassword is equal to the target hashed password, then returns correct password
       if (hashedWord === targetHash) {
-        console.log(`password found: ${dictionaryWord}`);
         weakPasswordArray.push(dictionaryWord);
       }
     }
