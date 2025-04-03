@@ -1,4 +1,4 @@
-import { dictionaryAttack } from "./dictionary-attack";
+//import { dictionaryAttack } from "./dictionary-attack";
 
 // This worker script takes
 onmessage = (e) => {
@@ -18,3 +18,21 @@ onmessage = (e) => {
   }
   console.log(`no weak passwords in task ${e.data.id}`);
 };
+
+function dictionaryAttack(targetHashes, dictionaryBatch) {
+  let weakPasswordArray = [];
+  // "For of" loop that goes through each password of the dictionary.
+  for (let dictionaryWord of dictionaryBatch) {
+    for (let targetHash of targetHashes) {
+      // Hashes the current password and assigns it to the const hashedPassword.
+      const hashedWord = hashSHA512(dictionaryWord);
+      // If hashedPassword is equal to the target hashed password, then returns correct password.
+      if (hashedWord === targetHash) {
+        console.log(`password found: ${dictionaryWord}`);
+        weakPasswordArray.push(dictionaryWord);
+      }
+    }
+  }
+
+  return weakPasswordArray;
+}
