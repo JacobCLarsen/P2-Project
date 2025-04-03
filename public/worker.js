@@ -2,11 +2,7 @@
 
 // This worker script takes
 onmessage = async (e) => {
-  console.log(
-    `Message received from main script:`,
-    Array.isArray(e.data.hashes) ? e.data.hashes : [e.data.hashes]
-  );
-  console.log(`and dictionary ${e.data.dictionary}`);
+  console.log(`Message received from main script: ${e.data}`);
 
   // Crack hashes
   let weakPasswords = await dictionaryAttack(e.data.hashes, e.data.dictionary);
