@@ -1,14 +1,14 @@
 //import { dictionaryAttack } from "./dictionary-attack";
 
 // This worker script takes
-onmessage = (e) => {
+onmessage = async (e) => {
   console.log("hello from the worker");
 
   console.log(`Message received from main script: ${e.data.hashes}`);
   console.log(`and dictionary ${e.data.dictionary}`);
 
   // Crack hashes
-  let weakPasswords = dictionaryAttack(e.data.hashes, e.data.dictionary);
+  let weakPasswords = await dictionaryAttack(e.data.hashes, e.data.dictionary);
 
   if (weakPasswords.length > 0) {
     const workerResult = weakPasswords;
