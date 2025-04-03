@@ -128,8 +128,8 @@ document
         throw new Error(data.message || `Error ${response.status}`);
       }
 
-      alert("Profile updated successfully!");
       console.log("Updated Profile:", data);
+      location.reload();
     } catch (error) {
       console.error("Error updating profile:", error);
       alert(`Error updating profile: ${error.message}`);
