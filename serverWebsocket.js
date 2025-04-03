@@ -8,6 +8,8 @@ let dashboardClients = [];
 let completedTaskCount = 0;
 let taskQueue = [];
 let taskcounter = 0;
+let taskCounter = 0; // Counter for unique task IDs
+let subtaskCounter = 0; // Counter for unique subtask IDs
 
 export function WebsocketListen(ws, wss) {
   ws.onmessage = async (event) => {
@@ -49,36 +51,34 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "request task":
-        // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
-        // if (taskQueue.length >= 1) {
-        //   let task = taskQueue.shift();
-        //   console.log(
-        //     `sending a task to worker: ${message.id}, with task id: ${task.id}`
-        //   );
-        //   ws.send(JSON.stringify({ action: "new task", data: task }));
-        // } else {
-        //   ws.send(JSON.stringify({ action: "no more tasks" }));
-        //   console.log("No more tasks in the queue ... ");
-        // }
-        // // Also send a message to all clients to update the taskqeueu, as a task now as been taken
-        // updateTaskQueue();
-
         if (taskQueue.length >= 1) {
           let task = taskQueue[0];
           if (task.completed === task.tasks.length) {
-            let completedTask = taskQueue.shift();
+            console.log(`Task ${task.id} completed. Removing from queue.`);
+            taskQueue.shift(); // Remove the completed task
+            updateTaskQueue();
           } else {
             let subtask = task.tasks[task.completed];
             console.log(
-              `sending a task to worker: ${message.id}, task ${
-                task.id
-              }: batch ${task.completed + 1}`
+              `Sending subtask ${subtask.id} of task ${task.id} to worker: ${message.id}`
             );
 
-            ws.send(JSON.stringify({ action: "new task", data: subtask }));
-          }
-        }
+            ws.send(
+              JSON.stringify({
+                action: "new task",
+                data: subtask,
+                taskId: task.id,
+                subtaskId: subtask.id,
+              })
+            );
 
+            task.completed++; // Increment the completed subtasks count
+            updateTaskQueue();
+          }
+        } else {
+          ws.send(JSON.stringify({ action: "no more tasks" }));
+          console.log("No more tasks in the queue ... ");
+        }
         break;
 
       case "start work":
@@ -102,8 +102,29 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "send result":
-        console.log(`Result from worker received: ${message.data}`);
-        // TODO: Add a check to see if the task was completed correctly or not
+        console.log(
+          `Result received for subtask ${message.subtaskId} of task ${message.taskId}: ${message.data}`
+        );
+
+        // Find the task in the queue
+        let taskIndex = taskQueue.findIndex((t) => t.id === message.taskId);
+        if (taskIndex !== -1) {
+          let task = taskQueue[taskIndex];
+          task.results.push({
+            subtaskId: message.subtaskId,
+            result: message.data,
+          });
+
+          // Check if all subtasks are completed
+          if (task.results.length === task.tasks.length) {
+            console.log(
+              `All subtasks of task ${task.id} completed. Removing task.`
+            );
+            taskQueue.splice(taskIndex, 1); // Remove the task from the queue
+            updateTaskQueue();
+          }
+        }
+
         completedTaskCount++;
         updateCompletedTasks();
         break;
@@ -112,21 +133,25 @@ export function WebsocketListen(ws, wss) {
         console.log("Splitting tasks based on active workers...");
         if (activeWorkers.length > 0) {
           const taskBatches = splitTasks(dictionaryPath, activeWorkers.length);
-          taskcounter++;
+          taskCounter++;
           let task = {
-            id: taskcounter,
+            id: taskCounter, // Unique task ID
             completed: 0,
             tasks: [],
+            results: [], // Store results for each subtask
           };
-          taskBatches.forEach((batchContent, index) => {
+          taskBatches.forEach((batchContent) => {
+            subtaskCounter++;
             const batch = {
-              id: `batch-${index + 1}`,
+              id: subtaskCounter, // Unique subtask ID
               data: batchContent,
             };
             task.tasks.push(batch);
           });
           addTaskToQueue(task);
-          console.log("Tasks split and added to the queue.");
+          console.log(
+            `Task ${task.id} with ${task.tasks.length} subtasks added to the queue.`
+          );
         } else {
           console.warn("No active workers available to split tasks.");
         }
@@ -242,7 +267,11 @@ function updateTaskQueue() {
       client.send(
         JSON.stringify({
           action: "updateQueue",
-          queue: taskQueue,
+          queue: taskQueue.map((task) => ({
+            id: task.id,
+            completed: task.completed,
+            total: task.tasks.length,
+          })),
         })
       );
     }

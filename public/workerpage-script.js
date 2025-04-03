@@ -119,6 +119,7 @@ function startWork(task) {
     let taskresult = {
       action: "send result",
       data: e.data,
+      id: task.id,
     };
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
