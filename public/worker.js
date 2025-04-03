@@ -18,6 +18,7 @@ onmessage = async (e) => {
     postMessage(workerResult);
   } else {
     console.log(`no weak passwords in task ${e.data.id}`);
+    postMessage(null);
   }
 };
 

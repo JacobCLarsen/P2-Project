@@ -119,7 +119,15 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "send result":
-        console.log(`Result from worker received: ${message.result}`);
+        // Log result to the user
+        if (!message.result) {
+          console.log(
+            `Result received from the worker: No passwords found in subtask: ${message.tasId}`
+          );
+        } else {
+          console.log(`Result from worker received: ${message.result}`);
+        }
+
         // TODO: Add a check to see if the task was completed correctly or not
 
         // Scan the currentTaskQueue for a matching task ID and mark completed
@@ -141,11 +149,14 @@ export function WebsocketListen(ws, wss) {
             );
 
             // Push results to the task object's array for results
-            mainTaskQueue[0].results.push(message.result);
+            if (message.result) {
+              mainTaskQueue[0].results.push(message.result);
+            }
 
             // Update the number of completed subtasks of the main task
             mainTaskQueue[0].subTasksCompleted++;
 
+            // If the whole task is now completed
             if (
               mainTaskQueue[0].subTasksCompleted ===
               mainTaskQueue[0].numberBatches
@@ -171,6 +182,7 @@ export function WebsocketListen(ws, wss) {
         completedTaskCount++;
         updateTaskQueue();
         updateCompletedTasks();
+
         break;
 
       case "addTask":
