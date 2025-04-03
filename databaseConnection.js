@@ -44,7 +44,7 @@ export function connectToDatabase() {
     });
 
     // Execute the query to create the "results" table
-    DBConnection.query(createResultsTable, (err, result) => {
+    DBConnection.query(createWeakPasswordsTable, (err, result) => {
       if (err) {
         console.error("Error creating results table:", err); // Log error if table creation fails
       } else {
