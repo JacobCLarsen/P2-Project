@@ -69,10 +69,10 @@ app.get("/", (req, res) => {
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3311;
+  const PORT = 3000;
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node1/"
+      "🚀 Server is listening on http://localhost:3000"
     );
   });
 } else if (x === 2) {
