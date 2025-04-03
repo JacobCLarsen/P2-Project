@@ -162,7 +162,7 @@ export function WebsocketListen(ws, wss) {
               // Use this completed task and store it somewhere
               let completed_task = mainTaskQueue.shift();
               console.log(
-                `Subtask was completed with id: ${completed_task.id} and result ${completed_task.results}`
+                `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
               );
 
               // Send the results of the task to the server
@@ -170,7 +170,7 @@ export function WebsocketListen(ws, wss) {
             }
           }
 
-          console.log(`Task with ID ${message.taskId} marked as complete.`);
+          console.log(`Subtask with ID ${message.taskId} marked as complete.`);
         } else {
           console.log(`No matching task found with ID ${message.taskId}.`);
         }
