@@ -67,17 +67,22 @@ export function WebsocketListen(ws, wss) {
           } else {
             console.log("Task found - starting new task from main queue");
             let task = mainTaskQueue.shift();
+            console.log("shifted mainQueue");
             currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
+            console.log("set currentQueue to contain subtasks");
           }
         }
 
         // Remove the task from the top of the queue and send it to the user
         if (currentTaskQueue.length > 0) {
-          let taskToSend = currentTaskQueue.shift(); // Renamed from `messageTask` to avoid conflict
+          console.log("tasks found in current queue");
+          let taskToSend = currentTaskQueue.shift();
+          console.log("defined a task to send");
           let taskMessage = {
             action: "new task",
             task: taskToSend,
           };
+          console.log("defined the message");
 
           // Send the message to the client
           ws.send(JSON.stringify(taskMessage));
