@@ -9,7 +9,7 @@ let dashboardClients = [];
 let completedTaskCount = 0;
 let mainTaskQueue = [];
 let currentTaskQueue = [];
-let taskcounter = 0;
+let taskWaitingForResult = [];
 let dictionaryNumberOfBatches = 5;
 
 export function WebsocketListen(ws, wss) {
@@ -77,6 +77,7 @@ export function WebsocketListen(ws, wss) {
         if (currentTaskQueue.length > 0) {
           console.log("tasks found in current queue");
           let taskToSend = currentTaskQueue.shift();
+          taskWaitingForResult.push(taskToSend);
           console.log("defined a task to send");
           let taskMessage = {
             action: "new task",
@@ -121,7 +122,7 @@ export function WebsocketListen(ws, wss) {
         // TODO: Add a check to see if the task was completed correctly or not
 
         // Scan the currentTaskQueue for a matching task ID and mark completed
-        let matchingTask = currentTaskQueue.find(
+        let matchingTask = taskWaitingForResult.find(
           (task) => task.id === message.taskId
         );
 
@@ -132,6 +133,11 @@ export function WebsocketListen(ws, wss) {
           } else {
             // Call complete() on the matching subtask
             matchingTask.complete();
+
+            // Remove from taskWatingForResult
+            taskWaitingForResult = taskWaitingForResult.filter(
+              (task) => task.id !== matchingTask.id
+            );
 
             // Update the number of completed subtasks of the main task
             mainTaskQueue[0].subTasksCompleted++;
