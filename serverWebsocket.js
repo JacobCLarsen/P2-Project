@@ -54,7 +54,6 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "request task":
-        // TODO: Instead of sending the hashlist again to the same worker, we should check if the last task completed by the worker was using the same hashlist and reuse if we can
         // If there are no more subtasks for the current task, start working on the next task in the main queue
         if (currentTaskQueue.length === 0) {
           if (mainTaskQueue.length === 0) {
@@ -67,17 +66,17 @@ export function WebsocketListen(ws, wss) {
         }
 
         // Remove the task from the top of the queue and send it to the user
-        let messageTask = currentTaskQueue.shift();
-        let message = {
+        let taskToSend = currentTaskQueue.shift(); // Renamed from `messageTask` to avoid conflict
+        let taskMessage = {
           action: "new task",
-          task: messageTask,
+          task: taskToSend,
         };
 
-        // Send the message to the cliet
-        ws.send(JSON.stringify(message));
+        // Send the message to the client
+        ws.send(JSON.stringify(taskMessage));
 
         console.log(
-          `Task send to the user with hashes: ${messageTask.hashes}, and dictionary list ${messageTask.dictionary} and id: ${messageTask.id}`
+          `Task sent to the user with hashes: ${taskToSend.hashes}, dictionary list: ${taskToSend.dictionary}, and id: ${taskToSend.id}`
         );
 
         break;
