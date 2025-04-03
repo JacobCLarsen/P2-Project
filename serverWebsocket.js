@@ -66,7 +66,7 @@ export function WebsocketListen(ws, wss) {
             console.log("No more tasks in the main queue");
           } else {
             console.log("Task found - starting new task from main queue");
-            let task = mainTaskQueue.shift();
+            let task = mainTaskQueue[0];
             console.log("shifted mainQueue");
             currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
             console.log("set currentQueue to contain subtasks");
@@ -80,7 +80,7 @@ export function WebsocketListen(ws, wss) {
           console.log("defined a task to send");
           let taskMessage = {
             action: "new task",
-            task: taskToSend,
+            subTask: taskToSend,
           };
           console.log("defined the message");
 
@@ -117,9 +117,35 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "send result":
-        console.log(`Result from worker received: ${message.data}`);
+        console.log(`Result from worker received: ${message.result}`);
         // TODO: Add a check to see if the task was completed correctly or not
+
+        // Scan the currentTaskQueue for a matching task ID and mark completed
+        let matchingTask = currentTaskQueue.find(
+          (task) => task.id === message.taskId
+        );
+
+        if (matchingTask) {
+          // Check if the task was completed already for chatching erroes
+          if (matchingTask.completed === 1) {
+            console.log(`ERROR: Task ${matchingTask.id} was already completed`);
+          } else {
+            // Call complete() on the matching subtask
+            matchingTask.complete();
+
+            // Update the number of completed subtasks of the main task
+            mainTaskQueue[0].subTasksCompleted++;
+          }
+
+          console.log(`Task with ID ${message.taskId} marked as complete.`);
+        } else {
+          console.log(`No matching task found with ID ${message.taskId}.`);
+        }
+
+        // TODO: Check if all subtasks have been completed
+
         completedTaskCount++;
+        updateTaskQueue();
         updateCompletedTasks();
         break;
 

@@ -62,7 +62,7 @@ function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} Hashes: ${task.size} Batches assigned: ${task.completed}/${task.numberBatches}`;
+    taskItem.innerText = `Task id: ${task.id} Hashes: ${task.size} Batches assigned: ${task.subTasksCompleted}/${task.numberBatches}`;
     taskQueue.append(taskItem);
   });
 }
@@ -74,7 +74,7 @@ mySocket.onmessage = (event) => {
   switch (message.action) {
     case "new task":
       console.log("Received new task:", message.data);
-      startWork(message.data);
+      startWork(message.subTask);
       break;
 
     case "no more tasks":
@@ -111,22 +111,25 @@ function fetchTask() {
 }
 
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
-function startWork(task) {
+function startWork(subTask) {
   const myWorker = new Worker("worker.js");
   console.log("worker connected!");
-  myWorker.postMessage(task.data);
-  console.log(`Message containing ${task.data} was send to the a worker`);
+  myWorker.postMessage(subTask.hashes);
+  console.log(
+    `Message containing a dictionary batch and hashes: ${subTask.hashes} was send to the a worker`
+  );
 
   myWorker.onmessage = (e) => {
     let taskresult = {
       action: "send result",
-      data: e.data,
+      result: e.data,
+      taskId: subTask.id,
     };
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
 
     let item = document.createElement("li");
-    item.innerText = `You completed task ${task.id} with result ${e.data}`;
+    item.innerText = `You completed task ${subTask.id} with result ${e.data}`;
     latestCompletedTask.innerHTML = "";
     latestCompletedTask.append(item);
 
