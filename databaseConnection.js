@@ -133,10 +133,10 @@ export function setupDatabaseRoutes(app) {
       const decoded = await authenticateJWT(token);
       const userId = decoded.userId;
 
-      const { name, email, bio } = req.body;
+      const { username, email, bio } = req.body;
 
       // Validate input
-      if (!name || !email || !bio) {
+      if (!username || !email || !bio) {
         return res
           .status(400)
           .json({ success: false, message: "All fields are required" });
@@ -144,23 +144,27 @@ export function setupDatabaseRoutes(app) {
 
       // Update user data in the database
       const query =
-        "UPDATE users SET name = ?, email = ?, bio = ? WHERE id = ?";
-      DBConnection.query(query, [name, email, bio, userId], (err, result) => {
-        if (err) {
-          console.error("Database update error:", err);
-          return res
-            .status(500)
-            .json({ success: false, message: "Database update failed" });
-        }
+        "UPDATE users SET username = ?, email = ?, bio = ? WHERE id = ?";
+      DBConnection.query(
+        query,
+        [username, email, bio, userId],
+        (err, result) => {
+          if (err) {
+            console.error("Database update error:", err);
+            return res
+              .status(500)
+              .json({ success: false, message: "Database update failed" });
+          }
 
-        if (result.affectedRows === 0) {
-          return res
-            .status(404)
-            .json({ success: false, message: "User not found" });
-        }
+          if (result.affectedRows === 0) {
+            return res
+              .status(404)
+              .json({ success: false, message: "User not found" });
+          }
 
-        res.json({ success: true, message: "Profile updated successfully" });
-      });
+          res.json({ success: true, message: "Profile updated successfully" });
+        }
+      );
     } catch (error) {
       console.error("Profile update error:", error);
       res.status(401).json({ success: false, message: error.message });

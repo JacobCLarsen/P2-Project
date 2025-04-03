@@ -4,7 +4,7 @@ document
     const token = localStorage.getItem("token");
 
     const updatedData = {
-      name: document.getElementById("editName").value.trim(),
+      username: document.getElementById("editName").value.trim(),
       email: document.getElementById("editEmail").value.trim(),
       bio: document.getElementById("editBio").value.trim(),
     };
