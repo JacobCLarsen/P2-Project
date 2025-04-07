@@ -19,7 +19,7 @@ export function uploadFiles(form) {
   fetch(url, fetchOptions);
 }
 
-export function validateFileUpload(fileList) {
+export async function validateFileUpload(fileList) {
   const allowedTypes = ["text/csv"];
 
   // Check each file if they are the right filetype
@@ -35,7 +35,7 @@ export function validateFileUpload(fileList) {
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512)
-  chechHashLengths(fileList);
+  await chechHashLengths(fileList);
 }
 
 export async function calculateHashCount(fileList) {
