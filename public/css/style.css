@@ -112,6 +112,10 @@ body {
   border-radius: 10px;
 }
 
+#sidebarBtns {
+  display: flex;
+}
+
 #taskUploadContainer {
   display: flex;
   flex-direction: column;
