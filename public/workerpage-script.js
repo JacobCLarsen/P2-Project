@@ -57,7 +57,7 @@ window.addEventListener("beforeunload", () => {
 
 // Evenetlistener for the "import task butten", which lets a user upload a file with hashed passwords to crack
 importTaskBtn.addEventListener("click", () => {
-  toggleVisibility(uploadForm, "block");
+  toggleVisibility(uploadContainer, "block");
 });
 
 // Eventlistener for the file upload form
