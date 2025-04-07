@@ -122,6 +122,7 @@ body {
 }
 
 #uploadForm {
+  display: none;
   position: relative;
   z-index: 2;
 }
