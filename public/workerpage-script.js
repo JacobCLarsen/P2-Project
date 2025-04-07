@@ -16,7 +16,7 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 import { socket } from "./requireAuth.js";
 
 // Import helper function
-import { toggleVisibility } from "./handleFileUpload.js";
+import { toggleVisibility, uploadFiles } from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
 
@@ -47,9 +47,17 @@ window.addEventListener("beforeunload", () => {
   }
 });
 
-// Evenetlistene for the "import task butten", which lets a user upload a file with hashed passwords to crack
+// Evenetlistener for the "import task butten", which lets a user upload a file with hashed passwords to crack
 importTaskBtn.addEventListener("click", () => {
   toggleVisibility(uploadForm, "block");
+});
+
+// Eventlistener for the file upload form
+uploadForm.addEventListener("sumbit", (e) => {
+  e.preventDefault();
+
+  // Helper functipn from "./handleFileUpload.js"
+  uploadFiles();
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
