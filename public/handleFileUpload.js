@@ -32,11 +32,10 @@ export async function validateFileUpload(fileList) {
     }
   }
 
-  // Check if the hashes are 512 bits (corresponding to the SHA1-512)
-  checkHashLengths(fileList);
+  // Check if the hashes are 512 bits (corresponding to the SHA1-512), return valid hashes
+  let validHashes = checkHashLengths(fileList);
 
-  // If no error:
-  return true; // Everything is okay
+  return validHashes;
 }
 
 export async function calculateHashCount(fileList) {
@@ -73,6 +72,7 @@ async function checkHashLengths(fileList) {
       console.log(
         `File: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
       );
+      return validHashes;
     }
   }
 }

@@ -57,7 +57,7 @@ window.addEventListener("beforeunload", () => {
 
 // Evenetlistener for the "import task butten", which lets a user upload a file with hashed passwords to crack
 importTaskBtn.addEventListener("click", () => {
-  toggleVisibility(uploadContainer, "block");
+  toggleVisibility(uploadForm, "block");
 });
 
 // Eventlistener for the file upload form
@@ -67,13 +67,14 @@ uploadForm.addEventListener("change", async (e) => {
 
   // Debugging
   console.log("Files selected:", fileList);
-  let validateUpload = 1;
+  let validHashes = validateFileUpload(fileList);
 
-  if (validateFileUpload(fileList)) {
+  if (validHashes) {
     uploadMessage.innerText = "File uploaded";
-
-    let hash_count = await calculateHashCount(fileList);
-    uploadHashCount.innerHTML = `Hashes uploaded: ${hash_count}`;
+    uploadHashCount.innerHTML = `Hashes uploaded: ${validHashes.length}`;
+    validHashes.forEach((hash) => {
+      console.log(hash);
+    });
   } else {
     uploadMessage.innerText = "Please upload a .CSV file";
   }
