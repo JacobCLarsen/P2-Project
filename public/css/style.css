@@ -121,10 +121,13 @@ body {
   flex-direction: column;
 }
 
-#uploadForm {
+#uploadFormContainer {
   display: none;
   position: relative;
   z-index: 2;
+}
+#uploadForm {
+  display: block;
 }
 
 #newTaskBtn {

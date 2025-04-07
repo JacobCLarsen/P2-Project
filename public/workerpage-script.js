@@ -8,6 +8,7 @@ const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 const importTaskBtn = document.getElementById("addUsertaskBtn");
+const uploadContainer = document.getElementById("uploadFormContainer");
 const uploadForm = document.getElementById("uploadForm");
 const uploadMessage = document.getElementById("uploadMessage");
 const uploadHashCount = document.getElementById("uploadHashCount");
@@ -56,7 +57,7 @@ window.addEventListener("beforeunload", () => {
 
 // Evenetlistener for the "import task butten", which lets a user upload a file with hashed passwords to crack
 importTaskBtn.addEventListener("click", () => {
-  toggleVisibility(uploadForm, "block");
+  toggleVisibility(uploadContainer, "block");
 });
 
 // Eventlistener for the file upload form

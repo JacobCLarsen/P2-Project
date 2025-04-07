@@ -36,10 +36,12 @@
         <div id="sidebarBtns">
           <div id="taskUploadContainer">
             <button id="addUsertaskBtn">Upload Task</button>
-            <form id="uploadForm" method="post" enctype="multipart/form-data">
-              <input name="file" type="file" multiple accept=".csv" />
-              <button type="submit">Upload</button>
-            </form>
+            <div id="uploadFormContainer">
+              <form id="uploadForm" method="post" enctype="multipart/form-data">
+                <input name="file" type="file" multiple accept=".csv" />
+                <button type="submit">Upload</button>
+              </form>
+            </div>
             <div id="uploadInfoContainer">
               <p id="uploadMessage"></p>
               <p id="uploadHashCount"></p>
