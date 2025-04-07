@@ -20,7 +20,7 @@ import { socket } from "./requireAuth.js";
 import {
   toggleVisibility,
   uploadFiles,
-  validateFileInput,
+  validateFileUpload,
 } from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
@@ -66,8 +66,10 @@ uploadForm.addEventListener("change", (e) => {
   console.log("Files selected:", fileList);
   let validateUpload = 1;
 
-  if (validateUpload) {
+  if (validateFileUpload) {
     uploadMessage.innerText = "File uploaded";
+  } else {
+    uploadMessage.innerText = "Please upload a .CSV file";
   }
 });
 

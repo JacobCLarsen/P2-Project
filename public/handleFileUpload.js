@@ -19,8 +19,8 @@ export function uploadFiles(form) {
   fetch(url, fetchOptions);
 }
 
-export function validateFileInput(fileList) {
-  const allowedTypes = ["image/webp", "image/jpeg", "image/png"];
+export function validateFileUpload(fileList) {
+  const allowedTypes = [".CSV"];
 
   for (const file of fileList) {
     const { name: fileName } = file;
@@ -29,6 +29,8 @@ export function validateFileInput(fileList) {
       throw new Error(
         `❌ File "${fileName}" could not be uploaded. Only images with the following types are allowed: .CSV`
       );
+    } else {
+      return true; // Everything is okay
     }
   }
 }
