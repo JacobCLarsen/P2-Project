@@ -29,7 +29,10 @@ router
   })
   .post("/startwork", (req, res) => {
     // Handle the POST request logic here
-    res.json({ res: "file uploaded from startwork page", reg: req });
+    res.json({
+      res: "file uploaded from startwork page",
+      reg: { body: req.body, query: req.query },
+    });
   });
 
 // Route for the about page
