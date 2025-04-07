@@ -113,7 +113,18 @@ body {
 }
 
 #newTaskBtn {
-  width: 60px;
+  width: 120px;
+  background-color: transparent;
+  border: #444 solid 2px;
+  border-radius: 8px;
+  padding: 10px 0px 10px 0px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+
+#addUsertask {
+  width: 120px;
   background-color: transparent;
   border: #444 solid 2px;
   border-radius: 8px;
@@ -135,6 +146,11 @@ body {
 }
 
 #newTaskBtn:hover {
+  border: #29ac32 solid 2px;
+  color: #29ac32;
+}
+
+#addUserTask:hover {
   border: #29ac32 solid 2px;
   color: #29ac32;
 }
