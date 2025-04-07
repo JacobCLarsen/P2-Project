@@ -34,3 +34,16 @@ export function validateFileUpload(fileList) {
     }
   }
 }
+
+export function calculateHashCount(fileList) {
+  for (const file of fileList) {
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const content = event.target.result;
+      const lines = content.split("\n");
+      const hash_count = lines.filter((line) => line.trim() !== "").length;
+      console.log(`Number of passwords: ${hash_count}`);
+    };
+    reader.readAsText(file);
+  }
+}

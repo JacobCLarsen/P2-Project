@@ -10,6 +10,7 @@ const plusTabBtn = document.getElementById("plus-tab-btn");
 const importTaskBtn = document.getElementById("addUsertaskBtn");
 const uploadForm = document.getElementById("uploadForm");
 const uploadMessage = document.getElementById("uploadMessage");
+const uploadHashCount = document.getElementById("uploadHashCount");
 const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
@@ -66,8 +67,11 @@ uploadForm.addEventListener("change", (e) => {
   console.log("Files selected:", fileList);
   let validateUpload = 1;
 
-  if (validateFileUpload) {
+  if (validateFileUpload(fileList)) {
     uploadMessage.innerText = "File uploaded";
+
+    let hash_count = calculateHashCount(fileList);
+    uploadHashCount.innerHTML = `Hashes uploaded: ${hash_count}`;
   } else {
     uploadMessage.innerText = "Please upload a .CSV file";
   }
