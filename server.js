@@ -42,7 +42,7 @@ app.use(express.json());
 app.use("/", router);
 
 // Websockets:
-const wss = new WebSocketServer({ port: 4311 });
+const wss = new WebSocketServer({ port: 4312 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
