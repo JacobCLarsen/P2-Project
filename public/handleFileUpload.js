@@ -20,7 +20,7 @@ export function uploadFiles(form) {
 }
 
 export function validateFileUpload(fileList) {
-  const allowedTypes = [".CSV"];
+  const allowedTypes = [".csv"];
 
   for (const file of fileList) {
     const { name: fileName } = file;
