@@ -20,6 +20,7 @@ import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
 } from "./databaseConnection.js";
+import { storeResults } from "./storeResults.js";
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -59,6 +60,7 @@ connectToDatabase(); // Establishes a connection to the MySQL database and ensur
 
 // Set up database-related routes
 setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
+storeResults(app);
 
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
