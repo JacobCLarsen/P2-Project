@@ -57,7 +57,7 @@ uploadForm.addEventListener("sumbit", (e) => {
   e.preventDefault();
 
   // Helper functipn from "./handleFileUpload.js"
-  uploadFiles();
+  uploadFiles(uploadForm);
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue

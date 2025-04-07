@@ -7,7 +7,7 @@ export function toggleVisibility(object, displayStyle) {
   }
 }
 
-export function uploadFiles() {
+export function uploadFiles(form) {
   const url = "https://httpbin.org/post";
   const formData = new FormData(form);
 
