@@ -22,9 +22,8 @@ import {
   toggleVisibility,
   uploadFiles,
   validateFileUpload,
-  hashesArray,
+  calculateHashCount,
 } from "./handleFileUpload.js";
-import { hash } from "crypto";
 
 const mySocket = socket; // use socket object from require auth
 
@@ -67,14 +66,13 @@ uploadForm.addEventListener("change", async (e) => {
 
   // Debugging
   console.log("Files selected:", fileList);
+  let validateUpload = 1;
 
   if (validateFileUpload(fileList)) {
     uploadMessage.innerText = "File uploaded";
 
-    uploadHashCount.innerHTML = `Hashes uploaded: ${hashesArray.length}`;
-    hashesArray.forEach((hash) => {
-      console.log(hash);
-    });
+    let hash_count = await calculateHashCount(fileList);
+    uploadHashCount.innerHTML = `Hashes uploaded: ${hash_count}`;
   } else {
     uploadMessage.innerText = "Please upload a .CSV file";
   }
