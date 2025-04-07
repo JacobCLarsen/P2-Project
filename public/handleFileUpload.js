@@ -56,10 +56,10 @@ async function checkHashLengths(fileList) {
           `hash in ${file}, hash ${hash} has length ${hash.length}`
         );
       }
-      console.log(
-        `File: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
-      );
     });
+    console.log(
+      `File: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
+    );
   }
 
   // If any hashes in the array

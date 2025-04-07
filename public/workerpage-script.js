@@ -68,17 +68,19 @@ uploadForm.addEventListener("change", async (e) => {
   console.log("Files selected:", fileList);
 
   // Check if hashes are valid, and return any valid hashes
-  let validHashes = await validateFileUpload(fileList);
-
-  if (validHashes) {
-    uploadMessage.innerText = "File uploaded";
-    uploadHashCount.innerHTML = `Hashes uploaded: ${validHashes.length}`;
-    validHashes.forEach((hash) => {
-      console.log(hash);
+  let validHashes = await validateFileUpload(fileList)
+    .then((hashes) => {
+      uploadMessage.innerText = "File uploaded";
+      uploadHashCount.innerHTML = `Hashes uploaded: ${hashes.length}`;
+      hashes.forEach((hash) => {
+        console.log(hash);
+      });
+      return hashes;
+    })
+    .catch(() => {
+      uploadMessage.innerText = "Please choose a .CSV file";
+      return null;
     });
-  } else {
-    uploadMessage.innerText = "Please choose a .CSV file";
-  }
 });
 
 // On submit
