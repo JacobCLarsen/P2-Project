@@ -1,4 +1,4 @@
-const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
+const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
 document.documentElement.style.display = "none"; // Hide the page intitially
 
 // Function to redirect to login if authentication fails
