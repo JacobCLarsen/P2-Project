@@ -1,10 +1,17 @@
 import { authenticateJWT } from "./middleware_jwt.js";
+import { Task } from "./createTask.js";
+import { startNewTask } from "./startNewtask.js";
+import { storeResult } from "./storeResults.js";
 
 // Keep track of online users and client roles
 let workerClientns = [];
+let activeWorkers = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
-let taskQueue = [];
+let mainTaskQueue = [];
+let currentTaskQueue = [];
+let taskWaitingForResult = [];
+let dictionaryNumberOfBatches = 5;
 
 export function WebsocketListen(ws, wss) {
   ws.onmessage = async (event) => {
@@ -12,72 +19,201 @@ export function WebsocketListen(ws, wss) {
 
     switch (message.action) {
       case "connect":
-        console.log(`worker connected with id: ${message.id}`);
-        // Add dashboard and worker clients to an array
+        ws.id = message.id;
+        console.log(
+          `Client connected with id: ${message.id} and role: ${message.role}`
+        );
+
+        // Add dashboard and worker clients to their respective arrays
         if (message.role === "dashboard") {
-          dashboardClients.push(ws);
-          // When a dashboard joins, send all the info to it (online users, active workers, tasks completd)
+          if (!dashboardClients.includes(ws)) {
+            dashboardClients.push(ws);
+            console.log(
+              "Dashboard client added. Total dashboards:",
+              dashboardClients.length
+            );
+          }
+          // When a dashboard joins, send all the info to it (online users, active workers, tasks completed)
           loadDashBoard(ws);
+        } else if (message.role === "worker") {
+          if (!workerClientns.includes(ws)) {
+            workerClientns.push(ws);
+            console.log(
+              "Worker client added. Total workers:",
+              workerClientns.length
+            );
+          }
+          ws.send(
+            JSON.stringify({ action: "updateQueue", queue: mainTaskQueue })
+          );
         } else {
-          workerClientns.push(ws);
-          ws.send(JSON.stringify({ action: "updateQueue", queue: taskQueue }));
+          console.log("User tried to connect with unknow role. Kicking....");
+          ws.close();
         }
 
         updateOnlineUsers();
         break;
 
       case "request task":
-        // If there are tasks in the queue, send the oldest one to the client to solve and remove it from the queue
-        if (taskQueue.length >= 1) {
-          let task = taskQueue.shift();
+        console.log(`Client ${ws.id} requested a task`);
+
+        // If there are no more subtasks for the current task, start working on the next task in the main queue
+        if (currentTaskQueue.length === 0) {
           console.log(
-            `sending a task to worker: ${message.id}, with task id: ${task.id}`
+            "no more tasks in current queue, checking main queue ... "
           );
-          ws.send(JSON.stringify({ action: "new task", data: task }));
-        } else {
-          ws.send(JSON.stringify({ action: "no more tasks" }));
-          console.log("No more tasks in the queue ... ");
+          if (mainTaskQueue.length === 0) {
+            // If no more tasks, print a message and let the users know
+            console.log("No more tasks in the main queue");
+            ws.send(JSON.stringify({ action: "no more tasks" }));
+          } else {
+            console.log("Task found - starting new task from main queue");
+            let task = mainTaskQueue[0];
+            currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
+            console.log(
+              `set currentQueue to contain subtasks from task ${task.id}`
+            );
+          }
         }
-        // Also send a message to all clients to update the taskqeueu, as a task now as been taken
-        updateTaskQueue();
+
+        // Remove the task from the top of the queue and send it to the user
+        if (currentTaskQueue.length > 0) {
+          console.log("tasks found in current queue");
+          let taskToSend = currentTaskQueue.shift();
+          taskWaitingForResult.push(taskToSend);
+          let taskMessage = {
+            action: "new task",
+            subTask: taskToSend,
+          };
+
+          // Send the message to the client
+          ws.send(JSON.stringify(taskMessage));
+
+          console.log(`Task ${taskToSend.id} sent to the user`);
+        } else {
+          console.log("No tasks available in the current task queue to send.");
+        }
+
+        break;
+
+      case "start work":
+        console.log(`${message.id} started working`);
+
+        // Add the worker WebSocket to the activeWorkers array
+        if (!activeWorkers.includes(ws)) {
+          activeWorkers.push(ws);
+        }
+
+        console.log("active workers:", activeWorkers.length);
+        updateOnlineUsers();
+        break;
+
+      case "stop work":
+        console.log(`${message.id} stopped working`);
+
+        // Remove the worker WebSocket from the activeWorkers array
+        activeWorkers = activeWorkers.filter((client) => client !== ws);
+        updateOnlineUsers();
         break;
 
       case "send result":
-        console.log(`Result from worker received: ${message.data}`);
+        // Log result to the user
+        if (!message.result) {
+          console.log(
+            `Result received from the worker: No passwords found in subtask: ${message.tasId}`
+          );
+        } else {
+          console.log(`Result from worker received: ${message.result}`);
+        }
+
         // TODO: Add a check to see if the task was completed correctly or not
+
+        // Scan the currentTaskQueue for a matching task ID and mark completed
+        let matchingTask = taskWaitingForResult.find(
+          (task) => task.id === message.taskId
+        );
+
+        if (matchingTask) {
+          // Check if the task was completed already for chatching erroes
+          if (matchingTask.completed === 1) {
+            console.log(`ERROR: Task ${matchingTask.id} was already completed`);
+          } else {
+            // Call complete() on the matching subtask
+            matchingTask.complete();
+
+            // Remove from taskWatingForResult
+            taskWaitingForResult = taskWaitingForResult.filter(
+              (task) => task.id !== matchingTask.id
+            );
+
+            // Push results to the task object's array for results
+            if (message.result) {
+              mainTaskQueue[0].results.push(message.result);
+            }
+
+            // Update the number of completed subtasks of the main task
+            mainTaskQueue[0].subTasksCompleted++;
+
+            // If the whole task is now completed
+            if (
+              mainTaskQueue[0].subTasksCompleted ===
+              mainTaskQueue[0].numberBatches
+            ) {
+              // Use this completed task and store it somewhere
+              let completed_task = mainTaskQueue.shift();
+              console.log(
+                `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
+              );
+
+              // Send the results of the task to the server
+              storeResult(completed_task);
+            }
+          }
+
+          console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+        } else {
+          console.log(`No matching task found with ID ${message.taskId}.`);
+        }
+
+        // TODO: Check if all subtasks have been completed
+
         completedTaskCount++;
+        updateTaskQueue();
         updateCompletedTasks();
+
         break;
 
       case "addTask":
-        console.log("new task is being created");
-        let newTask = createTask();
-        addTaskToQueue(newTask);
+        let testHashes = [
+          "adfb6dd1ab1238afc37acd8ca24c1279f8d46f61907dd842faab35b0cc41c6e8ad84cbdbef4964b8334c22c4985c2387d53bc47e6c3d0940ac962f521a127d9f",
+          "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
+          "ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
+          "9b71d224bd62f3785d96d46ad3ea3d73319bfbc2890caadae2dff72519673ca72323c3d99ba5c11d7c7acc6e14b8c5da0c4663475c2e5c3adef46f73bcdec043",
+          "9b908be092ca0b280236d5335597b4b8502d408d3b09809c2aea7f3922ff355050bf9c498c2e4940cfb1b8cb13cc0671e95de7e38475e296ccb4ad1eb64a61f2",
+          "2e8be0a37186094db6e2c7111385917a49d9dc34ec121d96caaddd49833d971ad1b12400a49b125166e2a1f1a7c06925bbbfb7f1c0e2fa625fd86fe84bd6982d",
+        ];
+        const task = new Task(testHashes, dictionaryNumberOfBatches);
+
+        addTaskToQueue(task);
         break;
 
       case "clearQueue":
-        taskQueue = [];
+        mainTaskQueue = [];
         updateTaskQueue();
         break;
 
       case "disconnect":
         console.log(`worker disconnected with id: ${message.id}`);
+
+        // Remove the worker WebSocket from both workerClientns and activeWorkers
         workerClientns = workerClientns.filter((client) => client !== ws);
+        activeWorkers = activeWorkers.filter((client) => client !== ws);
 
         // Remove the client from the dashboardClients list if it disconnects
         dashboardClients = dashboardClients.filter((client) => client !== ws);
 
         // Notify only dashboard clients about the updated number of online users
-        dashboardClients.forEach((client) => {
-          if (client.readyState === client.OPEN) {
-            client.send(
-              JSON.stringify({
-                action: "updateOnlineUsers",
-                users: workerClientns.length,
-              })
-            );
-          }
-        });
+        updateOnlineUsers();
         break;
 
       case "authenticate":
@@ -111,6 +247,11 @@ function createTask() {
 
 // Function to update the number of online users and send it to the dashboard clients
 function updateOnlineUsers() {
+  console.log("Updating online users..."); // Log when the function is called
+  console.log("Worker Clients:", workerClientns.length);
+  console.log("Active Workers:", activeWorkers.length);
+  console.log("Dashboards:", dashboardClients.length);
+
   // Notify only dashboard clients about the updated number of online users
   dashboardClients.forEach((client) => {
     if (client.readyState === client.OPEN) {
@@ -118,6 +259,7 @@ function updateOnlineUsers() {
         JSON.stringify({
           action: "updateOnlineUsers",
           users: workerClientns.length,
+          workers: activeWorkers.length,
         })
       );
     }
@@ -143,6 +285,7 @@ function loadDashBoard(ws) {
     JSON.stringify({
       action: "loadDashboard",
       onlineClients: workerClientns.length,
+      workers: activeWorkers.length,
       completedTasks: completedTaskCount,
     })
   );
@@ -151,7 +294,7 @@ function loadDashBoard(ws) {
 // For demo, create 5 tasks and add them to the task queue, when a button is clicked
 function addTaskToQueue(task) {
   // TODO: have a task queue on the database
-  taskQueue.push(task);
+  mainTaskQueue.push(task);
 
   // Send a message to clients to update their task queue
   updateTaskQueue();
@@ -164,7 +307,7 @@ function updateTaskQueue() {
       client.send(
         JSON.stringify({
           action: "updateQueue",
-          queue: taskQueue,
+          queue: mainTaskQueue,
         })
       );
     }

@@ -14,7 +14,6 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 import { socket } from "./requireAuth.js";
 
 const mySocket = socket; // use socket object from require auth
-//const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
@@ -22,6 +21,7 @@ const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 mySocket.addEventListener("open", (event) => {
   let message = {
     action: "connect",
+    role: "worker",
     data: null,
     id: clientId, // Use the generated client ID
   };
@@ -61,7 +61,7 @@ function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} - Task Hash: ${task.hash}`;
+    taskItem.innerText = `Task id: ${task.id} Hashes: ${task.size} Batches assigned: ${task.subTasksCompleted}/${task.numberBatches}`;
     taskQueue.append(taskItem);
   });
 }
@@ -72,8 +72,8 @@ mySocket.onmessage = (event) => {
 
   switch (message.action) {
     case "new task":
-      console.log("Received new task:", message.data);
-      startWork(message.data);
+      console.log("Received new task:", message.subTask.id);
+      startWork(message.subTask);
       break;
 
     case "no more tasks":
@@ -103,27 +103,34 @@ function fetchTask() {
     id: clientId,
   };
 
+  console.log("Asking for a new task");
+
   // When the server receives the message, it will send a task back to the client which will be received in the onmessage eventlistener above
   mySocket.send(JSON.stringify(message));
 }
 
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
-function startWork(task) {
+function startWork(subTask) {
   const myWorker = new Worker("worker.js");
   console.log("worker connected!");
-  myWorker.postMessage(task.hash);
-  console.log(`Message containing ${task.hash} was send to the a worker`);
+  myWorker.postMessage(subTask);
+  console.log(
+    "Message containing a dictionary batch and hashes send to the worker"
+  );
 
   myWorker.onmessage = (e) => {
     let taskresult = {
       action: "send result",
-      data: e.data,
+      result: e.data,
+      taskId: subTask.id,
     };
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
 
     let item = document.createElement("li");
-    item.innerText = `You completed task ${task.id} with result ${e.data}`;
+    item.innerText = `You completed task ${subTask.id} with result ${
+      e.data ? e.data : "no weak passwords"
+    }`;
     latestCompletedTask.innerHTML = "";
     latestCompletedTask.append(item);
 
@@ -207,8 +214,30 @@ function beforeReloadHandeler(event) {
 startBtn.addEventListener("click", function () {
   if (startBtnText.innerText == "Click to Start Working") {
     fetchTask();
+    setStateActive();
     startWorkUI();
   } else {
     stopWork();
+    setStateInactive();
   }
 });
+
+// Set the working state to active
+function setStateActive() {
+  let message = {
+    action: "start work",
+    data: null,
+    id: clientId,
+  };
+  mySocket.send(JSON.stringify(message));
+}
+
+// Set the working state to inactive
+function setStateInactive() {
+  let message = {
+    action: "stop work",
+    data: null,
+    id: clientId,
+  };
+  mySocket.send(JSON.stringify(message));
+}

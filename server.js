@@ -8,7 +8,6 @@ import { fileURLToPath } from "url";
 // Third-party modules
 import express from "express";
 import { createServer } from "http";
-import { Server } from "socket.io";
 
 // Custom modules
 import router from "./router.js";

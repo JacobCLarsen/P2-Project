@@ -20,13 +20,13 @@ const completedTasksField = document.getElementById("completed-tasks");
 // Receive message from the server to update online workes, active workers, and completed tasks in total since server restart
 mySocket.onmessage = (event) => {
   let message = JSON.parse(event.data);
+  console.log("Received message:", message); // Log the entire message for debugging
 
   switch (message.action) {
     case "updateOnlineUsers":
       onlineWorkersField.innerText = `Online workers: ${message.users}`;
-      break;
-
-    case "updateActiveWorkers":
+      activeWorkersField.innerText = `Active workers: ${message.workers}`;
+      console.log("Active Workers Count:", message.workers); // Log the count for debugging
       break;
 
     case "updateCompletedTasks":
@@ -35,10 +35,12 @@ mySocket.onmessage = (event) => {
 
     case "loadDashboard":
       onlineWorkersField.innerText = `Online workers: ${message.onlineClients}`;
+      activeWorkersField.innerText = `Active workers: ${message.workers}`;
       completedTasksField.innerText = `Completed tasks since restart: ${message.completedTasks}`;
+      console.log("Active Workers Count (Dashboard):", message.workers); // Log for debugging
       break;
 
     default:
-      console.warn("Unknown message type:", type);
+      console.warn("Unknown message type:", message.action);
   }
 };
