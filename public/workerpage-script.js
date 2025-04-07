@@ -14,7 +14,7 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 import { socket } from "./requireAuth.js";
 
 const mySocket = socket; // use socket object from require auth
-//const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
+//const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws7/");
 
 const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
