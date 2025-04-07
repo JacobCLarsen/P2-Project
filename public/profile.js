@@ -59,8 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
     userBio.textContent = user.bio;
     userTasks.textContent = user.tasks;
 
-    editName.textContent = user.username;
-    editEmail.textContent = user.email;
+    editName.value = user.username;
+    editEmail.value = user.email;
     editBio.textContent = user.bio;
 
     const storedProfilePic = localStorage.getItem("profilePic");
