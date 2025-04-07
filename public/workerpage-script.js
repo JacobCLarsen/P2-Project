@@ -7,6 +7,7 @@ const taskQueue = document.getElementById("taskqueue");
 const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const plusTabBtn = document.getElementById("plus-tab-btn");
+const importTaskBtn = document.getElementById("addUsertask");
 const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
@@ -42,6 +43,11 @@ window.addEventListener("beforeunload", () => {
   }
 });
 
+// Evenetlistene for the "import task butten", which lets a user upload a file with hashed passwords to crack
+importTaskBtn.addEventListener("click", () => [
+  handleFileUpload()
+])
+
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
 newTaskBtn.addEventListener("click", () => {
   console.log("asked for new task to be created");
@@ -49,7 +55,7 @@ newTaskBtn.addEventListener("click", () => {
   mySocket.send(JSON.stringify({ action: "addTask" }));
 });
 
-// Functio to clear the queue
+// Function to clear the queue
 clearQueueBtn.addEventListener("click", () => {
   console.log("Clearing the task queue");
 
