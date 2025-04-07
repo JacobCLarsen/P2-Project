@@ -33,7 +33,9 @@ export async function validateFileUpload(fileList) {
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512), return valid hashes
-  let validHashes = checkHashLengths(fileList);
+  let validHashes = checkHashLengths(fileList).catch(() => {
+    throw new Error("invalid input");
+  });
 
   return validHashes;
 }
