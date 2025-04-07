@@ -77,8 +77,8 @@ uploadForm.addEventListener("change", async (e) => {
       });
       return hashes;
     })
-    .catch(() => {
-      uploadMessage.innerText = "Please choose a .CSV file";
+    .catch((err) => {
+      uploadMessage.innerText = `failed with error: ${err}`;
       return null;
     });
 });
