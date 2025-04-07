@@ -20,14 +20,14 @@ export function uploadFiles(form) {
 }
 
 export function validateFileUpload(fileList) {
-  const allowedTypes = [".csv"];
+  const allowedTypes = ["text/csv"];
 
   for (const file of fileList) {
     const { name: fileName } = file;
 
     if (!allowedTypes.includes(file.type)) {
       throw new Error(
-        `❌ File "${fileName}" could not be uploaded. Only images with the following types are allowed: .CSV`
+        `❌ File "${fileName}" could not be uploaded. Only images with the following types are allowed: .csv`
       );
     } else {
       return true; // Everything is okay
