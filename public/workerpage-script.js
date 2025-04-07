@@ -66,6 +66,8 @@ uploadForm.addEventListener("change", async (e) => {
 
   // Debugging
   console.log("Files selected:", fileList);
+
+  // Check if hashes are valid, and return any valid hashes
   let validHashes = await validateFileUpload(fileList);
 
   if (validHashes) {
@@ -75,7 +77,7 @@ uploadForm.addEventListener("change", async (e) => {
       console.log(hash);
     });
   } else {
-    uploadMessage.innerText = "Please upload a .CSV file";
+    uploadMessage.innerText = "Please choose a .CSV file";
   }
 });
 

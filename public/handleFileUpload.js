@@ -61,5 +61,12 @@ async function checkHashLengths(fileList) {
       );
     });
   }
-  return validHashes;
+
+  // If any hashes in the array
+  if (validHashes.length > 0) {
+    return validHashes;
+  } else {
+    // Else return false to show an error
+    return false;
+  }
 }
