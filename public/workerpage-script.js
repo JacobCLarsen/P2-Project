@@ -61,7 +61,35 @@ importTaskBtn.addEventListener("click", () => {
 
 // Eventlistener for the file upload form
 // On change
-uploadForm.addEventListener("change", async (e) => {
+// uploadForm.addEventListener("change", async (e) => {
+//   const fileList = e.target.files;
+
+//   // Debugging
+//   console.log("Files selected:", fileList);
+
+//   // Check if hashes are valid, and return any valid hashes
+//   let validHashes = await validateFileUpload(fileList)
+//     .then((hashes) => {
+//       uploadMessage.innerText = "File uploaded";
+//       uploadHashCount.innerHTML = `Hashes uploaded: ${hashes.length}`;
+//       hashes.forEach((hash) => {
+//         console.log(hash);
+//       });
+//       return hashes;
+//     })
+//     .catch((err) => {
+//       uploadMessage.innerText = `failed with error: ${err}`;
+//       return null;
+//     });
+// });
+
+// On submit
+uploadForm.addEventListener("sumbit", async (e) => {
+  e.preventDefault();
+
+  // Helper functipn from "./handleFileUpload.js"
+  //uploadFiles(uploadForm);
+
   const fileList = e.target.files;
 
   // Debugging
@@ -81,14 +109,6 @@ uploadForm.addEventListener("change", async (e) => {
       uploadMessage.innerText = `failed with error: ${err}`;
       return null;
     });
-});
-
-// On submit
-uploadForm.addEventListener("sumbit", (e) => {
-  e.preventDefault();
-
-  // Helper functipn from "./handleFileUpload.js"
-  uploadFiles(uploadForm);
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
