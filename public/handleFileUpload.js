@@ -35,17 +35,15 @@ export function validateFileUpload(fileList) {
   }
 }
 
-export function calculateHashCount(fileList) {
-  let hash_count;
-  for (const file of fileList) {
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const content = event.target.result;
-      const lines = content.split("\n");
-      hash_count = lines.filter((line) => line.trim() !== "").length;
-      console.log(`Number of passwords: ${hash_count}`);
-    };
-    reader.readAsText(file);
-  }
-  return hash_count;
+export async function calculateHashCount(fileList) {
+    let totalHashCount = 0;
+
+    for (const file of fileList) {
+        const content = await file.text();
+        const lines = content.split("\n");
+        totalHashCount += lines.filter((line) => line.trim() !== "").length;
+    }
+
+    console.log(`Number of hashes in file(s): ${totalHashCount}`);
+    return totalHashCount;
 }
