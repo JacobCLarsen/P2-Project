@@ -8,7 +8,7 @@ import express from "express";
  * URL: /store_results
  * Request Body: { weak_passwords: weakPasswords, task_id: taskID }
  */
-export function storeResults() {
+export function storeResult() {
   app.post("/store_results", async (req, res) => {
     const { weakPasswords, taskId } = req.body; // Extract weakPasswords and taskId from the request body
 
