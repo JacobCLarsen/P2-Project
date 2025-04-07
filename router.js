@@ -26,6 +26,10 @@ router.get("/login", (req, res) => {
 router.get("/startwork", (req, res) => {
   res.sendFile(path.join(basePath, "workerpage.html"));
 });
+router.post("/startwork", (req, res) => {
+  // Handle the POST request logic here
+  res.json({ success: true, message: "POST request to /startwork handled" });
+});
 
 // Route for the about page
 router.get("/about", (req, res) => {
