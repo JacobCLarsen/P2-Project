@@ -67,7 +67,7 @@ uploadForm.addEventListener("change", async (e) => {
 
   // Debugging
   console.log("Files selected:", fileList);
-  let validHashes = validateFileUpload(fileList);
+  let validHashes = await validateFileUpload(fileList);
 
   if (validHashes) {
     uploadMessage.innerText = "File uploaded";
