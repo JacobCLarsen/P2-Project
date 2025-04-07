@@ -49,7 +49,7 @@ window.addEventListener("beforeunload", () => {
 
 // Evenetlistene for the "import task butten", which lets a user upload a file with hashed passwords to crack
 importTaskBtn.addEventListener("click", () => {
-  toggleVisibility(uploadForm, block);
+  toggleVisibility(uploadForm, "block");
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
