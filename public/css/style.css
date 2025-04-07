@@ -112,6 +112,16 @@ body {
   border-radius: 10px;
 }
 
+#taskUploadContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#uploadForm {
+  position: relative;
+  z-index: 2;
+}
+
 #newTaskBtn {
   width: 120px;
   background-color: transparent;

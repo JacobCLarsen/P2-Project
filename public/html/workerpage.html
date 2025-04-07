@@ -34,7 +34,15 @@
       <!-- Sidebar for completed tasks -->
       <aside class="sidebar">
         <div id="sidebarBtns">
-          <button id="addUsertaskBtn">Import Task</button>
+          <div id="taskUploadContainer">
+            <button id="addUsertaskBtn">Upload Task</button>
+            <div id="uploadForm">
+              <form action="submit">
+                <input type="file" />
+                <p>Hello</p>
+              </form>
+            </div>
+          </div>
           <button id="newTaskBtn">Add demo task</button>
           <button id="clearQueueBtn">Clear</button>
         </div>
