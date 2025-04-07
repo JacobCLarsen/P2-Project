@@ -9,6 +9,7 @@ const statusMessage = document.getElementById("workstatus");
 const plusTabBtn = document.getElementById("plus-tab-btn");
 const importTaskBtn = document.getElementById("addUsertaskBtn");
 const uploadForm = document.getElementById("uploadForm");
+const uploadMessage = document.getElementById("uploadMessage");
 const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
@@ -60,7 +61,14 @@ importTaskBtn.addEventListener("click", () => {
 // On change
 uploadForm.addEventListener("change", (e) => {
   const fileList = e.target.files;
+
+  // Debugging
   console.log("Files selected:", fileList);
+  let validateUpload = 1;
+
+  if (validateUpload) {
+    uploadMessage.innerText = "File uploaded";
+  }
 });
 
 // On submit
