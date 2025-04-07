@@ -38,41 +38,28 @@ export async function validateFileUpload(fileList) {
   return validHashes;
 }
 
-export async function calculateHashCount(fileList) {
-  let totalHashCount = 0;
-
-  for (const file of fileList) {
-    const content = await file.text();
-    const lines = content.split("\n");
-    totalHashCount += lines.filter((line) => line.trim() !== "").length;
-  }
-
-  console.log(`Number of hashes in file(s): ${totalHashCount}`);
-  return totalHashCount;
-}
-
 // ----------- Helper functions------------
 
 // Chech length of hashes
 async function checkHashLengths(fileList) {
+  let validHashes = [];
   for (const file of fileList) {
     const content = await file.text();
     const lines = content.split("\n");
-    const validHashes = lines.filter((line) => {
+    const validLines = lines.filter((line) => {
       const parts = line.split(",");
       const hash = parts[1]?.trim(); // Extract the hash
-      return hash && hash.length === 128; // Check if hash is 512 bit/ 128 characters
+      if (hash.length === 128) {
+        validHashes.push(hash);
+      } else {
+        throw new Error(
+          `hash in ${file}, hash ${hash} has length ${hash.length}`
+        );
+      }
     });
-
-    if (lines.length > validHashes.length) {
-      throw new Error(
-        `Not all lines had a valid 512-bit hash. Please check the content of file: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
-      );
-    } else {
-      console.log(
-        `File: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
-      );
-      return validHashes;
-    }
   }
+  console.log(
+    `File: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
+  );
+  return validHashes;
 }
