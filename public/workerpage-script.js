@@ -61,7 +61,7 @@ importTaskBtn.addEventListener("click", () => {
 
 // Eventlistener for the file upload form
 // On change
-uploadForm.addEventListener("change", (e) => {
+uploadForm.addEventListener("change", async (e) => {
   const fileList = e.target.files;
 
   // Debugging
@@ -71,7 +71,7 @@ uploadForm.addEventListener("change", (e) => {
   if (validateFileUpload(fileList)) {
     uploadMessage.innerText = "File uploaded";
 
-    let hash_count = calculateHashCount(fileList);
+    let hash_count = await calculateHashCount(fileList);
     uploadHashCount.innerHTML = `Hashes uploaded: ${hash_count}`;
   } else {
     uploadMessage.innerText = "Please upload a .CSV file";
