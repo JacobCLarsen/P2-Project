@@ -23,13 +23,14 @@ router.get("/login", (req, res) => {
 });
 
 // Route for the worker page
-router.get("/startwork", (req, res) => {
-  res.sendFile(path.join(basePath, "workerpage.html"));
-});
-router.post("/startwork", (req, res) => {
-  // Handle the POST request logic here
-  res.sendFile(path.join(basePath, "workerpage.html/post"));
-});
+router
+  .get("/startwork", (req, res) => {
+    res.sendFile(path.join(basePath, "workerpage.html"));
+  })
+  .post("/startwork", (req, res) => {
+    // Handle the POST request logic here
+    res.json({ res: "file uploaded from startwork page", reg: req });
+  });
 
 // Route for the about page
 router.get("/about", (req, res) => {
