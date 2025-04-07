@@ -65,6 +65,10 @@ async function chechHashLengths(fileList) {
       throw new Error(
         `Not all lines had a valied 512 bit hash, please check content of file: ${file} lines: ${lines.length}, valied 512 bit hashes: ${validHashes.length}`
       );
+    } else {
+      console.log(
+        `File: ${file} lines: ${lines.length}, valied 512 bit hashes: ${validHashes.length}`
+      );
     }
   }
 }
