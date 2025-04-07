@@ -23,7 +23,6 @@ import {
   toggleVisibility,
   uploadFiles,
   validateFileUpload,
-  calculateHashCount,
 } from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
