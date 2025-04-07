@@ -16,7 +16,11 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 import { socket } from "./requireAuth.js";
 
 // Import helper function
-import { toggleVisibility, uploadFiles } from "./handleFileUpload.js";
+import {
+  toggleVisibility,
+  uploadFiles,
+  validateFileInput,
+} from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
 
@@ -53,6 +57,13 @@ importTaskBtn.addEventListener("click", () => {
 });
 
 // Eventlistener for the file upload form
+// On change
+uploadForm.addEventListener("change", (e) => {
+  const fileList = e.target.files;
+  console.log("Files selected:", fileList);
+});
+
+// On submit
 uploadForm.addEventListener("sumbit", (e) => {
   e.preventDefault();
 

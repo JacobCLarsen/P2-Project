@@ -28,10 +28,8 @@ router
     res.sendFile(path.join(basePath, "workerpage.html"));
   })
   .post("/startwork", (req, res) => {
-    // Handle the POST request logic here
     res.json({
       res: "file uploaded from startwork page",
-      reg: { body: req.body, query: req.query },
     });
   });
 

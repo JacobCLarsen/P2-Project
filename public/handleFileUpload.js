@@ -18,3 +18,17 @@ export function uploadFiles(form) {
 
   fetch(url, fetchOptions);
 }
+
+export function validateFileInput(fileList) {
+  const allowedTypes = ["image/webp", "image/jpeg", "image/png"];
+
+  for (const file of fileList) {
+    const { name: fileName } = file;
+
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error(
+        `❌ File "${fileName}" could not be uploaded. Only images with the following types are allowed: .CSV`
+      );
+    }
+  }
+}
