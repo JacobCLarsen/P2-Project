@@ -33,7 +33,7 @@ export async function validateFileUpload(fileList) {
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512)
-  await checkHashLengths(fileList);
+  checkHashLengths(fileList);
 
   // If no error:
   return true; // Everything is okay
