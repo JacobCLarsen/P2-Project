@@ -29,13 +29,14 @@ export async function validateFileUpload(fileList) {
       throw new Error(
         `❌ File "${fileName}" could not be uploaded. Only images with the following types are allowed: .csv`
       );
-    } else {
-      return true; // Everything is okay
     }
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512)
   await checkHashLengths(fileList);
+
+  // If no error:
+  return true; // Everything is okay
 }
 
 export async function calculateHashCount(fileList) {
