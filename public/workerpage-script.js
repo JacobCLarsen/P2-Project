@@ -84,7 +84,7 @@ uploadForm.addEventListener("change", async (e) => {
 });
 
 // On submit
-uploadForm.addEventListener("sumbit", (e) => {
+uploadForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   // Helper functipn from "./handleFileUpload.js"
