@@ -63,6 +63,7 @@ router.get("/converter", (req, res) => {
 
 router.post("/startwork", (req, res) => {
   console.log("Request file:", req.body.file);
+  console.log("request", req);
 
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
