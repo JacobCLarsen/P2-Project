@@ -51,7 +51,19 @@ function uploadFiles(hashes) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ hashes: hashes }),
-  });
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to upload hashes");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Server response:", data);
+    })
+    .catch((error) => {
+      console.error("Error uploading hashes:", error);
+    });
 }
 
 // Chech length of hashes
