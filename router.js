@@ -83,6 +83,7 @@ router.post("/startwork", upload.single("file"), (req, res) => {
   // TODO: Connect to the websockets server, create a new task and send it to the websocket server client to add it to the queue
 
   //res.json({ success: true, received: hashes.length, hashes });
+  res.end();
 });
 
 export default router;
