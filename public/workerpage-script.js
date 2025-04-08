@@ -87,6 +87,8 @@ uploadForm.addEventListener("change", async (e) => {
 uploadForm.addEventListener("submit", (e) => {
   // Get the filelist
   const fileList = e.target.files;
+  console.log(fileList);
+
   e.preventDefault(); // Prevent default
 
   // Helper functipn from "./handleFileUpload.js"
