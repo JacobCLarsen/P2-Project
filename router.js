@@ -64,18 +64,11 @@ router.get("/converter", (req, res) => {
 router.post("/startwork", (req, res) => {
   console.log("Request file:", req.body.hashes);
 
-  if (!req.file) {
+  const hashes = req.body.hashes;
+
+  if (!hashes) {
     return res.status(400).json({ error: "No file uploaded" });
   }
-
-  // Read the file content and process it into an array of hashes
-  const fileContent = fs.readFileSync(req.file.path, "utf-8");
-  const hashes = fileContent
-    .split("\n")
-    .map((line) => line.trim())
-    .filter((hash) => hash.length === 128); // Ensure only valid 512-bit hashes are included
-
-  console.log("Extracted hashes:", hashes);
 
   if (hashes.length === 0) {
     return res.status(400).json({ error: "No valid hashes found in the file" });
@@ -83,8 +76,8 @@ router.post("/startwork", (req, res) => {
 
   // TODO: Connect to the websockets server, create a new task and send it to the websocket server client to add it to the queue
 
-  //res.json({ success: true, received: hashes.length, hashes });
-  res.end();
+  res.json({ success: true, received: hashes.length, hashes });
+  //res.end();
 });
 
 export default router;
