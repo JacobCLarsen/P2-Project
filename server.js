@@ -35,7 +35,8 @@ const server = createServer(app);
 app.use(express.static(path.join(__dirname, "public")));
 
 // Middleware to parse JSON payloads in incoming requests
-app.use(express.json());
+app.use(express.json({ limit: "10mb" })); // Allows 10MB payloads
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 // Use the router for handling routes
 app.use("/", router);
