@@ -55,21 +55,20 @@ function uploadFiles(hashes) {
 
 // Chech length of hashes
 async function checkHashLengths(fileList) {
+  let validHashes = [];
   for (const file of fileList) {
     const content = await file.text();
     const hashes = content.split("\n");
-    console.log(
-      `File: ${file.name} contains ${hashes.length} unvarified hashes`
-    );
+    validHashes.push(...hashes.filter((hash) => hash.trim().length === 128));
+    console.log(`File: ${file.name} contains ${validHashes.length} hashes`);
   }
 
   // Filter for hashes using the specificied length of 128 characters
-  const validHashes = lines.filter((line) => line.trim().length === 128);
   console.log("Total 512 bit hashes found:", validHashes.length);
 
   // If any 512 bit hashes in the array
-  if (hashes.length > 0) {
-    return hashes;
+  if (validHashes.length > 0) {
+    return validHashes;
   } else {
     // Else return false to show an error
     throw new Error("No valid 512 bit hashes found");
