@@ -1,4 +1,5 @@
 // TODO: Add a way to track wich user uploaded a task, to store the results in a database with their id. The user can then reference their results at a later time
+// TODO: Discard dublicates from the hashes
 
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
@@ -83,7 +84,7 @@ async function checkHashLengthUsername(fileList) {
     const lines = content.split("\n");
     const validLines = lines.filter((line) => {
       const parts = line.split(",");
-      const hash = parts[1]?.trim(); // Extract the hash
+      const hash = parts[1]?.trim(); // Extract the hash from the line
       if (hash.length === 128) {
         validHashes.push(hash);
       } else {

@@ -70,8 +70,8 @@ uploadForm.addEventListener("change", async (e) => {
   // Check if hashes are valid, and return any valid hashes
   let validHashes = await validateFileUpload(fileList)
     .then((hashes) => {
-      uploadMessage.innerText = "File uploaded";
-      uploadHashCount.innerHTML = `Hashes uploaded: ${hashes.length}`;
+      uploadMessage.innerText = "File selected";
+      uploadHashCount.innerHTML = `Hashes in file: ${hashes.length}`;
       hashes.forEach((hash) => {
         console.log(hash);
       });
