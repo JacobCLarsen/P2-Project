@@ -57,7 +57,7 @@ function uploadFiles(hashes) {
 async function checkHashLengths(fileList) {
   for (const file of fileList) {
     const content = await file.text();
-    const hashes = content.split(",");
+    const hashes = content.split("\n");
     console.log(
       `File: ${file.name} contains ${hashes.length} unvarified hashes`
     );
