@@ -55,7 +55,7 @@ router.get("/converter", (req, res) => {
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
-router.post("/upload-hashes", (req, res) => {
+router.post("/startwork", (req, res) => {
   const hashes = req.body.hashes;
 
   if (!Array.isArray(hashes)) {
