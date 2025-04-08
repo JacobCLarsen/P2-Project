@@ -54,7 +54,7 @@ async function uploadFiles(hashes) {
     throw new Error("Hashes must be an array");
   }
 
-  await fetch("startwork", {
+  await fetch("/startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ hashes: hashes }),
