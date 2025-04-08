@@ -79,7 +79,7 @@ router.post("/startwork", (req, res) => {
   res.json({ success: true, received: hashes.length, hashes });
 
   // Create a task with the reveiced hashes
-  newTask = createTask(hashes);
+  const newTask = createTask(hashes);
 
   // add task to the queue
   startNewTask(newTask);
