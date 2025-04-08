@@ -15,7 +15,8 @@ export async function submitFileUpload(fileList) {
   await validateFileUpload(fileList)
     .then((hashes) => {
       // Upload the hashes to the database
-      uploadFiles(hashes);
+      console.log("uploading hashes", hashes);
+      //uploadFiles(hashes);
     })
     .catch(() => {
       throw new Error("Invalid file upload");
