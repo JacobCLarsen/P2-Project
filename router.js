@@ -1,6 +1,7 @@
 import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 import { authenticateJWT } from "./middleware_jwt.js";
 import multer from "multer"; // Import multer for file uploads
 
@@ -67,7 +68,6 @@ router.post("/startwork", upload.single("file"), (req, res) => {
   }
 
   // Read the file content and process it into an array of hashes
-  const fs = require("fs");
   const fileContent = fs.readFileSync(req.file.path, "utf-8");
   const hashes = fileContent
     .split("\n")
