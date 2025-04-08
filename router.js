@@ -62,8 +62,7 @@ router.get("/converter", (req, res) => {
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
 
 router.post("/startwork", (req, res) => {
-  console.log("Request file:", req.body.file);
-  console.log("request", req);
+  console.log("Request file:", req.body.hashes);
 
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
