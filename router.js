@@ -3,7 +3,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { authenticateJWT } from "./middleware_jwt.js";
-import multer from "multer"; // Import multer for file uploads
 
 const router = Router();
 
@@ -13,9 +12,6 @@ const __dirname = path.dirname(__filename); // Get the current file directory
 
 // Adjust the basePath to correctly point to the public/html folder from the root directory
 const basePath = path.join(__dirname, "./public/html"); // Going up one level to the root, then to 'public/html'
-
-// Configure multer for file uploads
-const upload = multer({ dest: "uploads/" }); // Files will be stored in the "uploads" directory
 
 // Define a route for the home page
 router.get("/", (req, res) => {
@@ -77,7 +73,6 @@ router.post("/startwork", (req, res) => {
   // TODO: Connect to the websockets server, create a new task and send it to the websocket server client to add it to the queue
 
   res.json({ success: true, received: hashes.length, hashes });
-  //res.end();
 });
 
 export default router;
