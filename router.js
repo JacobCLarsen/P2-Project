@@ -52,4 +52,18 @@ router.get("/converter", (req, res) => {
   res.sendFile(path.join(basePath, "converter.html"));
 });
 
+// -------------- Post requests --------------
+
+// Handle the post request to upload hashes as a user. Data has been validated on the client side
+router.post("/upload-hashes", (req, res) => {
+  const hashes = req.body.hashes;
+
+  if (!Array.isArray(hashes)) {
+    return res.status(400).json({ error: "Invalid data format" });
+  }
+
+  console.log("Received hashes:", hashes);
+  res.json({ success: true, received: hashes.length });
+});
+
 export default router;

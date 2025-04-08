@@ -1,3 +1,5 @@
+// TODO: Add a way to track wich user uploaded a task, to store the results in a database with their id. The user can then reference their results at a later time
+
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
   if (object.style.display === "none" || object.style.display === "") {
@@ -6,19 +8,20 @@ export function toggleVisibility(object, displayStyle) {
     object.style.display = "none";
   }
 }
-
-export function uploadFiles(form) {
-  const url = "https://httpbin.org/post";
-  const formData = new FormData(form);
-
-  const fetchOptions = {
-    method: "post",
-    body: formData,
-  };
-
-  fetch(url, fetchOptions);
+// Handle the submit and add the task to the queue
+export async function submitFileUpload(fileList) {
+  // Validate the files again to make sure nothing as changed since the user uploaded their files
+  await validateFileUpload(fileList)
+    .then((hashes) => {
+      // Upload the hashes to the database
+      uploadFiles(hashes);
+    })
+    .catch(() => {
+      throw new Error("Invalid file upload");
+    });
 }
 
+// Validate the file type and hash length of the uploaded file(s)
 export async function validateFileUpload(fileList) {
   const allowedTypes = ["text/csv"];
 
@@ -33,17 +36,48 @@ export async function validateFileUpload(fileList) {
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512), return valid hashes
-  let validHashes = checkHashLengths(fileList).catch(() => {
-    throw new Error("Invalid file input");
+  let validHashes = await checkHashLengths(fileList).catch(() => {
+    throw new Error("Invalid hash length");
   });
 
   return validHashes;
 }
 
 // ----------- Helper functions------------
+// Upload files
+function uploadFiles(hashes) {
+  fetch("/upload-hashes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ hashes: hashes }),
+  });
+}
 
 // Chech length of hashes
 async function checkHashLengths(fileList) {
+  for (const file of fileList) {
+    const content = await file.text();
+    const hashes = content.split(",");
+    console.log(
+      `File: ${file.name} contains ${hashes.length} unvarified hashes`
+    );
+  }
+
+  // Filter for hashes using the specificied length of 128 characters
+  const validHashes = lines.filter((line) => line.trim().length === 128);
+  console.log("Total 512 bit hashes found:", validHashes.length);
+
+  // If any 512 bit hashes in the array
+  if (hashes.length > 0) {
+    return hashes;
+  } else {
+    // Else return false to show an error
+    throw new Error("No valid 512 bit hashes found");
+  }
+}
+
+// Chech length of hashes, when the user has also specified usernames for each hash
+async function checkHashLengthUsername(fileList) {
   let validHashes = [];
   for (const file of fileList) {
     const content = await file.text();

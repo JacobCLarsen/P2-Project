@@ -21,8 +21,8 @@ import { socket } from "./requireAuth.js";
 // Import helper function
 import {
   toggleVisibility,
-  uploadFiles,
   validateFileUpload,
+  submitFileUpload,
 } from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
@@ -88,7 +88,7 @@ uploadForm.addEventListener("sumbit", (e) => {
   e.preventDefault();
 
   // Helper functipn from "./handleFileUpload.js"
-  uploadFiles(uploadForm);
+  submitFileUpload(fileList);
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
