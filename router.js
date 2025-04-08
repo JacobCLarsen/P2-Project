@@ -60,12 +60,9 @@ router.get("/converter", (req, res) => {
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
-<<<<<<< HEAD
-router.post("startwork", upload.single("file"), (req, res) => {
-=======
+
 router.post("/startwork", (req, res) => {
->>>>>>> parent of 0fb1192 (test)
-  console.log("Request file:", req.file); // Debug log to inspect the uploaded file
+  console.log("Request file:", req.body.file);
 
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
