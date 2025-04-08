@@ -15,7 +15,10 @@ class Task {
 
 export function createTask(hashes) {
   // Divide into chuncks of 100 hashes
-  const numBatches = Math.floor(hashes.length / 100);
+  //const numBatches = Math.floor(hashes.length / 100);
+
+  // For testing
+  const numBatches = 1;
 
   // Create a new task with the given hashes and number of batches
   const newTask = new Task(hashes, numBatches);
