@@ -163,7 +163,7 @@ function fetchTask() {
 }
 
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
-function startWork(subTask) {
+async function startWork(subTask) {
   const myWorker = new Worker("worker.js");
   console.log("worker connected!");
   myWorker.postMessage(subTask);
@@ -171,7 +171,7 @@ function startWork(subTask) {
     "Message containing a dictionary batch and hashes send to the worker"
   );
 
-  myWorker.onmessage = (e) => {
+  myWorker.onmessage = async (e) => {
     let taskresult = {
       action: "send result",
       result: e.data,
@@ -188,9 +188,8 @@ function startWork(subTask) {
     latestCompletedTask.append(item);
 
     mySocket.send(JSON.stringify(taskresult));
+    fetchTask();
   };
-
-  fetchTask();
 
   // for demo - weight 2 seconds before fetching a new task
   // setTimeout(() => {
