@@ -47,7 +47,7 @@ export async function validateFileUpload(fileList) {
 // ----------- Helper functions------------
 // Upload files
 async function uploadFiles(hashes) {
-  await fetch("upload_work", {
+  await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ hashes: hashes }),
