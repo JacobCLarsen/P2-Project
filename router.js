@@ -80,7 +80,9 @@ router.post("/startwork", upload.single("file"), (req, res) => {
     return res.status(400).json({ error: "No valid hashes found in the file" });
   }
 
-  res.json({ success: true, received: hashes.length, hashes });
+  // TODO: Connect to the websockets server, create a new task and send it to the websocket server client to add it to the queue
+
+  //res.json({ success: true, received: hashes.length, hashes });
 });
 
 export default router;
