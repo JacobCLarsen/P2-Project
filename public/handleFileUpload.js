@@ -61,7 +61,7 @@ async function uploadFiles(hashes) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Failed to upload hashes");
+        throw new Error("Failed to upload hashes", response);
       }
       return response.json();
     })
