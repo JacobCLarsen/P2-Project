@@ -190,12 +190,14 @@ function startWork(subTask) {
     mySocket.send(JSON.stringify(taskresult));
   };
 
+  fetchTask();
+
   // for demo - weight 2 seconds before fetching a new task
-  setTimeout(() => {
-    if (startBtnText.innerText == "Hashing passwords") {
-      fetchTask();
-    }
-  }, 2000);
+  // setTimeout(() => {
+  //  if (startBtnText.innerText == "Hashing passwords") {
+  //    fetchTask();
+  //  }
+  //}, 2000);
 }
 
 // Animate the work button, when working.
