@@ -47,20 +47,23 @@ export async function validateFileUpload(fileList) {
 
 // ----------- Helper functions------------
 // Upload files
-async function uploadFiles(file) {
-  console.log("File to upload:", file); // Debug log to verify the file
+async function uploadFiles(hashes) {
+  console.log("Hashes to upload:", hashes); // Debug log to verify the array
 
-  const formData = new FormData();
-  formData.append("file", file); // Ensure the field name matches the server-side expectation
+  if (!Array.isArray(hashes)) {
+    throw new Error("Hashes must be an array");
+  }
 
-  await fetch("/startwork", {
+  await fetch("startwork", {
     method: "POST",
-    body: formData, // Send the file as FormData
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ hashes: hashes }),
   })
     .then((response) => {
-      console.log(response); // Debug log to inspect the response
+      console.log(response);
+
       if (!response.ok) {
-        throw new Error(`Failed to upload hashes. Status: ${response.status}`);
+        throw new Error("Failed to upload hashes");
       }
       return response.json();
     })

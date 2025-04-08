@@ -60,36 +60,34 @@ router.get("/converter", (req, res) => {
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
+<<<<<<< HEAD
 router.post("startwork", upload.single("file"), (req, res) => {
+=======
+router.post("/startwork", (req, res) => {
+>>>>>>> parent of 0fb1192 (test)
   console.log("Request file:", req.file); // Debug log to inspect the uploaded file
 
   if (!req.file) {
-    console.error("No file uploaded");
     return res.status(400).json({ error: "No file uploaded" });
   }
 
-  try {
-    // Read the file content and process it into an array of hashes
-    const fileContent = fs.readFileSync(req.file.path, "utf-8");
-    const hashes = fileContent
-      .split("\n")
-      .map((line) => line.trim())
-      .filter((hash) => hash.length === 128); // Ensure only valid 512-bit hashes are included
+  // Read the file content and process it into an array of hashes
+  const fileContent = fs.readFileSync(req.file.path, "utf-8");
+  const hashes = fileContent
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((hash) => hash.length === 128); // Ensure only valid 512-bit hashes are included
 
-    console.log("Extracted hashes:", hashes);
+  console.log("Extracted hashes:", hashes);
 
-    if (hashes.length === 0) {
-      console.error("No valid hashes found in the file");
-      return res
-        .status(400)
-        .json({ error: "No valid hashes found in the file" });
-    }
-
-    res.json({ success: true, received: hashes.length, hashes });
-  } catch (error) {
-    console.error("Error processing file:", error);
-    res.status(500).json({ error: "Internal server error" });
+  if (hashes.length === 0) {
+    return res.status(400).json({ error: "No valid hashes found in the file" });
   }
+
+  // TODO: Connect to the websockets server, create a new task and send it to the websocket server client to add it to the queue
+
+  //res.json({ success: true, received: hashes.length, hashes });
+  res.end();
 });
 
 export default router;
