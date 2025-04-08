@@ -2,6 +2,7 @@ import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { authenticateJWT } from "./middleware_jwt.js";
+import multer from "multer"; // Import multer for file uploads
 
 const router = Router();
 
@@ -11,6 +12,9 @@ const __dirname = path.dirname(__filename); // Get the current file directory
 
 // Adjust the basePath to correctly point to the public/html folder from the root directory
 const basePath = path.join(__dirname, "./public/html"); // Going up one level to the root, then to 'public/html'
+
+// Configure multer for file uploads
+const upload = multer({ dest: "uploads/" }); // Files will be stored in the "uploads" directory
 
 // Define a route for the home page
 router.get("/", (req, res) => {
@@ -55,18 +59,28 @@ router.get("/converter", (req, res) => {
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
-router.post("/startwork", (req, res) => {
-  console.log("Request body:", req.body); // Debug log to inspect the request body
+router.post("/startwork", upload.single("file"), (req, res) => {
+  console.log("Request file:", req.file); // Debug log to inspect the uploaded file
 
-  const hashes = req.body.hashes;
-
-  if (!Array.isArray(hashes)) {
-    console.error("Invalid data format: hashes is not an array");
-    return res.status(400).json({ error: "Invalid data format" });
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
   }
 
-  console.log("Received hashes:", hashes);
-  res.json({ success: true, received: hashes.length });
+  // Read the file content and process it into an array of hashes
+  const fs = require("fs");
+  const fileContent = fs.readFileSync(req.file.path, "utf-8");
+  const hashes = fileContent
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((hash) => hash.length === 128); // Ensure only valid 512-bit hashes are included
+
+  console.log("Extracted hashes:", hashes);
+
+  if (hashes.length === 0) {
+    return res.status(400).json({ error: "No valid hashes found in the file" });
+  }
+
+  res.json({ success: true, received: hashes.length, hashes });
 });
 
 export default router;
