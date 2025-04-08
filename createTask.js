@@ -13,6 +13,14 @@ class Task {
   }
 }
 
-export { Task };
+export function createTask(hashes) {
+  // Divide into chuncks of 100 hashes
+  const numBatches = Math.floor(hashes.length / 100);
 
-// TODO: This should be called in router to crate a task, and this should add the task to the task queue
+  // Create a new task with the given hashes and number of batches
+  const newTask = new Task(hashes, numBatches);
+
+  return newTask;
+}
+
+export { Task };

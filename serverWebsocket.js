@@ -197,6 +197,12 @@ export function WebsocketListen(ws, wss) {
         addTaskToQueue(task);
         break;
 
+      case "add client task":
+        const newClientTask = message.task;
+
+        addTaskToQueue(newClientTask);
+        break;
+
       case "clearQueue":
         mainTaskQueue = [];
         updateTaskQueue();
