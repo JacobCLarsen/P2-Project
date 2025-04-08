@@ -56,9 +56,12 @@ router.get("/converter", (req, res) => {
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
 router.post("/startwork", (req, res) => {
+  console.log("Request body:", req.body); // Debug log to inspect the request body
+
   const hashes = req.body.hashes;
 
   if (!Array.isArray(hashes)) {
+    console.error("Invalid data format: hashes is not an array");
     return res.status(400).json({ error: "Invalid data format" });
   }
 
