@@ -86,7 +86,7 @@ uploadForm.addEventListener("change", async (e) => {
 // On submit
 uploadForm.addEventListener("submit", (e) => {
   // Get the filelist
-  const fileList = e.target.files;
+  const fileList = uploadForm.querySelector('input[type="file"]').files;
   console.log(fileList);
 
   e.preventDefault(); // Prevent default
