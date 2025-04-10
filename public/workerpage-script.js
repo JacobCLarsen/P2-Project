@@ -114,7 +114,7 @@ function updateQueue(queue) {
   taskQueue.innerHTML = "";
   queue.forEach((task) => {
     let taskItem = document.createElement("li");
-    taskItem.innerText = `Task id: ${task.id} Hashes: ${task.size} Batches assigned: ${task.subTasksCompleted}/${task.numberBatches}`;
+    taskItem.innerText = `Task id: ${task.id} Hashes: ${task.size} Batches completed: ${task.subTasksCompleted}/${task.numberBatches}`;
     taskQueue.append(taskItem);
   });
 }
@@ -177,6 +177,7 @@ async function startWork(subTask) {
       result: e.data,
       taskId: subTask.id,
     };
+    
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
 

@@ -9,7 +9,7 @@ import { createTask } from "./createTask.js";
 import { startNewTask } from "./startNewtask.js";
 
 // Add a socket connection to the router page
-const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws7/");
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
 const router = Router();
 
@@ -58,6 +58,11 @@ router.get("/dashboard", (req, res) => {
 // Route for the converter page
 router.get("/converter", (req, res) => {
   res.sendFile(path.join(basePath, "converter.html"));
+});
+
+// Route for the leaderboard page
+router.get("/leaderboard", (req, res) => {
+  res.sendFile(path.join(basePath, "reward.html"));
 });
 
 // -------------- Post requests --------------
