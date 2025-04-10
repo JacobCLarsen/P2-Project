@@ -60,6 +60,11 @@ router.get("/converter", (req, res) => {
   res.sendFile(path.join(basePath, "converter.html"));
 });
 
+// Route for the leaderboard page
+router.get("/leaderboard", (req, res) => {
+  res.sendFile(path.join(basePath, "reward.html"));
+});
+
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
