@@ -54,13 +54,14 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchData(); //Call the function to fetch data when the page loads
 
   async function loadProfile(user) {
-    const storedName = user.username;
-    const storedEmail = user.email;
-    const storedBio = user.bio;
+    userName.textContent = user.username;
+    userEmail.textContent = user.email;
+    userBio.textContent = user.bio;
+    userTasks.textContent = user.tasks;
 
-    userName.textContent = storedName;
-    userEmail.textContent = storedEmail;
-    userBio.textContent = storedBio;
+    editName.value = user.username;
+    editEmail.value = user.email;
+    editBio.textContent = user.bio;
 
     const storedProfilePic = localStorage.getItem("profilePic");
     if (storedProfilePic) {

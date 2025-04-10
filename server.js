@@ -20,6 +20,7 @@ import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
 } from "./databaseConnection.js";
+import { storeResults } from "./storeResults.js";
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -42,7 +43,9 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use("/", router);
 
 // Websockets:
+
 const wss = new WebSocketServer({ port: 4317 });
+
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -60,6 +63,7 @@ connectToDatabase(); // Establishes a connection to the MySQL database and ensur
 
 // Set up database-related routes
 setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
+storeResults(app);
 
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
@@ -69,10 +73,12 @@ app.get("/", (req, res) => {
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
+
   const PORT = 3317;
+
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node1/"
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/"
     );
   });
 } else if (x === 2) {
