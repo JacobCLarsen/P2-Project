@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 
+
 /* ----- Store_results: (Store weak password in the database) ----- */
 /**
  * Method: POST
@@ -36,9 +37,10 @@ export function storeResults(app) {
   });
 }
 
+
 // Filepath to text element
 const filepath = path.join(process.cwd(), "./results.txt");
-// Function to store the result in database
+
 function storeResult(task) {
   // Pull the results from the task
   const results = task.results;
