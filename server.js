@@ -58,11 +58,11 @@ setupAuth(app);
 /* ----- DATABASE SETUP ----- */
 
 // Connect to the database and initialize tables
-connectToDatabase(); // Establishes a connection to the MySQL database and ensures the "users" table exists
+// connectToDatabase(); // Establishes a connection to the MySQL database and ensures the "users" table exists
 
 // Set up database-related routes
-setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
-storeResults(app);
+// setupDatabaseRoutes(app); // Adds routes for testing the database connection and fetching users
+// storeResults(app);
 
 // Simple test route to verify server is running
 app.get("/", (req, res) => {
