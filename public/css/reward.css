@@ -1,0 +1,34 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #222;
+  color: white;
+}
+.container {
+  width: 60%;
+  margin: auto;
+  background: #333;
+  padding: 20px;
+  border-radius: 10px;
+}
+.leaderboard,
+.rewards {
+  margin-top: 20px;
+}
+.user {
+  display: flex;
+  justify-content: space-between;
+  background: #444;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+}
+.btn {
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  background: #008cba;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
