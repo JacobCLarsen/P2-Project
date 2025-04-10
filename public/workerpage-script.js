@@ -188,15 +188,8 @@ async function startWork(subTask) {
     latestCompletedTask.append(item);
 
     mySocket.send(JSON.stringify(taskresult));
-    fetchTask();
+    fetchTask(); // Fetch a new task after sending the result to the server
   };
-
-  // for demo - weight 2 seconds before fetching a new task
-  // setTimeout(() => {
-  //  if (startBtnText.innerText == "Hashing passwords") {
-  //    fetchTask();
-  //  }
-  //}, 2000);
 }
 
 // Animate the work button, when working.
