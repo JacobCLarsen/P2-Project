@@ -112,8 +112,39 @@ body {
   border-radius: 10px;
 }
 
+#sidebarBtns {
+  display: flex;
+}
+
+#taskUploadContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+#uploadFormContainer {
+  display: none;
+  position: relative;
+  z-index: 2;
+}
+#uploadForm {
+  display: block;
+}
+
 #newTaskBtn {
-  width: 60px;
+  width: 120px;
+  height: 40px;
+  background-color: transparent;
+  border: #444 solid 2px;
+  border-radius: 8px;
+  padding: 10px 0px 10px 0px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: center;
+}
+
+#addUsertaskBtn {
+  width: 120px;
+  height: 40px;
   background-color: transparent;
   border: #444 solid 2px;
   border-radius: 8px;
@@ -125,6 +156,7 @@ body {
 
 #clearQueueBtn {
   width: 60px;
+  height: 40px;
   background-color: transparent;
   border: #444 solid 2px;
   border-radius: 8px;
@@ -135,6 +167,11 @@ body {
 }
 
 #newTaskBtn:hover {
+  border: #29ac32 solid 2px;
+  color: #29ac32;
+}
+
+#addUsertaskBtn:hover {
   border: #29ac32 solid 2px;
   color: #29ac32;
 }

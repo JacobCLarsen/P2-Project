@@ -120,7 +120,7 @@ export function WebsocketListen(ws, wss) {
         // Log result to the user
         if (!message.result) {
           console.log(
-            `Result received from the worker: No passwords found in subtask: ${message.tasId}`
+            `Result received from the worker: No passwords found in subtask: ${message.taskId}`
           );
         } else {
           console.log(`Result from worker received: ${message.result}`);
@@ -195,6 +195,12 @@ export function WebsocketListen(ws, wss) {
         const task = new Task(testHashes, dictionaryNumberOfBatches);
 
         addTaskToQueue(task);
+        break;
+
+      case "add client task":
+        const newClientTask = message.task;
+
+        addTaskToQueue(newClientTask);
         break;
 
       case "clearQueue":

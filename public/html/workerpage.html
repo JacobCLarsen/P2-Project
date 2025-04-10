@@ -33,9 +33,23 @@
 
       <!-- Sidebar for completed tasks -->
       <aside class="sidebar">
-        <div id="sidebarBtns"></div>
-        <button id="newTaskBtn">Add</button>
-        <button id="clearQueueBtn">Clear</button>
+        <div id="sidebarBtns">
+          <div id="taskUploadContainer">
+            <button id="addUsertaskBtn">Upload Task</button>
+            <div id="uploadFormContainer">
+              <form id="uploadForm" method="post" enctype="multipart/form-data">
+                <input name="file" type="file" multiple accept=".csv" />
+                <button type="submit">Upload</button>
+              </form>
+              <div id="uploadInfoContainer">
+                <p id="uploadMessage"></p>
+                <p id="uploadHashCount"></p>
+              </div>
+            </div>
+          </div>
+          <button id="newTaskBtn">Add demo task</button>
+          <button id="clearQueueBtn">Clear</button>
+        </div>
         <h3>Task Queue</h3>
         <ul id="taskqueue"></ul>
       </aside>
