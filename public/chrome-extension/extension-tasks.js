@@ -11,21 +11,64 @@ export function fetchTask(mySocket) {
 }
 
 // Function to start work
-export function startWork(task, mySocket) {
+export async function startWork(task, mySocket) {
+    // Crack hashes
+    let weakPasswords = await dictionaryAttack(task.hashes, task.dictionary);
+  
+    if (weakPasswords.length > 0) {
+        console.log(
+        `weak passwords found: ${weakPasswords} in subtask ${task.id}`
+        );
+        console.log("Posting message back to main script");
+    } else {
+        console.log(`no weak passwords in task ${task.id}`);
+    };
+    
     let taskresult = {
         action: "send result",
-        data: "I did it!",
+        result: "I did it!",
+        taskId: task.id
     };
     mySocket.send(JSON.stringify(taskresult));
   
-    // for demo - wait 2 seconds before fetching a new task
-    setTimeout(() => {
-        chrome.storage.local.get("isWorking", function(data) {
-            if (data.isWorking) {
-                fetchTask(mySocket);
-            } else {
-                console.log("Task stopped. Not fetching a new task.");
+    chrome.storage.local.get("isWorking", function(data) {
+        if (data.isWorking) {
+            fetchTask(mySocket);
+        } else {
+            console.log("Task stopped. Not fetching a new task.");
+        }
+    });
+}
+  
+async function dictionaryAttack(targetHashes, dictionaryBatch) {
+    let weakPasswordArray = [];
+    // "For of" loop that goes through each password of the dictionary.
+    for (let dictionaryWord of dictionaryBatch) {
+        for (let targetHash of targetHashes) {
+            // Hashes the current password and assigns it to the const hashedPassword.
+            const hashedWord = await hashSHA512(dictionaryWord);
+            // If hashedPassword is equal to the target hashed password, then returns correct password
+            if (hashedWord === targetHash) {
+                weakPasswordArray.push(dictionaryWord);
             }
-        });
-    }, 2000);
+        }
+    }
+
+    return weakPasswordArray;
+}
+  
+async function hashSHA512(message) {
+    // Converts string into binary format
+    const encoder = new TextEncoder();
+    // Transfors the text into bytes
+    const data = encoder.encode(message);
+    // Computes the SHA-512 hash of the input
+    const hashBuffer = await crypto.subtle.digest("SHA-512", data);
+    // Converts hashBuffer to hex string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    // Converts each byte into hexadecimal
+    const hashHex = hashArray
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    return hashHex;
 }
