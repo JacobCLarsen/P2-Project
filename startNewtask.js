@@ -14,7 +14,8 @@ class SubTask {
 }
 
 // Function to create a subtask for each dictionary batch and pair it with the hashlist
-function startNewTask(task, numberBatches) {
+function startNewTask(task) {
+  const numberBatches = task.numberBatches;
   // Validate input parameters
   if (!task || !Array.isArray(task.hashes)) {
     throw new Error("Invalid task object. 'hashes' must be an array.");

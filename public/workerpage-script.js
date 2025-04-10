@@ -7,11 +7,23 @@ const taskQueue = document.getElementById("taskqueue");
 const taskResults = document.getElementById("taskResults");
 const statusMessage = document.getElementById("workstatus");
 const plusTabBtn = document.getElementById("plus-tab-btn");
+const importTaskBtn = document.getElementById("addUsertaskBtn");
+const uploadContainer = document.getElementById("uploadFormContainer");
+const uploadForm = document.getElementById("uploadForm");
+const uploadMessage = document.getElementById("uploadMessage");
+const uploadHashCount = document.getElementById("uploadHashCount");
 const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 import { socket } from "./requireAuth.js";
+
+// Import helper function
+import {
+  toggleVisibility,
+  validateFileUpload,
+  submitFileUpload,
+} from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
 
@@ -42,6 +54,47 @@ window.addEventListener("beforeunload", () => {
   }
 });
 
+// Evenetlistener for the "import task butten", which lets a user upload a file with hashed passwords to crack
+importTaskBtn.addEventListener("click", () => {
+  toggleVisibility(uploadContainer, "block");
+});
+
+// Eventlistener for the file upload form
+// On change
+uploadForm.addEventListener("change", async (e) => {
+  const fileList = e.target.files;
+
+  // Debugging
+  console.log("Files selected:", fileList);
+
+  // Check if hashes are valid, and return any valid hashes
+  let validHashes = await validateFileUpload(fileList)
+    .then((hashes) => {
+      uploadMessage.innerText = "File selected";
+      uploadHashCount.innerHTML = `Hashes in file: ${hashes.length}`;
+      hashes.forEach((hash) => {
+        console.log(hash);
+      });
+      return hashes;
+    })
+    .catch((err) => {
+      uploadMessage.innerText = `failed with error: ${err}`;
+      return null;
+    });
+});
+
+// On submit
+uploadForm.addEventListener("submit", (e) => {
+  // Get the filelist
+  const fileList = uploadForm.querySelector('input[type="file"]').files;
+  console.log(fileList);
+
+  e.preventDefault(); // Prevent default
+
+  // Helper functipn from "./handleFileUpload.js"
+  submitFileUpload(fileList);
+});
+
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue
 newTaskBtn.addEventListener("click", () => {
   console.log("asked for new task to be created");
@@ -49,7 +102,7 @@ newTaskBtn.addEventListener("click", () => {
   mySocket.send(JSON.stringify({ action: "addTask" }));
 });
 
-// Functio to clear the queue
+// Function to clear the queue
 clearQueueBtn.addEventListener("click", () => {
   console.log("Clearing the task queue");
 
@@ -110,7 +163,7 @@ function fetchTask() {
 }
 
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
-function startWork(subTask) {
+async function startWork(subTask) {
   const myWorker = new Worker("worker.js");
   console.log("worker connected!");
   myWorker.postMessage(subTask);
@@ -118,7 +171,7 @@ function startWork(subTask) {
     "Message containing a dictionary batch and hashes send to the worker"
   );
 
-  myWorker.onmessage = (e) => {
+  myWorker.onmessage = async (e) => {
     let taskresult = {
       action: "send result",
       result: e.data,
@@ -135,14 +188,8 @@ function startWork(subTask) {
     latestCompletedTask.append(item);
 
     mySocket.send(JSON.stringify(taskresult));
+    fetchTask(); // Fetch a new task after sending the result to the server
   };
-
-  // for demo - weight 2 seconds before fetching a new task
-  setTimeout(() => {
-    if (startBtnText.innerText == "Hashing passwords") {
-      fetchTask();
-    }
-  }, 2000);
 }
 
 // Animate the work button, when working.
