@@ -20,6 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="about" class="link">
             <button>About</button>
         </a>
+          </a>
+        <a href="reward" class="link">
+            <button>Reward</button>
+        </a>
     </div>
     <div id="navbar-profile-container">
         <a href="profile" class="link">
