@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="about" class="link">
             <button>About</button>
         </a>
-          </a>
         <a href="leaderboard" class="link">
             <button>Reward</button>
         </a>
