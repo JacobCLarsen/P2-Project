@@ -37,6 +37,8 @@ export function connectToDatabase() {
 
     // Execute the query to create the "users" table
     DBConnection.query(createUsersTable, (err, result) => {
+      console.log("hello, database fuckery 123 pick up the phone");
+
       if (err) {
         console.error("Error creating users table:", err); // Log error if table creation fails
       } else {
