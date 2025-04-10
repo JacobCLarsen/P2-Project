@@ -44,8 +44,7 @@ app.use("/", router);
 
 // Websockets:
 
-const wss = new WebSocketServer({ port: 4317 });
-
+const wss = new WebSocketServer({ port: 4310 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -73,8 +72,7 @@ app.get("/", (req, res) => {
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-
-  const PORT = 3317;
+  const PORT = 3310;
 
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
