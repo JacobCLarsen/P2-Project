@@ -177,6 +177,7 @@ async function startWork(subTask) {
       result: e.data,
       taskId: subTask.id,
     };
+    
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
 
