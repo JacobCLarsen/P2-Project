@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button>About</button>
         </a>
           </a>
-        <a href="reward" class="link">
+        <a href="leaderboard" class="link">
             <button>Reward</button>
         </a>
     </div>
