@@ -1,4 +1,5 @@
-//import { dictionaryAttack } from "./dictionary-attack";
+// TODO: this shuld instead hash the list of dictionary words and the check for matches after
+// TODO: use encryption with the owners public key
 
 // This worker script takes
 onmessage = async (e) => {
