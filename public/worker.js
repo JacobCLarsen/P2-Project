@@ -1,5 +1,6 @@
 // TODO: this shuld instead hash the list of dictionary words and the check for matches after
 // TODO: use encryption with the owners public key
+// TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
 // This worker script takes
 onmessage = async (e) => {
