@@ -26,6 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
             <button>Profile</button>
         </a>
         <div id="dropdown-content">
+            <a id="my-results" href="dashboard">
+                My Results
+            </a>
             <a id="log-out" href="login">
                 Log out
             </a>
