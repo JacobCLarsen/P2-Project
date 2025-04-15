@@ -1,6 +1,7 @@
 // TODO: Add a way to track wich user uploaded a task, to store the results in a database with their id. The user can then reference their results at a later time
 // TODO: Discard dublicates from the hashes
 // TODO: Encrypt hashes
+// TODO: Be able to drag and drop files into a box to upload
 
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
