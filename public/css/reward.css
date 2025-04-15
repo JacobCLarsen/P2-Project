@@ -2,10 +2,12 @@ body {
   background-color: #ffffff;
 }
 .container {
-  width: 60%;
-  margin: auto;
-  background: #ffffff;
-  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+
+  font-size: 30px;
   border-radius: 10px;
 }
 .leaderboard,
@@ -15,7 +17,7 @@ body {
 .user {
   display: flex;
   justify-content: space-between;
-  background: #444;
+  background: #c3bebe;
   padding: 10px;
   margin: 5px;
   border-radius: 5px;

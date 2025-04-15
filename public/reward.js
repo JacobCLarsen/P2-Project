@@ -1,4 +1,11 @@
-let users = { User1: 0 };
+let users = {
+  User1: 0,
+  User2: 0,
+  User3: 0,
+  User4: 0,
+  User5: 0,
+  User6: 0,
+};
 function addPoints(user) {
   users[user] += 20; // Simulate computing contribution
   updateLeaderboard();
