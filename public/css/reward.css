@@ -1,13 +1,13 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #222;
+  background-color: #ffffff;
   color: white;
 }
 .container {
   width: 60%;
   margin: auto;
-  background: #333;
+  background: #ffffff;
   padding: 20px;
   border-radius: 10px;
 }

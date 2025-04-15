@@ -1,6 +1,6 @@
 let users = { User1: 0 };
 function addPoints(user) {
-  users[user] += 10; // Simulate computing contribution
+  users[user] += 20; // Simulate computing contribution
   updateLeaderboard();
 }
 function updateLeaderboard() {
