@@ -1,4 +1,4 @@
-import { crypto } from "crypto";
+import { crypto } from "../node_modules/crypto.js";
 
 //Test keys for testing
 export const publicKey = "123456789";
