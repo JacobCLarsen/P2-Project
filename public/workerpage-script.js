@@ -204,8 +204,10 @@ async function startWork(subTask) {
     };
 
     myWorker.onerror = (error) => {
-      console.error("Worker encountered an error:", error);
-      stopWork(`Worker error: ${error}`);
+      console.error("Worker encountered an error:");
+      console.error("Error message:", error.message);
+      console.error("Error details:", error);
+      stopWork(`Worker error: ${error.message}`);
       myWorker.terminate();
     };
   } catch (error) {

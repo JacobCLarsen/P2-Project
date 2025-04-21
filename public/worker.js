@@ -2,6 +2,13 @@
 
 import { rsaUtils } from "./rsaFunction";
 
+// Global error handler for the worker
+self.onerror = (error) => {
+  console.error("Unhandled error in worker:", error.message);
+  console.error("Error details:", error);
+  postMessage({ error: error.message });
+};
+
 // This worker script takes
 onmessage = async (e) => {
   try {
