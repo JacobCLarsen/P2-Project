@@ -11,10 +11,16 @@ onmessage = async (e) => {
     const hashedDictionary = await hashDictionary(e.data.dictionary);
 
     // Step 2: Encrypt each hashed word in the dictionary using the public key
-    const encryptedDictionary = encryptDictionary(hashedDictionary, "12345");
+    const encryptedDictionary = await encryptDictionary(
+      hashedDictionary,
+      "12345"
+    );
 
     // Step 3: Compare encrypted hashes with target encrypted hashes
-    const weakPasswords = dictionaryAttack(e.data.hashes, encryptedDictionary);
+    const weakPasswords = await dictionaryAttack(
+      e.data.hashes,
+      encryptedDictionary
+    );
 
     // Step 4: Return a result bases on if weak passwords where found or not
     if (weakPasswords.length > 0) {
@@ -28,12 +34,14 @@ onmessage = async (e) => {
     }
   } catch (error) {
     console.error("An error occurred in the worker:", error);
+    console.log("error from the worker", error);
+
     postMessage({ error: error.message });
   }
 };
 
 // Compares each word in the dictionary with the list of hashes passwords
-function dictionaryAttack(targetHashes, encryptedDictionary) {
+async function dictionaryAttack(targetHashes, encryptedDictionary) {
   return encryptedDictionary.filter((encryptedWord) =>
     targetHashes.includes(encryptedWord)
   );
@@ -55,7 +63,7 @@ async function hashSHA512(message) {
   return hashHex;
 }
 // Returns an encrypted dictonary from a hashes dictionary
-function encryptDictionary(hashedDictionary, publicKey) {
+async function encryptDictionary(hashedDictionary, publicKey) {
   return hashedDictionary.map((hashedWord) =>
     rsaUtils.encrypt(publicKey, hashedWord)
   );
