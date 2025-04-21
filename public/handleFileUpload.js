@@ -4,6 +4,7 @@
 // TODO: Be able to drag and drop files into a box to upload
 
 import { rsaUtils } from "./rsaFunction.js";
+import { publicKey } from "./rsaFunction.js";
 
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
@@ -67,7 +68,7 @@ async function uploadFiles(hashes) {
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: hashes, publicKey: rsaUtils.publicKey }),
+    body: JSON.stringify({ hashes: hashes, publicKey: publicKey }),
   })
     .then((response) => {
       console.log(response);
