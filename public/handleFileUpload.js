@@ -19,8 +19,9 @@ export async function submitFileUpload(fileList) {
   await validateFileUpload(fileList)
     .then((hashes) => {
       // Encrypt hashes
-      hashEncrypt(hashes);
-      console.log("hashes enrypted");
+      const encrypted = hashEncrypt(hashes);
+      console.log("Hashes encrypted");
+      return encrypted;
     })
     .then((encryptedHashes) => {
       // Upload the hashes to the database
@@ -92,6 +93,7 @@ async function hashEncrypt(hashes) {
   hashes.forEach((hash) => {
     encryptedHashes.push(rsaUtils.encrypt(hash, rsaUtils.publicKey));
   });
+
   return encryptedHashes;
 }
 
