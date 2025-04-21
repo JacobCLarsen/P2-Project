@@ -167,33 +167,51 @@ function fetchTask() {
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
 async function startWork(subTask) {
   const myWorker = new Worker("worker.js");
-  console.log("worker connected!");
-  myWorker.postMessage(subTask);
-  console.log(
-    "Message containing a dictionary batch and hashes send to the worker",
-    subTask
-  );
+  console.log("Worker connected!");
 
-  myWorker.onmessage = async (e) => {
-    let taskresult = {
-      action: "send result",
-      result: e.data,
-      taskId: subTask.id,
+  try {
+    myWorker.postMessage(subTask);
+    console.log(
+      "Message containing a dictionary batch and hashes sent to the worker:",
+      subTask
+    );
+
+    myWorker.onmessage = async (e) => {
+      if (e.data?.error) {
+        console.error("Error received from worker:", e.data.error);
+        stopWork(`Error in task ${subTask.id}: ${e.data.error}`);
+        return;
+      }
+
+      let taskresult = {
+        action: "send result",
+        result: e.data,
+        taskId: subTask.id,
+      };
+
+      console.log("Message received from worker:", e.data);
+      myWorker.terminate();
+
+      let item = document.createElement("li");
+      item.innerText = `You completed task ${subTask.id} with result ${
+        e.data ? e.data : "no weak passwords"
+      }`;
+      latestCompletedTask.innerHTML = "";
+      latestCompletedTask.append(item);
+
+      mySocket.send(JSON.stringify(taskresult));
+      fetchTask(); // Fetch a new task after sending the result to the server
     };
 
-    console.log("Message received from worker:", e.data);
-    myWorker.terminate();
-
-    let item = document.createElement("li");
-    item.innerText = `You completed task ${subTask.id} with result ${
-      e.data ? e.data : "no weak passwords"
-    }`;
-    latestCompletedTask.innerHTML = "";
-    latestCompletedTask.append(item);
-
-    mySocket.send(JSON.stringify(taskresult));
-    fetchTask(); // Fetch a new task after sending the result to the server
-  };
+    myWorker.onerror = (error) => {
+      console.error("Worker encountered an error:", error.message);
+      stopWork(`Worker error: ${error.message}`);
+      myWorker.terminate();
+    };
+  } catch (error) {
+    console.error("An error occurred while starting the worker:", error);
+    stopWork(`Error: ${error.message}`);
+  }
 }
 
 // Animate the work button, when working.
