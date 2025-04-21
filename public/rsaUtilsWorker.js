@@ -8,7 +8,10 @@ export function createRsaUtils(crypto) {
       }),
 
     encrypt: (publicKey, plaintext) => {
-      return crypto.AES.encrypt(plaintext, publicKey, { iv }).toString();
+      const encrypted = crypto.AES.encrypt(plaintext, publicKey, {
+        iv,
+      }).toString();
+      return encrypted.ciphertext.toString(crypto.enc.Base64);
     },
 
     decrypt: (privateKey, encrypted) => {
