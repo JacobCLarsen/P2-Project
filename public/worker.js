@@ -1,11 +1,11 @@
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
-import { rsaUtils } from "./rsaFunction";
+//import { rsaUtils } from "./rsaFunction";
 
 // This worker script takes
 onmessage = async (e) => {
   try {
-    console.log("Message received from main script:");
+    console.log("Message received from main script:", e.data);
 
     // Step 1: Hash the dictionary
     const hashedDictionary = await hashDictionary(e.data.dictionary);
