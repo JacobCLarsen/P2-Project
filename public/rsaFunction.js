@@ -1,4 +1,6 @@
 //Test keys for testing
+import { Buffer } from "buffer";
+
 export const publicKey = "123456789";
 export const privateKey = "abcd1234";
 
