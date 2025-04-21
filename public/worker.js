@@ -16,7 +16,7 @@ onmessage = async (e) => {
     // Step 2: Encrypt each hashed word in the dictionary using the public key
     const encryptedDictionary = await encryptDictionary(
       hashedDictionary,
-      "1234567890abcdef"
+      e.data.encryptionKey
     );
 
     //debug: log the two lists, to manually compare
