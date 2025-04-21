@@ -20,7 +20,7 @@ onmessage = async (e) => {
     );
 
     //debug: log the two lists, to manually compare
-    console.log(encryptDictionary);
+    console.log(encryptedDictionary);
     console.log(e.data.hashes);
 
     // Step 3: Compare encrypted hashes with target encrypted hashes
