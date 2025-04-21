@@ -67,7 +67,7 @@ async function uploadFiles(hashes) {
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: hashes }),
+    body: JSON.stringify({ hashes: hashes, publicKey: rsaUtils.publicKey }),
   })
     .then((response) => {
       console.log(response);

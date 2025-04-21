@@ -2,12 +2,23 @@
 // TODO: use encryption with the owners public key
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
+import { rsaUtils } from "./rsaFunction";
+
 // This worker script takes
 onmessage = async (e) => {
   console.log("Message received from main script:");
 
+  // Encrypt the given dictionary using the publickey given from the task
+  let encryptedDictionary = await encryptDictionary(
+    e.data.dictionary,
+    e.data.publicKey
+  );
+
   // Crack hashes
-  let weakPasswords = await dictionaryAttack(e.data.hashes, e.data.dictionary);
+  let weakPasswords = await dictionaryAttack(
+    e.data.hashes,
+    encryptedDictionary
+  );
 
   if (weakPasswords.length > 0) {
     const workerResult = weakPasswords;
@@ -54,4 +65,13 @@ async function hashSHA512(message) {
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
   return hashHex;
+}
+
+async function encryptDictionary(dictionary, publicKey) {
+  let encryptedDictionary = [];
+  // Encrypt each word in the dictionary to match the encryption on the given hashes in the task
+  dictionary.forEach((Word) => {
+    encryptedDictionary.push(rsaUtils.encrypt(publicKey, Word));
+  });
+  return encryptDictionary;
 }

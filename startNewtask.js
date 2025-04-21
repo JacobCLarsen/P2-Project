@@ -2,9 +2,10 @@ import { splitDictionary, dictionaryPath } from "./split-dictionary.js";
 // Create class to represent a subtask
 // Is is constructed with a dictionary batch and a list of hashes to crack
 class SubTask {
-  constructor(dictionary, hashes) {
+  constructor(dictionary, hashes, publicKey) {
     this.dictionary = dictionary;
     this.hashes = hashes;
+    this.encryptionKey = publicKey;
     this.completed = 0;
     this.id = Math.floor(10000000 + Math.random() * 90000000);
   }
@@ -31,7 +32,9 @@ function startNewTask(task) {
   }
 
   // Create sub-tasks using map for cleaner code
-  return batchesArray.map((batch) => new SubTask(batch, task.hashes));
+  return batchesArray.map(
+    (batch) => new SubTask(batch, task.hashes, task.publicKey)
+  );
 }
 
 export { startNewTask };

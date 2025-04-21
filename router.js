@@ -78,9 +78,14 @@ router.post("/startwork", (req, res) => {
   console.log("Request file:", req.body.hashes);
 
   const hashes = req.body.hashes;
+  const publicKey = req.body.publicKey;
 
   if (!hashes) {
     return res.status(400).json({ error: "No file uploaded" });
+  }
+
+  if (!publicKey) {
+    return res.status(400).json({ error: "No key given in request" });
   }
 
   if (hashes.length === 0) {
@@ -89,7 +94,7 @@ router.post("/startwork", (req, res) => {
   res.json({ success: true, received: hashes.length, hashes });
 
   // Create a task with the reveiced hashes
-  const newTask = createTask(hashes);
+  const newTask = createTask(hashes, publicKey);
 
   // add task to the queue
   startNewTask(newTask);

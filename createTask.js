@@ -1,7 +1,8 @@
 class Task {
-  constructor(hashes, numberBatches) {
+  constructor(hashes, numberBatches, publicKey) {
     this.hashes = hashes;
     this.size = hashes.length;
+    this.encryptionKey = publicKey;
     this.numberBatches = numberBatches;
     this.subTasksCompleted = 0;
     this.completed = 0;
@@ -13,12 +14,12 @@ class Task {
   }
 }
 
-export function createTask(hashes) {
+export function createTask(hashes, publicKey) {
   // Divide into chuncks of 100 hashes
   const numBatches = Math.ceil(hashes.length / 50);
 
   // Create a new task with the given hashes and number of batches
-  const newTask = new Task(hashes, numBatches);
+  const newTask = new Task(hashes, numBatches, publicKey);
 
   return newTask;
 }

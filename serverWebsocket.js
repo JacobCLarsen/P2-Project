@@ -69,7 +69,7 @@ export function WebsocketListen(ws, wss) {
           } else {
             console.log("Task found - starting new task from main queue");
             let task = mainTaskQueue[0];
-            currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
+            currentTaskQueue = startNewTask(task);
             console.log(
               `set currentQueue to contain subtasks from task ${task.id}`
             );
@@ -241,14 +241,6 @@ export function WebsocketListen(ws, wss) {
         console.warn("Unknown message type:", message.action);
     }
   };
-}
-
-// function to create a random task to use in this file
-function createTask() {
-  let task = {};
-  task.id = Math.floor(Math.random() * 1000);
-  task.hash = `0x${Math.random().toString(36).slice(2, 11)}`;
-  return task;
 }
 
 // Function to update the number of online users and send it to the dashboard clients
