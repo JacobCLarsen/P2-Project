@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "crypto-es";
 
 //Test keys for testing
 export const publicKey = "123456789";

@@ -22,6 +22,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
+    "crypto-es": "^2.1.0",
     "crypto-js": "^4.2.0",
     "crypto.js": "^3.3.4",
     "express": "^4.21.2",
