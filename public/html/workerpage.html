@@ -7,16 +7,20 @@
     <title>Worker Page</title>
     <link rel="stylesheet" href="css/style.css" />
     <script type="module">
-      import { Buffer } from "https://cdn.jsdelivr.net/npm/buffer@6.0.3/index.min.js";
-      window.Buffer = Buffer;
-    </script>
-    <script type="module" src="requireAuth.js"></script>
-    <script type="module">
-      import CryptoJS from "https://cdn.skypack.dev/crypto-js";
+      import { Buffer } from "https://esm.sh/buffer";
 
-      // Example usage of CryptoJS
-      console.log(CryptoJS.SHA256("hello").toString());
+      const buf = Buffer.from("Hello from browser!", "utf-8");
+      console.log(buf.toString());
     </script>
+    <script type="module">
+        import CryptoJS from "https://cdn.skypack.dev/crypto-js";
+
+        // Example usage of CryptoJS
+        console.log(CryptoJS.SHA256("hello").toString());
+      </script
+      <script type="module" src="requireAuth.js">
+    </script>
+    >
     <script type="module" src="handleFileUpload.js"></script>
   </head>
   <body>
