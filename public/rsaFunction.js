@@ -30,9 +30,14 @@ export const rsaUtils = {
     }),
 
   // Encrypt Data with Public Key
-  encrypt: (publicKey, plaintext) =>
-    crypto.AES.encrypt(Buffer.from(plaintext), publicKey),
+  encrypt: (publicKey, plaintext) => {
+    let encrypted = crypto.AES.encrypt(Buffer.from(plaintext), publicKey);
+    console.log(encrypted);
+  },
 
   // Decrypt Data with Private Key
-  decrypt: (privateKey, encrypted) => crypto.AES.decrypt(encrypted, privateKey),
+  decrypt: (privateKey, encrypted) => {
+    let decrypted = crypto.AES.decrypt(encrypted, privateKey);
+    console.log(decrypted);
+  },
 };
