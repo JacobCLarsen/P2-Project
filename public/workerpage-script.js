@@ -23,7 +23,7 @@ import {
   toggleVisibility,
   validateFileUpload,
   submitFileUpload,
-} from "./handleFileUpload.js";
+} from "../handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
 
@@ -177,7 +177,7 @@ async function startWork(subTask) {
       result: e.data,
       taskId: subTask.id,
     };
-    
+
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
 
