@@ -7,6 +7,7 @@ import { authenticateJWT } from "./middleware_jwt.js";
 // Import function from other files
 import { createTask } from "./createTask.js";
 import { startNewTask } from "./startNewtask.js";
+import { log } from "console";
 
 // Add a socket connection to the router page
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
@@ -95,9 +96,10 @@ router.post("/startwork", (req, res) => {
 
   // Create a task with the reveiced hashes
   const newTask = createTask(hashes, publicKey);
+  console.log("sending task to the server socket", newTask);
 
   // add task to the queue
-  startNewTask(newTask);
+  //startNewTask(newTask);
 
   // Sending the task to the websocket server socket
   const message = {
