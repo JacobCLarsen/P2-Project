@@ -92,7 +92,7 @@ async function hashEncrypt(hashes) {
 
   let encryptedHashes = [];
   hashes.forEach((hash) => {
-    encryptedHashes.push(rsaUtils.encrypt(rsaUtils.publicKey, hash));
+    encryptedHashes.push(rsaUtils.encrypt(publicKey, hash));
   });
 
   return encryptedHashes;
