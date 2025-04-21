@@ -126,6 +126,8 @@ mySocket.onmessage = (event) => {
   switch (message.action) {
     case "new task":
       console.log("Received new task:", message.subTask.id);
+      console.log("task: ", message.subTask);
+
       startWork(message.subTask);
       break;
 

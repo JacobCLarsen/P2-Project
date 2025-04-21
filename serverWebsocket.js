@@ -89,7 +89,7 @@ export function WebsocketListen(ws, wss) {
           // Send the message to the client
           ws.send(JSON.stringify(taskMessage));
 
-          console.log(`Task ${taskToSend.id} sent to the user`);
+          console.log(`Task ${taskToSend.id} sent to the user: ${taskToSend}`);
         } else {
           console.log("No tasks available in the current task queue to send.");
         }
@@ -201,6 +201,8 @@ export function WebsocketListen(ws, wss) {
         const newClientTask = message.task;
 
         addTaskToQueue(newClientTask);
+        console.log("new task added to the queue", newClientTask);
+
         break;
 
       case "clearQueue":
