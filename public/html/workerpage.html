@@ -7,11 +7,13 @@
     <title>Worker Page</title>
     <link rel="stylesheet" href="css/style.css" />
     <script type="module">
+      // Import buffer
       import { Buffer } from "https://esm.sh/buffer";
       window.Buffer = Buffer; // Make buffer globaly Available
-    </script>
-    <script type="module">
-      import CryptoJS from "https://cdn.skypack.dev/crypto-js";
+
+      // Import ctrypto
+      import { CryptoJS } from "https://cdn.skypack.dev/crypto-js";
+      window.CryptoJS = CryptoJS;
     </script>
     <script type="module" src="requireAuth.js"></script>
     <script type="module" src="handleFileUpload.js"></script>

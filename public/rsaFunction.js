@@ -1,3 +1,6 @@
+// Define the crypto function
+const crypto = window.CryptoJS;
+
 // Test keys for testing
 export const publicKey = "123456789";
 export const privateKey = "abcd1234";
