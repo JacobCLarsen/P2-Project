@@ -90,9 +90,7 @@ async function hashEncrypt(hashes) {
 
   let encryptedHashes = [];
   hashes.forEach((hash) => {
-    encryptedHashes.push(
-      rsaUtils.encrypt(Buffer.from(hash), rsaUtils.publicKey)
-    ); // Use global Buffer
+    encryptedHashes.push(rsaUtils.encrypt(hash, rsaUtils.publicKey));
   });
   return encryptedHashes;
 }
