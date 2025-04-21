@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <script type="module">
       import { Buffer } from "https://esm.sh/buffer";
+      window.Buffer = Buffer; // Make buffer globaly Available
     </script>
     <script type="module">
       import CryptoJS from "https://cdn.skypack.dev/crypto-js";
