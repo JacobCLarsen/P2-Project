@@ -1,17 +1,20 @@
 export function createRsaUtils(crypto) {
-    return {
-      generateKeyPair: () =>
-        new Promise((resolve, reject) => {
-          // NOTE: CryptoJS doesn't support generateKeyPair — remove or mock this
-          reject(new Error("generateKeyPair is not supported in CryptoJS."));
-        }),
-  
-      encrypt: (publicKey, plaintext) => {
-        return crypto.AES.encrypt(plaintext, publicKey).toString();
-      },
-  
-      decrypt: (privateKey, encrypted) => {
-        return crypto.AES.decrypt(encrypted, privateKey).toString(crypto.enc.Utf8);
-      },
-    };
-  }
+  const iv = crypto.enc.Utf8.parse("0000000000000000"); // 16 bytes
+  return {
+    generateKeyPair: () =>
+      new Promise((resolve, reject) => {
+        // NOTE: CryptoJS doesn't support generateKeyPair — remove or mock this
+        reject(new Error("generateKeyPair is not supported in CryptoJS."));
+      }),
+
+    encrypt: (publicKey, plaintext) => {
+      return crypto.AES.encrypt(plaintext, publicKey, { iv }).toString();
+    },
+
+    decrypt: (privateKey, encrypted) => {
+      return crypto.AES.decrypt(encrypted, privateKey).toString(
+        crypto.enc.Utf8
+      );
+    },
+  };
+}

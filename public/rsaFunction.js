@@ -4,6 +4,7 @@ const crypto = window.CryptoJS;
 // Test keys for testing
 export const publicKey = "1234567890abcdef";
 export const privateKey = "abcd1234";
+const iv = crypto.enc.Utf8.parse("0000000000000000"); // 16 bytes
 
 export const rsaUtils = {
   // Generate a pair of private/public keys
@@ -31,7 +32,7 @@ export const rsaUtils = {
 
   // Encrypt Data with Public Key
   encrypt: (publicKey, plaintext) => {
-    return crypto.AES.encrypt(plaintext, publicKey).toString();
+    return crypto.AES.encrypt(plaintext, publicKey, { iv }).toString();
   },
 
   // Decrypt Data with Private Key
