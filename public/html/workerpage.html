@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Worker Page</title>
     <link rel="stylesheet" href="css/style.css" />
-    <script src="https://cdn.jsdelivr.net/npm/buffer@6.0.3/index.min.js"></script>
-    <script>
-      // Make Buffer globally available in the browser
-      window.Buffer = buffer.Buffer;
+    <script type="module">
+      import { Buffer } from "https://cdn.jsdelivr.net/npm/buffer@6.0.3/index.min.js";
+      window.Buffer = Buffer;
     </script>
     <script type="module" src="requireAuth.js"></script>
     <script type="module">
