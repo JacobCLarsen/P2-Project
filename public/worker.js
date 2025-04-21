@@ -1,5 +1,3 @@
-// TODO: this shuld instead hash the list of dictionary words and the check for matches after
-// TODO: use encryption with the owners public key
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
 import { rsaUtils } from "./rsaFunction";
@@ -8,47 +6,35 @@ import { rsaUtils } from "./rsaFunction";
 onmessage = async (e) => {
   console.log("Message received from main script:");
 
-  // Encrypt the given dictionary using the publickey given from the task
-  let encryptedDictionary = await encryptDictionary(
-    e.data.dictionary,
+  // Step 1: Hash the dictionary
+  const hashedDictionary = await hashDictionary(e.data.dictionary);
+
+  // Step 2: Encrypt each hashed word in the dictionary using the public key
+  const encryptedDictionary = encryptDictionary(
+    hashedDictionary,
     e.data.publicKey
   );
 
-  // Crack hashes
-  let weakPasswords = await dictionaryAttack(
-    e.data.hashes,
-    encryptedDictionary
-  );
+  // Step 3: Compare encrypted hashes with target encrypted hashes
+  const weakPasswords = dictionaryAttack(e.data.hashes, encryptedDictionary);
 
+  // Step 4: Return a result bases on if weak passwords where found or not
   if (weakPasswords.length > 0) {
-    const workerResult = weakPasswords;
     console.log(
-      `weak passwords found: ${weakPasswords} in subtask ${e.data.id}`
+      `Weak passwords found: ${weakPasswords} in subtask ${e.data.id}`
     );
-
-    console.log("Posting message back to main script");
-    postMessage(workerResult);
+    postMessage(weakPasswords);
   } else {
-    console.log(`no weak passwords in task ${e.data.id}`);
+    console.log(`No weak passwords in task ${e.data.id}`);
     postMessage(null);
   }
 };
 
-async function dictionaryAttack(targetHashes, dictionaryBatch) {
-  let weakPasswordArray = [];
-  // "For of" loop that goes through each password of the dictionary.
-  for (let dictionaryWord of dictionaryBatch) {
-    for (let targetHash of targetHashes) {
-      // Hashes the current password and assigns it to the const hashedPassword.
-      const hashedWord = await hashSHA512(dictionaryWord);
-      // If hashedPassword is equal to the target hashed password, then returns correct password
-      if (hashedWord === targetHash) {
-        weakPasswordArray.push(dictionaryWord);
-      }
-    }
-  }
-
-  return weakPasswordArray;
+// Compares each word in the dictionary with the list of hashes passwords
+function dictionaryAttack(targetHashes, encryptedDictionary) {
+  return encryptedDictionary.filter((encryptedWord) =>
+    targetHashes.includes(encryptedWord)
+  );
 }
 
 async function hashSHA512(message) {
@@ -66,12 +52,14 @@ async function hashSHA512(message) {
     .join("");
   return hashHex;
 }
+// Returns an encrypted dictonary from a hashes dictionary
+function encryptDictionary(hashedDictionary, publicKey) {
+  return hashedDictionary.map((hashedWord) =>
+    rsaUtils.encrypt(publicKey, hashedWord)
+  );
+}
 
-async function encryptDictionary(dictionary, publicKey) {
-  let encryptedDictionary = [];
-  // Encrypt each word in the dictionary to match the encryption on the given hashes in the task
-  dictionary.forEach((Word) => {
-    encryptedDictionary.push(rsaUtils.encrypt(publicKey, Word));
-  });
-  return encryptDictionary;
+// Returns a hased dictionary
+async function hashDictionary(dictionary) {
+  return Promise.all(dictionary.map((word) => hashSHA512(word)));
 }
