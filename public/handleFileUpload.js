@@ -86,9 +86,13 @@ async function uploadFiles(hashes) {
 
 // Encrypt hashes
 async function hashEncrypt(hashes) {
+  console.log("public key", rsaUtils.publicKey);
+
   let encryptedHashes = [];
   hashes.forEach((hash) => {
-    encryptedHashes.push(rsaUtils.encrypt(rsaUtils.publicKey, Buffer.from(hash))); // Use global Buffer
+    encryptedHashes.push(
+      rsaUtils.encrypt(rsaUtils.publicKey, Buffer.from(hash))
+    ); // Use global Buffer
   });
   return encryptedHashes;
 }
