@@ -19,6 +19,10 @@ onmessage = async (e) => {
       "12345"
     );
 
+    //debug: log the two lists, to manually compare
+    console.log(encryptDictionary);
+    console.log(e.data.hashes);
+
     // Step 3: Compare encrypted hashes with target encrypted hashes
     const weakPasswords = await dictionaryAttack(
       e.data.hashes,
