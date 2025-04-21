@@ -1,12 +1,11 @@
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
-import { rsaUtils } from "./rsaFunction.js";
 
-// As crypto-js is installed only onto the main thread, it is added to the worker also
 importScripts(
   "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
 );
-const crypto = self.CryptoJS;
+importScripts("rsaUtils.js");
+const rsaUtils = createRsaUtils(self.CryptoJS);
 
 // This worker script takes
 onmessage = async (e) => {
