@@ -2,6 +2,12 @@
 
 import { rsaUtils } from "./rsaFunction.js";
 
+// As crypto-js is installed only onto the main thread, it is added to the worker also
+importScripts(
+  "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+);
+const crypto = self.CryptoJS;
+
 // This worker script takes
 onmessage = async (e) => {
   try {
