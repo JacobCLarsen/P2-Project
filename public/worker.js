@@ -2,35 +2,21 @@
 
 import { rsaUtils } from "./rsaFunction";
 
-// Global error handler for the worker
-self.onerror = (error) => {
-  console.error("Unhandled error in worker:", error.message);
-  console.error("Error details:", error);
-  postMessage({ error: error.message });
-};
-
 // This worker script takes
 onmessage = async (e) => {
   try {
-    console.log("Message received from main script:", e.data);
-
-    if (!e.data.dictionary || !e.data.encryptionKey || !e.data.hashes) {
-      throw new Error("Missing required data in the task payload.");
-    }
+    console.log("Message received from main script:");
 
     // Step 1: Hash the dictionary
     const hashedDictionary = await hashDictionary(e.data.dictionary);
 
     // Step 2: Encrypt each hashed word in the dictionary using the public key
-    const encryptedDictionary = encryptDictionary(
-      hashedDictionary,
-      e.data.encryptionKey
-    );
+    const encryptedDictionary = encryptDictionary(hashedDictionary, "12345");
 
     // Step 3: Compare encrypted hashes with target encrypted hashes
     const weakPasswords = dictionaryAttack(e.data.hashes, encryptedDictionary);
 
-    // Step 4: Return a result based on if weak passwords were found or not
+    // Step 4: Return a result bases on if weak passwords where found or not
     if (weakPasswords.length > 0) {
       console.log(
         `Weak passwords found: ${weakPasswords} in subtask ${e.data.id}`
