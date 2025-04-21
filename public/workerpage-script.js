@@ -166,7 +166,7 @@ function fetchTask() {
 
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
 async function startWork(subTask) {
-  const myWorker = new Worker("worker.js");
+  const myWorker = new Worker("worker.js", { type: "module" });
   console.log("worker connected!");
   myWorker.postMessage(subTask);
   console.log(

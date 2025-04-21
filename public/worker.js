@@ -1,6 +1,6 @@
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
-//import { rsaUtils } from "./rsaFunction";
+import { rsaUtils } from "./rsaFunction";
 
 // This worker script takes
 onmessage = async (e) => {
