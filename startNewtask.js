@@ -33,7 +33,7 @@ function startNewTask(task) {
 
   // Create sub-tasks using map for cleaner code
   return batchesArray.map(
-    (batch) => new SubTask(batch, task.hashes, task.publicKey)
+    (batch) => new SubTask(batch, task.hashes, task.encryptionKey)
   );
 }
 
