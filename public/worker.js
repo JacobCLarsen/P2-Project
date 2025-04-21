@@ -1,9 +1,9 @@
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
 import { createRsaUtils } from "./rsaUtilsWorker.js";
-import JSEncrypt from "https://cdn.skypack.dev/jsencrypt";
+import * as CryptoJS from "https://cdn.skypack.dev/crypto-js";
 
-const encryptor = createRsaUtils(JSEncrypt);
+const rsaUtils = createRsaUtils(CryptoJS);
 
 // This worker script takes
 onmessage = async (e) => {
@@ -71,7 +71,9 @@ async function hashSHA512(message) {
 }
 // Returns an encrypted dictonary from a hashes dictionary
 async function encryptDictionary(hashedDictionary, publicKey) {
-  return hashedDictionary.map((hashedWord) => encryptor.encrypt(hashedWord));
+  return hashedDictionary.map((hashedWord) =>
+    rsaUtils.encrypt(publicKey, hashedWord)
+  );
 }
 
 // Returns a hased dictionary
