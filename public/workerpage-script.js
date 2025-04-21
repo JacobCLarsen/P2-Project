@@ -23,7 +23,7 @@ import {
   toggleVisibility,
   validateFileUpload,
   submitFileUpload,
-} from "../handleFileUpload.js";
+} from "./handleFileUpload.js";
 
 const mySocket = socket; // use socket object from require auth
 
