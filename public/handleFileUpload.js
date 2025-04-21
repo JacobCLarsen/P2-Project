@@ -4,6 +4,7 @@
 // TODO: Be able to drag and drop files into a box to upload
 
 import { rsaUtils } from "./rsaFunction.js";
+import { Buffer } from "buffer"; // Import Buffer polyfill for browser environments
 
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
@@ -88,7 +89,7 @@ async function uploadFiles(hashes) {
 async function hashEncrypt(hashes) {
   let encryptedHashes = [];
   hashes.forEach((hash) => {
-    encryptedHashes.push(rsaUtils.encrypt(rsaUtils.publicKey, hash));
+    encryptedHashes.push(rsaUtils.encrypt(rsaUtils.publicKey, Buffer.from(hash))); // Use global Buffer
   });
   return encryptedHashes;
 }

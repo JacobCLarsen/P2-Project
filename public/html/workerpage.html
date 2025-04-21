@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="icon" type="png" href="assets/circular-favicon.svg" />
+    <link rel="icon" type="image/png" href="assets/circular-favicon.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>Worker Page</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/buffer@6.0.3/index.min.js"></script>
+    <script>
+      // Make Buffer globally available in the browser
+      window.Buffer = buffer.Buffer;
+    </script>
     <script type="module" src="requireAuth.js"></script>
     <script type="module">
       import CryptoJS from "https://cdn.skypack.dev/crypto-js";
 
+      // Example usage of CryptoJS
       console.log(CryptoJS.SHA256("hello").toString());
     </script>
     <script type="module" src="handleFileUpload.js"></script>
   </head>
-  <nav>
-    <script src="navbar.js"></script>
-  </nav>
   <body>
+    <nav>
+      <script src="navbar.js"></script>
+    </nav>
+
     <!-- Main content and sidebar -->
     <div class="container">
       <!-- Main content section -->
@@ -29,12 +36,9 @@
           </div>
           <p id="messageBox">Please leave this page open to continue working</p>
           <section id="activeTasks">
-            <!-- <h4>Latest Completed Task</h4> -->
             <ul id="latestCompletedTask"></ul>
           </section>
         </div>
-
-        <!-- Active tasks -->
       </div>
 
       <!-- Sidebar for completed tasks -->
@@ -53,13 +57,14 @@
               </div>
             </div>
           </div>
-          <button id="newTaskBtn">Add demo task</button>
+          <button id="newTaskBtn">Add Demo Task</button>
           <button id="clearQueueBtn">Clear</button>
         </div>
         <h3>Task Queue</h3>
         <ul id="taskqueue"></ul>
       </aside>
     </div>
+
     <script type="module" src="workerpage-script.js"></script>
   </body>
 </html>
