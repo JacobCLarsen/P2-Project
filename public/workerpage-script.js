@@ -168,7 +168,8 @@ async function startWork(subTask) {
   console.log("worker connected!");
   myWorker.postMessage(subTask);
   console.log(
-    "Message containing a dictionary batch and hashes send to the worker"
+    "Message containing a dictionary batch and hashes send to the worker",
+    subTask
   );
 
   myWorker.onmessage = async (e) => {
