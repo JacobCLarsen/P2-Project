@@ -7,7 +7,11 @@
     <title>Home</title>
     <link rel="stylesheet" href="css/style.css" />
     <script type="module" src="requireAuth.js"></script>
-    <script type="module" src="node_modules/crypto-js.js"></script>
+    <script type="module">
+      import CryptoJS from "https://cdn.skypack.dev/crypto-js";
+
+      console.log(CryptoJS.SHA256("hello").toString());
+    </script>
     <script type="module" src="handleFileUpload.js"></script>
   </head>
   <nav>
