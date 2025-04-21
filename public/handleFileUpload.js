@@ -3,7 +3,7 @@
 // TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
-import { rsaUtils } from "./rsaFunction.js";
+import { encryptor } from "./rsaFunction.js";
 import { publicKey } from "./rsaFunction.js";
 
 // Function to toggle visibility of a DOM object
@@ -92,7 +92,7 @@ async function hashEncrypt(hashes) {
 
   let encryptedHashes = [];
   hashes.forEach((hash) => {
-    encryptedHashes.push(rsaUtils.encrypt(publicKey, hash));
+    encryptedHashes.push(encryptor.encrypt(hash));
   });
 
   return encryptedHashes;
