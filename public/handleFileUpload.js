@@ -3,6 +3,8 @@
 // TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
+import { rsaUtils } from "../rsaFunction";
+
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
   if (object.style.display === "none" || object.style.display === "") {
@@ -16,9 +18,14 @@ export async function submitFileUpload(fileList) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
   await validateFileUpload(fileList)
     .then((hashes) => {
+      // Encrypt hashes
+      hashEncrypt(hashes);
+      console.log("hashes enrypted");
+    })
+    .then((encryptedHashes) => {
       // Upload the hashes to the database
-      console.log("uploading hashes", hashes);
-      uploadFiles(hashes);
+      console.log("uploading encrypted hashes", encryptedHashes);
+      uploadFiles(encryptedHashes);
     })
     .catch(() => {
       throw new Error("Invalid file upload");
@@ -75,6 +82,15 @@ async function uploadFiles(hashes) {
     .catch((error) => {
       console.error("Error uploading hashes:", error);
     });
+}
+
+// Encrypt hashes
+async function hashEncrypt(hashes) {
+  let encryptedHashes = [];
+  hashes.forEach((hash) => {
+    encryptedHashes.push(rsaUtils.encrypt(rsaUtils.publicKey, hash));
+  });
+  return encryptedHashes;
 }
 
 // Chech length of hashes

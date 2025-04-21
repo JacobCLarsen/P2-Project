@@ -21,6 +21,8 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "crypto.js": "^3.3.4",
     "express": "^4.21.2",
     "mysql": "^2.18.1",
     "socket.io": "^4.8.1",
