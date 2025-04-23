@@ -21,7 +21,7 @@ export async function submitFileUpload(fileList) {
       // Generate keys for encryption
       // TODO: promt the user to save the private key
       const Keys = rsaUtils.generateKeyPair();
-      const publicKey = Keys.publicKey;
+      const publicKey = await Keys.publicKey;
       // Encrypt hashes
       const encrypted = await hashEncrypt(hashes, publicKey);
       console.log("Hashes encrypted");
