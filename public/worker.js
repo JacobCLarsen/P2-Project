@@ -29,6 +29,12 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
   // Hash the dictionary
   const hashedDictionary = await hashDictionary(dictionaryBatch);
 
+  // Log each set for debugging
+  console.log("dictionary:", hashedDictionary);
+  console.log("hashes:", targetHashes);
+  
+  
+
   // Create a map of target hashes for quick lookup
   const targetHashSet = new Set(targetHashes);
 
