@@ -16,9 +16,11 @@ export async function submitFileUpload(fileList) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
   await validateFileUpload(fileList)
     .then((hashes) => {
+      // Clean hashes 
+      const cleanedHashes = hashes.map(hash => hash.replace(/[\r\n]+/g, '').trim());
       // Upload the hashes to the database
-      console.log("uploading hashes", hashes);
-      uploadFiles(hashes);
+      console.log("uploading hashes", cleanedHashes);
+      uploadFiles(cleanedHashes);
     })
     .catch(() => {
       throw new Error("Invalid file upload");
