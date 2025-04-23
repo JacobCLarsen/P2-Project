@@ -12,8 +12,8 @@ const algortihm = "RSA-OAEP";
 // rsaUtils is exported and holds function to encrypt and decrypt a message using RSA-OAEP
 export const rsaUtils = {
   // Function to encrypt a message using RSA encryption - returns the encrypted message
-  encrypt: function (publicKey, message) {
-    return window.crypto.subtle.encrypt(
+  encrypt: async function (publicKey, message) {
+    return await window.crypto.subtle.encrypt(
       {
         name: algortihm,
       },
