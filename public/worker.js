@@ -118,7 +118,7 @@ async function importPublicKey(exportedPublicKeyBase64) {
 
 // Helper function to convert base64 to arraybuffer
 function base64ToArrayBuffer(base64) {
-  const binaryString = window.atob(base64);  // Decode base64 string to binary string
+  const binaryString = atob(base64);  // Decode base64 string to binary string
   const len = binaryString.length;
   const bytes = new Uint8Array(len);
   
