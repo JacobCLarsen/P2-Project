@@ -30,12 +30,13 @@ export async function submitFileUpload(fileList) {
       console.log("Hashes encrypted");
       return { encryptedHashes };
     })
-    .then(( encryptedHashes ) => {
+    .then(({ encryptedHashes }) => {
       // Upload the hashes to the database
       console.log("uploading encrypted hashes", encryptedHashes);
       uploadFiles(encryptedHashes, publicKey);
     })
     .catch(() => {
+      console.error("Detailed error:", err);
       throw new Error("Invalid file upload");
     });
 }
