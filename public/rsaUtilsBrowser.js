@@ -40,6 +40,7 @@ export const rsaUtils = {
     );
   },
 
+  // Generate a keypair of a public and private key
   generateKeyPair: async function () {
     return window.crypto.subtle.generateKey(
       {
@@ -52,4 +53,26 @@ export const rsaUtils = {
       ["encrypt", "decrypt"]
     );
   },
+
+  //Export a keys a an arraybuffer
+  exportPublicKey: async function(publicKey) {
+    const exportedKey = await crypto.subtle.exportKey("spki", publicKey); // Export to SPKI format
+    return exportedKey; // This is now an ArrayBuffer
+  },
+
+  // We also need a function to import the key from an array buffer into the cryptoKey format
+  importPublicKey: async function(exportedPublicKey) {
+    const importedKey = await crypto.subtle.importKey(
+      "spki", //Use same format is the export function
+      exportedPublicKey,
+      {
+        name: "RSA-OAEP", // Algorithm to use with the key
+        hash: "SHA-256"   // Hash algorithm (or the one used in key generation)
+      },
+      true,
+      ["encrypt"] // Usage of the key
+    );
+    return importedKey;
+  }
+
 };

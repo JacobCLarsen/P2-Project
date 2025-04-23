@@ -4,13 +4,16 @@ onmessage = async (e) => {
   try {
     console.log("Message received from main script:", e.data);
 
+    //Import the publick key
+    const publicKey = await importPublicKey(e.data.encryptionKey)
+
     // Step 1: Hash the dictionary
     const hashedDictionary = await hashDictionary(e.data.dictionary);
 
     // Step 2: Encrypt each hashed word in the dictionary using the public key
     const encryptedDictionary = await encryptDictionary(
       hashedDictionary,
-      e.data.encryptionKey
+      publicKey
     );
 
     //debug: log the two lists, to manually compare
@@ -86,4 +89,19 @@ function encrypt(publicKey, message) {
     publicKey,
     encodedMessage
   );
+}
+
+// Function to import the publickey from arraybuffer to cryptoKey format
+async function importPublicKey (exportedPublicKey) {
+  const importedKey = await crypto.subtle.importKey(
+    "spki", //Use same format is the export function
+    exportedPublicKey,
+    {
+      name: "RSA-OAEP", // Algorithm to use with the key
+      hash: "SHA-256"   // Hash algorithm (or the one used in key generation)
+    },
+    true,
+    ["encrypt"] // Usage of the key
+  );
+  return importedKey;
 }

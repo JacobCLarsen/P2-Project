@@ -67,15 +67,20 @@ export async function validateFileUpload(fileList) {
 // Upload files
 async function uploadFiles(hashes, publicKey) {
   console.log("Hashes to upload:", hashes); // Debug log to verify the array
+  console.log("key", publicKey);
+  
 
   if (!Array.isArray(hashes)) {
     throw new Error("Hashes must be an array");
   }
 
+  // Export the publick key to the right format
+  const exportedKey = rsaUtils.exportPublicKey(publicKey)
+
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: hashes, publicKey: publicKey }),
+    body: JSON.stringify({ hashes: hashes, publicKey: exportedKey }),
   })
     .then((response) => {
       console.log(response);
