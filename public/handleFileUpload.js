@@ -109,6 +109,16 @@ async function hashEncrypt(hashes, publicKey) {
   return encryptedHashes;
 }
 
+// Arraybuffertobase64 function
+function arrayBufferToBase64(buffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
 // Chech length of hashes
 async function checkHashLengths(fileList) {
   let validHashes = [];
