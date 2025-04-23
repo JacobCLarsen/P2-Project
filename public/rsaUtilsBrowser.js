@@ -57,7 +57,7 @@ export const rsaUtils = {
   //Export a keys to base 64
   exportPublicKey: async function (publicKey) {
     const exportedKey = await crypto.subtle.exportKey("spki", publicKey); // Export to SPKI format
-    return arrayBufferToBase64(exportedKey); // This is now in base64
+    return rsaUtils.arrayBufferToBase64(exportedKey); // This is now in base64
   },
 
   // We also need a function to import the key from an array buffer into the cryptoKey format
@@ -74,10 +74,9 @@ export const rsaUtils = {
     );
     return importedKey;
   },
-};
 
-// Helper function to convert arraybuffer to base64
-function arrayBufferToBase64(buffer) {
+  // Helper function to convert arraybuffer to base64
+  arrayBufferToBase64: function (buffer) {
     let binary = '';
     const bytes = new Uint8Array(buffer);
     for (let i = 0; i < bytes.byteLength; i++) {
@@ -85,3 +84,5 @@ function arrayBufferToBase64(buffer) {
     }
     return window.btoa(binary); // Convert to base64
   }
+};
+

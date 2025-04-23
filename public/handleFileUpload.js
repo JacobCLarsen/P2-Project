@@ -77,10 +77,13 @@ async function uploadFiles(hashes, publicKey) {
   // Export the publick key to the right format
   const exportedKey = rsaUtils.exportPublicKey(publicKey)
 
+  // Export hashes to base64
+  const base64Hashes = hashes.map(hash => rsaUtils.arrayBufferToBase64(hash));
+
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: hashes, publicKey: exportedKey }),
+    body: JSON.stringify({ hashes: base64Hashes, publicKey: exportedKey }),
   })
     .then((response) => {
       console.log(response);
