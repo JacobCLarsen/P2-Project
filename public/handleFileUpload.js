@@ -35,7 +35,7 @@ export async function submitFileUpload(fileList) {
       console.log("uploading encrypted hashes", encryptedHashes);
       uploadFiles(encryptedHashes, publicKey);
     })
-    .catch(() => {
+    .catch((err) => {
       console.error("Detailed error:", err);
       throw new Error("Invalid file upload");
     });
