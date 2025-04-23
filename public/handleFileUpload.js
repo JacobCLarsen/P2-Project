@@ -3,7 +3,6 @@
 // TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
-import { log } from "console";
 import { rsaUtils } from "./rsaUtilsBrowser.js";
 
 // variable to hold publickey
