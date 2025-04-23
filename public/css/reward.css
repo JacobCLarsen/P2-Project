@@ -5,7 +5,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
+  height: calc(100vh - 80px);
 
   font-size: 30px;
   border-radius: 10px;
