@@ -21,9 +21,11 @@ onmessage = async (e) => {
     );
     console.log("worker ecrypted dictionary", encryptedDictionary);
     
+    // Convert dictionary to base64 to compare with hashes
+    const base64Dictionary = arrayBufferToBase64(encryptDictionary)
 
     //debug: log the two lists, to manually compare
-    console.log(encryptedDictionary);
+    console.log(base64Dictionary);
     console.log(e.data.hashes);
 
     // Step 3: Compare encrypted hashes with target encrypted hashes
@@ -127,4 +129,14 @@ function base64ToArrayBuffer(base64) {
   }
 
   return bytes.buffer;  // Return as ArrayBuffer
+}
+
+// Helper function to go from arraybuffer to base 64
+function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);        
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);            
+  }
+  return btoa(binary);                                 
 }
