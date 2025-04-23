@@ -75,11 +75,15 @@ async function hashDictionary(dictionary) {
 
 // Encrypt a hash using the same RSA-OEAP algorithm as the owner of the task
 function encrypt(publicKey, message) {
-  return WorkerGlobalScope.crypto.subtle.encrypt(
+  // Encode the message so that it is ready for encryption
+  const encoder = new TextEncoder();
+  const encodedMessage = encoder.encode(message);
+
+  return crypto.subtle.encrypt(
     {
       name: "RSA-OAEP",
     },
     publicKey,
-    message
+    encodedMessage
   );
 }
