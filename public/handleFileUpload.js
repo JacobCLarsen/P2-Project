@@ -20,14 +20,14 @@ export async function submitFileUpload(fileList) {
     .then(async (hashes) => {
       // Generate keys for encryption
       // TODO: promt the user to save the private key
-      const Keys = rsaUtils.generateKeyPair();
-      const publicKey = await Keys.publicKey;
+      const Keys = await rsaUtils.generateKeyPair();
+      const publicKey = Keys.publicKey;
       // Encrypt hashes
       const encrypted = await hashEncrypt(hashes, publicKey);
       console.log("Hashes encrypted");
       return { encrypted, publicKey };
     })
-    .then((encryptedHashes, publicKey) => {
+    .then(({ encryptedHashes, publicKey }) => {
       // Upload the hashes to the database
       console.log("uploading encrypted hashes", encryptedHashes);
       uploadFiles(encryptedHashes, publicKey);
@@ -93,10 +93,9 @@ async function uploadFiles(hashes, publicKey) {
 async function hashEncrypt(hashes, publicKey) {
   console.log("public key", publicKey);
 
-  let encryptedHashes = [];
-  hashes.forEach(async (hash) => {
-    encryptedHashes.push(await rsaUtils.encrypt(publicKey, hash));
-  });
+  const encryptedHashes = await Promise.all(
+    hashes.map((hash) => rsaUtils.encrypt(publicKey, hash))
+  );
 
   return encryptedHashes;
 }
