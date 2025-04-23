@@ -91,14 +91,11 @@ async function uploadFiles(hashes, publicKey) {
 
 // Encrypt hashes
 async function hashEncrypt(hashes, publicKey) {
-  // Create a key pair
-  const Keys = rsaUtils.generateKeyPair();
-
   console.log("public key", publicKey);
 
   let encryptedHashes = [];
-  hashes.forEach((hash) => {
-    encryptedHashes.push(rsaUtils.encrypt(publicKey, hash));
+  hashes.forEach(async (hash) => {
+    encryptedHashes.push(await rsaUtils.encrypt(publicKey, hash));
   });
 
   return encryptedHashes;
