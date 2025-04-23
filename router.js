@@ -70,6 +70,16 @@ router.get("/results", (req, res) => {
   res.sendFile(path.join(basePath, "results.html"));
 });
 
+// Route for the Terms & Conditions page
+router.get("/t&c", (req, res) => {
+  res.sendFile(path.join(basePath, "t&c.html"));
+});
+
+// Route for the Privacy Policy page
+router.get("/privacypolicy", (req, res) => {
+  res.sendFile(path.join(basePath, "privacy-policy.html"));
+});
+
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
