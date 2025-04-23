@@ -1,5 +1,4 @@
 // TODO: this shuld instead hash the list of dictionary words and the check for matches after
-// TODO: use encryption with the owners public key
 // TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
 
 // This worker script takes
@@ -24,22 +23,30 @@ onmessage = async (e) => {
 };
 
 async function dictionaryAttack(targetHashes, dictionaryBatch) {
+  // Array to store any weak passwords found
   let weakPasswordArray = [];
-  // "For of" loop that goes through each password of the dictionary.
-  for (let dictionaryWord of dictionaryBatch) {
-    for (let targetHash of targetHashes) {
-      // Hashes the current password and assigns it to the const hashedPassword.
-      const hashedWord = await hashSHA512(dictionaryWord);
-      // If hashedPassword is equal to the target hashed password, then returns correct password
-      if (hashedWord === targetHash) {
-        weakPasswordArray.push(dictionaryWord);
-      }
-    }
-  }
 
+  // Hash the dictionary
+  const hashedDictionary = await hashDictionary(dictionaryBatch);
+
+  // Create a map of target hashes for quick lookup
+  const targetHashSet = new Set(targetHashes);
+
+  // Compare each hashed dictionary word with the target hashes
+  hashedDictionary.forEach((hashedWord, index) => {
+    if (targetHashSet.has(hashedWord)) {
+      weakPasswordArray.push(dictionaryBatch[index]);
+    }
+  });
   return weakPasswordArray;
 }
 
+// Function to hash the dictionary
+async function hashDictionary(dictionary) {
+  return Promise.all(dictionary.map(async (word) => await hashSHA512(word)));
+}
+
+// Helper function to hash a message with SHA-512
 async function hashSHA512(message) {
   // Converts string into binary format
   const encoder = new TextEncoder();
