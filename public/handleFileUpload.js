@@ -75,7 +75,7 @@ async function uploadFiles(hashes, publicKey) {
   }
 
   // Export the publick key to the right format
-  const exportedKey = rsaUtils.exportPublicKey(publicKey)
+  const exportedKey = await rsaUtils.exportPublicKey(publicKey)
   console.log("ready to export key", exportedKey);
   
 
