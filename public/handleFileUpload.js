@@ -3,7 +3,7 @@
 // TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
-import { rsaUtils, publickKey, privateKey } from "./rsaUtilsBrowser.js";
+import { rsaUtils } from "./rsaUtilsBrowser.js";
 
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
@@ -18,15 +18,19 @@ export async function submitFileUpload(fileList) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
   await validateFileUpload(fileList)
     .then((hashes) => {
+      // Generate keys for encryption
+      // TODO: promt the user to save the private key
+      const Keys = rsaUtils.generateKeyPair();
+      const publicKey = Keys.publicKey;
       // Encrypt hashes
-      const encrypted = hashEncrypt(hashes);
+      const encrypted = hashEncrypt(hashes, publicKey);
       console.log("Hashes encrypted");
-      return encrypted;
+      return { encrypted, publicKey };
     })
-    .then((encryptedHashes) => {
+    .then((encryptedHashes, publicKey) => {
       // Upload the hashes to the database
       console.log("uploading encrypted hashes", encryptedHashes);
-      uploadFiles(encryptedHashes);
+      uploadFiles(encryptedHashes, publicKey);
     })
     .catch(() => {
       throw new Error("Invalid file upload");
@@ -57,7 +61,7 @@ export async function validateFileUpload(fileList) {
 
 // ----------- Helper functions------------
 // Upload files
-async function uploadFiles(hashes) {
+async function uploadFiles(hashes, publicKey) {
   console.log("Hashes to upload:", hashes); // Debug log to verify the array
 
   if (!Array.isArray(hashes)) {
@@ -86,12 +90,15 @@ async function uploadFiles(hashes) {
 }
 
 // Encrypt hashes
-async function hashEncrypt(hashes) {
-  console.log("public key", rsaUtils.publicKey);
+async function hashEncrypt(hashes, publicKey) {
+  // Create a key pair
+  const Keys = rsaUtils.generateKeyPair();
+
+  console.log("public key", publicKey);
 
   let encryptedHashes = [];
   hashes.forEach((hash) => {
-    encryptedHashes.push(rsaUtils.encrypt(rsaUtils.publicKey, hash));
+    encryptedHashes.push(rsaUtils.encrypt(publicKey, hash));
   });
 
   return encryptedHashes;
