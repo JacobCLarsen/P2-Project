@@ -11,14 +11,21 @@ const algortihm = "RSA-OAEP";
 
 // rsaUtils is exported and holds function to encrypt and decrypt a message using RSA-OAEP
 export const rsaUtils = {
+  // Encode message into the right format for encryption
+  EncodeMessage: function (message) {
+    let enc = new TextEncoder();
+    return enc.encode(message);
+  },
+
   // Function to encrypt a message using RSA encryption - returns the encrypted message
   encrypt: async function (publicKey, message) {
+    let encodedMessage = rsaUtils.EncodeMessage(message);
     return await window.crypto.subtle.encrypt(
       {
         name: algortihm,
       },
       publicKey,
-      message
+      encodedMessage
     );
   },
 
