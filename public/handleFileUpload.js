@@ -5,6 +5,9 @@
 
 import { rsaUtils } from "./rsaUtilsBrowser.js";
 
+// variable to hold publickey
+let publicKey;
+
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
   if (object.style.display === "none" || object.style.display === "") {
@@ -21,13 +24,13 @@ export async function submitFileUpload(fileList) {
       // Generate keys for encryption
       // TODO: promt the user to save the private key
       const Keys = await rsaUtils.generateKeyPair();
-      const publicKey = Keys.publicKey;
+      publicKey = Keys.publicKey;
       // Encrypt hashes
       const encryptedHashes = await hashEncrypt(hashes, publicKey);
       console.log("Hashes encrypted");
-      return { encryptedHashes, publicKey };
+      return { encryptedHashes };
     })
-    .then(({ encryptedHashes, publicKey }) => {
+    .then(( encryptedHashes ) => {
       // Upload the hashes to the database
       console.log("uploading encrypted hashes", encryptedHashes);
       uploadFiles(encryptedHashes, publicKey);
