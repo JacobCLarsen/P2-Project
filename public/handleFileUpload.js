@@ -100,6 +100,12 @@ async function hashEncrypt(hashes, publicKey) {
   const encryptedHashes = await Promise.all(
     hashes.map((hash) => rsaUtils.encrypt(publicKey, hash))
   );
+
+  const encryptedBase64 = encryptedBuffers.map((buf) =>
+    arrayBufferToBase64(buf)
+  );
+  
+  console.log(encryptedBase64);
   return encryptedHashes;
 }
 
