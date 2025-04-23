@@ -22,7 +22,7 @@ onmessage = async (e) => {
     console.log("worker ecrypted dictionary", encryptedDictionary);
     
     // Convert dictionary to base64 to compare with hashes
-    const base64Dictionary = arrayBufferToBase64(encryptedDictionary)
+    const base64Dictionary = encryptedDictionary.map(word => arrayBufferToBase64(word));
 
     //debug: log the two lists, to manually compare
     console.log(base64Dictionary);
