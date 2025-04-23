@@ -74,7 +74,7 @@ async function hashSHA512(message) {
 }
 // Returns an encrypted dictonary from a hashes dictionary
 async function encryptDictionary(hashedDictionary, publicKey) {
-  return hashedDictionary.map((hashedWord) => encrypt(publicKey, hashedWord));
+  return hashedDictionary.map(async(hashedWord) => await encrypt(publicKey, hashedWord));
 }
 
 // Returns a hased dictionary
@@ -83,7 +83,7 @@ async function hashDictionary(dictionary) {
 }
 
 // Encrypt a hash using the same RSA-OEAP algorithm as the owner of the task
-function encrypt(publicKey, message) {
+async function encrypt(publicKey, message) {
   // Encode the message so that it is ready for encryption
   const encoder = new TextEncoder();
   const encodedMessage = encoder.encode(message);
