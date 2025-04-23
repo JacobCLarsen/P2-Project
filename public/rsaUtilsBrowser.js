@@ -6,10 +6,6 @@ inside of the "worker.js" file.
 For browser use, SubtleCrypto function are available inside of the "window.crypto" property
 */
 
-// Keys for tesing
-const Keys = rsaUtils.generateKeyPair()
-
-
 // Specify the encryption algortihm used is RSA-OAEP
 const algortihm = "RSA-OAEP";
 
@@ -50,4 +46,3 @@ export const rsaUtils = {
     );
   },
 };
-
