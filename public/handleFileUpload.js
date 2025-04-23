@@ -3,7 +3,7 @@
 // TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
-import { rsaUtils, publickKey, privateKey } from "./rsaUtilsBrowser";
+import { rsaUtils, publickKey, privateKey } from "./rsaUtilsBrowser.js";
 
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
