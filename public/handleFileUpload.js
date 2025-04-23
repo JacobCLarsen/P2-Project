@@ -17,13 +17,13 @@ export function toggleVisibility(object, displayStyle) {
 export async function submitFileUpload(fileList) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
   await validateFileUpload(fileList)
-    .then((hashes) => {
+    .then(async (hashes) => {
       // Generate keys for encryption
       // TODO: promt the user to save the private key
       const Keys = rsaUtils.generateKeyPair();
       const publicKey = Keys.publicKey;
       // Encrypt hashes
-      const encrypted = hashEncrypt(hashes, publicKey);
+      const encrypted = await hashEncrypt(hashes, publicKey);
       console.log("Hashes encrypted");
       return { encrypted, publicKey };
     })
