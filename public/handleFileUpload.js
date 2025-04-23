@@ -101,10 +101,10 @@ async function hashEncrypt(hashes, publicKey) {
     hashes.map((hash) => rsaUtils.encrypt(publicKey, hash))
   );
 
-  const encryptedBase64 = encryptedBuffers.map((buf) =>
-    arrayBufferToBase64(buf)
+  const encryptedBase64 = encryptedHashes.map((hash) =>
+    arrayBufferToBase64(hash)
   );
-  
+
   console.log(encryptedBase64);
   return encryptedHashes;
 }
