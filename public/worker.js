@@ -98,16 +98,33 @@ function encrypt(publicKey, message) {
 }
 
 // Function to import the publickey from arraybuffer to cryptoKey format
-async function importPublicKey (exportedPublicKey) {
+async function importPublicKey(exportedPublicKeyBase64) {
+  const exportedPublicKeyArrayBuffer = base64ToArrayBuffer(exportedPublicKeyBase64);  // Convert from base64 to ArrayBuffer
+
+  // Import the ArrayBuffer as a CryptoKey
   const importedKey = await crypto.subtle.importKey(
-    "spki", //Use same format is the export function
-    exportedPublicKey,
+    "spki",  // use same formaet as export in "handleFileUpload.js"
+    exportedPublicKeyArrayBuffer,
     {
-      name: "RSA-OAEP", // Algorithm to use with the key
-      hash: "SHA-256"   // Hash algorithm (or the one used in key generation)
+      name: "RSA-OAEP",  
+      hash: "SHA-256"    
     },
-    true,
-    ["encrypt"] // Usage of the key
+    true,  
+    ["encrypt"]
   );
-  return importedKey;
+
+  return importedKey; // Return key as a CryptoKey
+}
+
+// Helper function to convert base64 to arraybuffer
+function base64ToArrayBuffer(base64) {
+  const binaryString = window.atob(base64);  // Decode base64 string to binary string
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+
+  return bytes.buffer;  // Return as ArrayBuffer
 }
