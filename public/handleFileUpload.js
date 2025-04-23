@@ -23,9 +23,9 @@ export async function submitFileUpload(fileList) {
       const Keys = await rsaUtils.generateKeyPair();
       const publicKey = Keys.publicKey;
       // Encrypt hashes
-      const encrypted = await hashEncrypt(hashes, publicKey);
+      const encryptedHashes = await hashEncrypt(hashes, publicKey);
       console.log("Hashes encrypted");
-      return { encrypted, publicKey };
+      return { encryptedHashes, publicKey };
     })
     .then(({ encryptedHashes, publicKey }) => {
       // Upload the hashes to the database
@@ -96,7 +96,6 @@ async function hashEncrypt(hashes, publicKey) {
   const encryptedHashes = await Promise.all(
     hashes.map((hash) => rsaUtils.encrypt(publicKey, hash))
   );
-
   return encryptedHashes;
 }
 
