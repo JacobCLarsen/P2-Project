@@ -3,6 +3,7 @@
 // TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
+import { log } from "console";
 import { rsaUtils } from "./rsaUtilsBrowser.js";
 
 // variable to hold publickey
@@ -76,6 +77,8 @@ async function uploadFiles(hashes, publicKey) {
 
   // Export the publick key to the right format
   const exportedKey = rsaUtils.exportPublicKey(publicKey)
+  console.log("ready to export key", exportedKey);
+  
 
   // Export hashes to base64
   const base64Hashes = hashes.map(hash => rsaUtils.arrayBufferToBase64(hash));
@@ -110,21 +113,11 @@ async function hashEncrypt(hashes, publicKey) {
   );
 
   const encryptedBase64 = encryptedHashes.map((hash) =>
-    arrayBufferToBase64(hash)
+    rsaUtils.arrayBufferToBase64(hash)
   );
 
   console.log(encryptedBase64);
   return encryptedHashes;
-}
-
-// Arraybuffertobase64 function
-function arrayBufferToBase64(buffer) {
-  let binary = "";
-  const bytes = new Uint8Array(buffer);
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
 }
 
 // Chech length of hashes
