@@ -76,7 +76,7 @@ router.post("/startwork", (req, res) => {
   console.log("Request file:", req.body.hashes);
 
   const hashes = req.body.hashes;
-  const publicKey = importPublicKey(req.body.publicKey);
+  const publicKey = req.body.publicKey;
 
   if (!hashes) {
     return res.status(400).json({ error: "No file uploaded" });
