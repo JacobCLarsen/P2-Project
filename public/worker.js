@@ -6,15 +6,21 @@ onmessage = async (e) => {
 
     //Import the publick key
     const publicKey = await importPublicKey(e.data.encryptionKey)
+    console.log("key received by worker", publicKey);
+    
 
     // Step 1: Hash the dictionary
     const hashedDictionary = await hashDictionary(e.data.dictionary);
+    console.log("worker hashed dictionary", hashDictionary);
+    
 
     // Step 2: Encrypt each hashed word in the dictionary using the public key
     const encryptedDictionary = await encryptDictionary(
       hashedDictionary,
       publicKey
     );
+    console.log("worker ecrypted dictionary", encryptedDictionary);
+    
 
     //debug: log the two lists, to manually compare
     console.log(encryptedDictionary);

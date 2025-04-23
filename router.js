@@ -1,14 +1,11 @@
 import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
 import { authenticateJWT } from "./middleware_jwt.js";
 
 // Import function from other files
 import { createTask } from "./createTask.js";
-import { startNewTask } from "./startNewtask.js";
-import { log } from "console";
-
+import { rsaUtils } from "./public/rsaUtilsBrowser.js";
 // Add a socket connection to the router page
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
 
@@ -79,7 +76,7 @@ router.post("/startwork", (req, res) => {
   console.log("Request file:", req.body.hashes);
 
   const hashes = req.body.hashes;
-  const publicKey = req.body.publicKey;
+  const publicKey = importPublicKey(req.body.publicKey);
 
   if (!hashes) {
     return res.status(400).json({ error: "No file uploaded" });
