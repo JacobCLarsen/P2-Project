@@ -74,10 +74,13 @@ async function hashSHA512(message) {
     .join("");
   return hashHex;
 }
-// Returns an encrypted dictonary from a hashes dictionary
 async function encryptDictionary(hashedDictionary, publicKey) {
-  return hashedDictionary.map(async(hashedWord) => await encrypt(publicKey, hashedWord));
+  const encryptedPromises = hashedDictionary.map((hashedWord) =>
+    encrypt(publicKey, hashedWord)
+  );
+  return Promise.all(encryptedPromises); // return completed encryptions
 }
+
 
 // Returns a hased dictionary
 async function hashDictionary(dictionary) {
