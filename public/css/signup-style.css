@@ -85,4 +85,7 @@ h2 {
 .footer a:hover {
   text-decoration: underline;
 }
+#checkbox {
+  font-size: 9rem;
+}
   
