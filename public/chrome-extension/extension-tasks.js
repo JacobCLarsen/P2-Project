@@ -1,5 +1,5 @@
 // Function for fetching tasks
-import { clientId } from "../workerpage-script";
+import { clientId } from "../js/workerpage-script.js";
 
 export function fetchTask(mySocket) {
     let message = {
