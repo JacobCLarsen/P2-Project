@@ -28,7 +28,7 @@ export function connectToDatabase() {
 
     // Create "results" table
     const createPasswordsTable = `
-            CREATE TABLE passwords (
+            CREATE TABLE IF NOT EXISTS passwords (
               id INT AUTO_INCREMENT PRIMARY KEY, -- Password ID
               password VARCHAR(255) NOT NULL, -- Password hash
               user_id INT NOT NULL, -- User ID
