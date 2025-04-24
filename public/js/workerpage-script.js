@@ -25,7 +25,7 @@ import {
 
 // use socket object from require auth and set a clientId
 const mySocket = socket;
-export const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
+const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
 // variable to keep track of worker state locally
 let workerActiveStatus;
