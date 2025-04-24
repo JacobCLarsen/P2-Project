@@ -4,9 +4,6 @@ const startBtnText = document.getElementById("startBtnContent");
 const startBtnLoad = document.getElementById("startBtnLoad");
 const messageBox = document.getElementById("messageBox");
 const taskQueue = document.getElementById("taskqueue");
-const taskResults = document.getElementById("taskResults");
-const statusMessage = document.getElementById("workstatus");
-const plusTabBtn = document.getElementById("plus-tab-btn");
 const importTaskBtn = document.getElementById("addUsertaskBtn");
 const uploadContainer = document.getElementById("uploadFormContainer");
 const uploadForm = document.getElementById("uploadForm");
@@ -16,18 +13,22 @@ const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
+// Import the socket connection to the server
 import { socket } from "./requireAuth.js";
 
-// Import helper function
+// Import helper functions to upload files
 import {
   toggleVisibility,
   validateFileUpload,
   submitFileUpload,
 } from "./handleFileUpload.js";
 
-const mySocket = socket; // use socket object from require auth
-
+// use socket object from require auth and set a clientId
+const mySocket = socket;
 export const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
+
+// variable to keep track of worker state locally
+let workerActiveStatus;
 
 // Send the name to the server after connecting
 mySocket.addEventListener("open", (event) => {
@@ -59,13 +60,9 @@ importTaskBtn.addEventListener("click", () => {
   toggleVisibility(uploadContainer, "block");
 });
 
-// Eventlistener for the file upload form
-// On change
+// Eventlistener for the file upload form to validate files and display the number of hashes "onChange"
 uploadForm.addEventListener("change", async (e) => {
   const fileList = e.target.files;
-
-  // Debugging
-  console.log("Files selected:", fileList);
 
   // Check if hashes are valid, and return any valid hashes
   let validHashes = await validateFileUpload(fileList)
@@ -164,23 +161,25 @@ function fetchTask() {
 
 // Start working involves, fetching a task, creating a worker to complete the task and sending the result back to the server
 async function startWork(subTask) {
-  const myWorker = new Worker("worker.js");
+  const myWorker = new Worker("./js/worker.js");
   console.log("worker connected!");
   myWorker.postMessage(subTask);
   console.log(
     "Message containing a dictionary batch and hashes send to the worker"
   );
 
+  // When message received from the web worker send a mesage with task result to the server
   myWorker.onmessage = async (e) => {
     let taskresult = {
       action: "send result",
       result: e.data,
       taskId: subTask.id,
     };
-    
+
     console.log("Message received from worker:", e.data);
     myWorker.terminate();
 
+    // Dislay the completed task on the webpage
     let item = document.createElement("li");
     item.innerText = `You completed task ${subTask.id} with result ${
       e.data ? e.data : "no weak passwords"
@@ -189,7 +188,11 @@ async function startWork(subTask) {
     latestCompletedTask.append(item);
 
     mySocket.send(JSON.stringify(taskresult));
-    fetchTask(); // Fetch a new task after sending the result to the server
+
+    // If worker status is still active after completing a task, fetch a new task from the server
+    if (workerActiveStatus) {
+      fetchTask(); // Fetch a new task after sending the result to the server
+    }
   };
 }
 
@@ -270,9 +273,11 @@ startBtn.addEventListener("click", function () {
   }
 });
 
-// Set the working state to active
+// Set the working state to active locally and on the server
 function setStateActive() {
+  workerActiveStatus = true; // Change active status locally
   let message = {
+    // Change status on the server
     action: "start work",
     data: null,
     id: clientId,
@@ -282,7 +287,9 @@ function setStateActive() {
 
 // Set the working state to inactive
 function setStateInactive() {
+  workerActiveStatus = false; // Change active status locally
   let message = {
+    // Change status on the server
     action: "stop work",
     data: null,
     id: clientId,

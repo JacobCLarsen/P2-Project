@@ -1,6 +1,5 @@
-
-const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
-
+// Define URL for websocket connection "ws(n)" corresponds to node (n)
+const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
 
 document.documentElement.style.display = "none"; // Hide the page intitially
 
@@ -10,8 +9,9 @@ function redirectToLogin() {
   window.location.href = `${basePath}/login`;
 }
 
+// When the page is opened log a succes message
 socket.addEventListener("open", () => {
-  console.log("WebSocket connected");
+  console.log("Succes: WebSocket connected");
 
   // Authenticate immediately if token exists
   const token = localStorage.getItem("token");
@@ -23,6 +23,7 @@ socket.addEventListener("open", () => {
   }
 });
 
+// Handles incomming message from the server with authentication status
 socket.addEventListener("message", (event) => {
   const response = JSON.parse(event.data);
 
