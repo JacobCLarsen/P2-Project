@@ -239,7 +239,7 @@ function handleConnection(ws, message) {
 
 // When a client start working, update the dashboard
 function handleStartWork(ws) {
-  console.log(`${message.id} started working`);
+  console.log(`${ws.id} started working`);
 
   // Add the worker WebSocket to the activeWorkers array
   if (!activeWorkers.includes(ws)) {
