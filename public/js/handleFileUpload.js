@@ -1,6 +1,8 @@
 // TODO: Add a way to track wich user uploaded a task, to store the results in a database with their id. The user can then reference their results at a later time
 // TODO: Be able to drag and drop files into a box to upload
 
+import e from "cors";
+
 // Function to toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
   if (object.style.display === "none" || object.style.display === "") {
@@ -20,8 +22,8 @@ export async function submitFileUpload(fileList) {
       console.log("uploading hashes", cleanHashes);
       uploadFiles(cleanHashes);
     })
-    .catch(() => {
-      throw new Error("Invalid file upload");
+    .catch((err) => {
+      throw new Error("Invalid file upload - error:", err);
     });
 }
 
