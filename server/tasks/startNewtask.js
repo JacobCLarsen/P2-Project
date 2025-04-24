@@ -1,4 +1,5 @@
-import { splitDictionary, dictionaryPath } from "./split-dictionary.js";
+import { splitDictionary, dictionaryPath } from "./split-dictionary.js"; // Corrected path
+
 // Create class to represent a subtask
 // Is is constructed with a dictionary batch and a list of hashes to crack
 class SubTask {
