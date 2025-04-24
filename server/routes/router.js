@@ -22,57 +22,57 @@ const basePath = path.join(__dirname, "../../public/html"); // Going up one leve
 
 // Define a route for the home page
 router.get("/", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/login.html"));
+  res.sendFile(path.join(basePath, "login.html"));
 });
 
 // Route for the login page
 router.get("/login", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/login.html"));
+  res.sendFile(path.join(basePath, "login.html"));
 });
 
 // Route for the worker page
 router.get("/startwork", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/workerpage.html"));
+  res.sendFile(path.join(basePath, "workerpage.html"));
 });
 
 // Route for the profile page
 router.get("/profile", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/profile.html"));
+  res.sendFile(path.join(basePath, "profile.html"));
 });
 
 // Route for the signup page
 router.get("/signup", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/signup.html"));
+  res.sendFile(path.join(basePath, "public/signup.html"));
 });
 
 // Route for the dashboard page
 router.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/dashboard.html"));
+  res.sendFile(path.join(basePath, "public/dashboard.html"));
 });
 
 // Route for the converter page
 router.get("/converter", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/converter.html"));
+  res.sendFile(path.join(basePath, "public/converter.html"));
 });
 
 // Route for the leaderboard page
 router.get("/leaderboard", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/reward.html"));
+  res.sendFile(path.join(basePath, "public/reward.html"));
 });
 
 // Route for the client/ user my weak passwords page
 router.get("/results", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/results.html"));
+  res.sendFile(path.join(basePath, "public/results.html"));
 });
 
 // Route for the Terms & Conditions page
 router.get("/t&c", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/t&c.html"));
+  res.sendFile(path.join(basePath, "public/t&c.html"));
 });
 
 // Route for the Privacy Policy page
 router.get("/privacypolicy", (req, res) => {
-  res.sendFile(path.join(basePath, "../../public/privacy-policy.html"));
+  res.sendFile(path.join(basePath, "public/privacy-policy.html"));
 });
 
 // -------------- Post requests --------------
