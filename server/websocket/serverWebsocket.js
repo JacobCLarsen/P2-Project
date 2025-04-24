@@ -173,43 +173,32 @@ function handleRequestTask(ws) {
 
   // If there are no more subtasks for the current task, start working on the next task in the main queue
   if (currentTaskQueue.length === 0) {
-    console.log("No more tasks in current queue, checking main queue...");
+    console.log("no more tasks in current queue, checking main queue ... ");
     if (mainTaskQueue.length === 0) {
       // If no more tasks, print a message and let the users know
       console.log("No more tasks in the main queue");
       ws.send(JSON.stringify({ action: "no more tasks" }));
-      return;
     } else {
       console.log("Task found - starting new task from main queue");
       let task = mainTaskQueue[0];
       currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
-      console.log(`Set currentQueue to contain subtasks from task ${task.id}`);
+      console.log(`set currentQueue to contain subtasks from task ${task.id}`);
     }
   }
 
   // Remove the task from the top of the queue and send it to the user
   if (currentTaskQueue.length > 0) {
-    console.log("Tasks found in current queue");
-
-    // Get the next task
+    console.log("tasks found in current queue");
     let taskToSend = currentTaskQueue.shift();
-
-    // Check if the task is already in the taskWaitingForResult array
-    if (taskWaitingForResult.some((task) => task.id === taskToSend.id)) {
-      console.log(`Task ${taskToSend.id} is already assigned to another worker`);
-      return;
-    }
-
-    // Add the task to the taskWaitingForResult array
     taskWaitingForResult.push(taskToSend);
-
-    // Send the task to the worker
     let taskMessage = {
       action: "new task",
       subTask: taskToSend,
     };
 
+    // Send the message to the client
     ws.send(JSON.stringify(taskMessage));
+
     console.log(`Task ${taskToSend.id} sent to the user`);
   } else {
     console.log("No tasks available in the current task queue to send.");
@@ -275,19 +264,7 @@ function handleStopWork(ws) {
 // TODO: Add a check to see if the task was completed correctly or not
 // TODO: Check if all subtasks have been completed
 function handleResultReceived(message) {
-  console.log(`Result received for task ID: ${message.taskId}`);
-
-  // Find the matching task in the taskWaitingForResult array
-  let matchingTask = taskWaitingForResult.find(
-    (task) => task.id === message.taskId
-  );
-
-  if (!matchingTask) {
-    console.log(`No matching task found with ID ${message.taskId}.`);
-    return;
-  }
-
-  // Log the result
+  // Log result to the user
   if (!message.result) {
     console.log(
       `Result received from the worker: No passwords found in subtask: ${message.taskId}`
@@ -296,36 +273,53 @@ function handleResultReceived(message) {
     console.log(`Result from worker received: ${message.result}`);
   }
 
-  // Mark the task as completed
-  matchingTask.complete();
-
-  // Remove the task from the taskWaitingForResult array
-  taskWaitingForResult = taskWaitingForResult.filter(
-    (task) => task.id !== matchingTask.id
+  // Scan the currentTaskQueue for a matching task ID and mark completed
+  let matchingTask = taskWaitingForResult.find(
+    (task) => task.id === message.taskId
   );
 
-  // Push results to the task object's array for results
-  if (message.result) {
-    mainTaskQueue[0].results.push(message.result);
+  if (matchingTask) {
+    // Check if the task was completed already for chatching erroes
+    if (matchingTask.completed === 1) {
+      console.log(`ERROR: Task ${matchingTask.id} was already completed`);
+    } else {
+      // Call complete() on the matching subtask
+      matchingTask.complete();
+
+      // Remove from taskWatingForResult
+      taskWaitingForResult = taskWaitingForResult.filter(
+        (task) => task.id !== matchingTask.id
+      );
+
+      // Push results to the task object's array for results
+      if (message.result) {
+        mainTaskQueue[0].results.push(message.result);
+      }
+
+      // Update the number of completed subtasks of the main task
+      mainTaskQueue[0].subTasksCompleted++;
+
+      // If the whole task is now completed
+      if (
+        mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
+      ) {
+        // Use this completed task and store it somewhere
+        let completed_task = mainTaskQueue.shift();
+        console.log(
+          `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
+        );
+
+        // Send the results of the task to the server
+        storeResult(completed_task);
+      }
+    }
+
+    console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+  } else {
+    console.log(`No matching task found with ID ${message.taskId}.`);
   }
 
-  // Update the number of completed subtasks of the main task
-  mainTaskQueue[0].subTasksCompleted++;
-
-  // If the whole task is now completed
-  if (
-    mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
-  ) {
-    let completedTask = mainTaskQueue.shift();
-    console.log(
-      `Task was completed with id: ${completedTask.id} and result ${completedTask.results}`
-    );
-
-    // Send the results of the task to the server
-    storeResult(completedTask);
-  }
-
-  console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+  completedTaskCount++;
   updateTaskQueue();
   updateCompletedTasks();
 }
