@@ -14,13 +14,14 @@ function splitDictionary(filePath, numberBatches) {
   const batchSize = Math.ceil(lines.length / numberBatches);
   const batches = [];
 
+  // Split the task into batches of a given size
   for (let i = 0; i < numberBatches; i++) {
     const start = i * batchSize;
     const end = start + batchSize;
     batches.push(lines.slice(start, end));
   }
 
-  return batches;
+  return batches; 
 }
 
 // Export the splitTasks function and activeWorkers for use in serverWebsocket
