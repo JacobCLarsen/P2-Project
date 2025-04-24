@@ -22,7 +22,7 @@ export function WebsocketListen(ws, wss) {
 
     switch (message.action) {
       case "connect":
-        handleConnection(ws);
+        handleConnection(ws, message);
         break;
 
       case "request task":
@@ -206,7 +206,7 @@ function handleRequestTask(ws) {
 }
 
 // When a socket sonnects, sets it's id on the serer and update "workerclients[]" and "dashboardclients[]"
-function handleConnection(ws) {
+function handleConnection(ws, message) {
   ws.id = message.id;
   console.log(
     `Client connected with id: ${message.id} and role: ${message.role}`
