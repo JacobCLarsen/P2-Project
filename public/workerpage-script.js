@@ -27,7 +27,7 @@ import {
 
 const mySocket = socket; // use socket object from require auth
 
-const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
+export const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
 // Send the name to the server after connecting
 mySocket.addEventListener("open", (event) => {
