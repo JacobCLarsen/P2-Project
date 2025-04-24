@@ -9,7 +9,7 @@ function redirectToLogin() {
   window.location.href = `${basePath}/login`;
 }
 
-// When the page is opened log a succes message 
+// When the page is opened log a succes message
 socket.addEventListener("open", () => {
   console.log("Succes: WebSocket connected");
 
