@@ -1,5 +1,5 @@
 import mysql from "mysql";
-import { authenticateJWT } from "./middleware_jwt.js";
+import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
 
 // Database connection configuration
 const DBConnection = mysql.createConnection({

@@ -1,7 +1,7 @@
-import { authenticateJWT } from "./middleware_jwt.js";
-import { Task } from "./createTask.js";
-import { startNewTask } from "./startNewtask.js";
-import { storeResult } from "./storeResults.js";
+import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
+import { Task } from "../tasks/createTask.js"; // Corrected path
+import { startNewTask } from "../tasks/startNewtask.js"; // Corrected path
+import { storeResult } from "../database/storeResults.js"; // Corrected path
 
 // Keep track of online users and client roles
 let workerClientns = [];

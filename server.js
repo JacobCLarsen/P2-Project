@@ -1,26 +1,26 @@
 /* ----- IMPORTS ----- */
 // TODO; We should use node Fetch
 
-// Core modules
+// Core Modules
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Third-party modules
+// Third-Party Modules
 import express from "express";
 import { createServer } from "http";
 
-// Custom modules
-import router from "./router.js";
-import { setupAuth } from "./setupAuth.js";
+// Custom Modules
+import router from "./server/routes/router.js"; // Updated path
+import { setupAuth } from "./server/routes/setupAuth.js"; // Updated path
 
 import { WebSocketServer } from "ws";
-import { WebsocketListen } from "./serverWebsocket.js";
+import { WebsocketListen } from "./server/websocket/serverWebsocket.js"; // Updated path
 
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
-} from "./databaseConnection.js";
-import { storeResults } from "./storeResults.js";
+} from "./server/database/databaseConnection.js"; // Updated path
+import { storeResults } from "./server/database/storeResults.js"; // Updated path
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
