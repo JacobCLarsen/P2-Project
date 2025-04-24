@@ -264,59 +264,64 @@ function handleStopWork(ws) {
 // TODO: Add a check to see if the task was completed correctly or not
 // TODO: Check if all subtasks have been completed
 function handleResultReceived(message) {
-  // Log result to the user
-  if (!message.result) {
-    console.log(
-      `Result received from the worker: No passwords found in subtask: ${message.taskId}`
-    );
+  const { taskId, result } = message;
+
+  console.log(`Result received for task ID: ${taskId}`);
+
+  if (!result) {
+    console.log(`No passwords found in subtask: ${taskId}`);
   } else {
-    console.log(`Result from worker received: ${message.result}`);
+    console.log(`Result from worker: ${result}`);
   }
 
-  // Scan the currentTaskQueue for a matching task ID and mark completed
-  let matchingTask = taskWaitingForResult.find(
-    (task) => task.id === message.taskId
+  // Try to find the matching subtask
+  const matchingTask = taskWaitingForResult.find((task) => task.id === taskId);
+
+  if (!matchingTask) {
+    console.warn(`⚠️ No matching task found for ID: ${taskId}`);
+    return;
+  }
+
+  if (matchingTask.completed === 1) {
+    console.error(`❌ ERROR: Task ${taskId} was already completed.`);
+    return;
+  }
+
+  matchingTask.complete();
+
+  // Remove from waiting list
+  taskWaitingForResult = taskWaitingForResult.filter(
+    (task) => task.id !== taskId
+  );
+  console.log(`✅ Subtask with ID ${taskId} marked as complete.`);
+
+  // Push result to corresponding main task
+  const parentTask = mainTaskQueue.find(
+    (task) => task.subTaskIds && task.subTaskIds.includes(taskId)
   );
 
-  if (matchingTask) {
-    // Check if the task was completed already for chatching erroes
-    if (matchingTask.completed === 1) {
-      console.log(`ERROR: Task ${matchingTask.id} was already completed`);
-    } else {
-      // Call complete() on the matching subtask
-      matchingTask.complete();
+  if (!parentTask) {
+    console.error(`❌ Could not find parent task for subtask ${taskId}`);
+    return;
+  }
 
-      // Remove from taskWatingForResult
-      taskWaitingForResult = taskWaitingForResult.filter(
-        (task) => task.id !== matchingTask.id
-      );
+  if (result) parentTask.results.push(result);
+  parentTask.subTasksCompleted++;
 
-      // Push results to the task object's array for results
-      if (message.result) {
-        mainTaskQueue[0].results.push(message.result);
-      }
+  console.log(
+    `Main task ${parentTask.id}: ${parentTask.subTasksCompleted}/${parentTask.numberBatches} completed.`
+  );
 
-      // Update the number of completed subtasks of the main task
-      mainTaskQueue[0].subTasksCompleted++;
-
-      // If the whole task is now completed
-      if (
-        mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
-      ) {
-        // Use this completed task and store it somewhere
-        let completed_task = mainTaskQueue.shift();
-        console.log(
-          `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
-        );
-
-        // Send the results of the task to the server
-        storeResult(completed_task);
-      }
-    }
-
-    console.log(`Subtask with ID ${message.taskId} marked as complete.`);
-  } else {
-    console.log(`No matching task found with ID ${message.taskId}.`);
+  if (parentTask.subTasksCompleted === parentTask.numberBatches) {
+    const completedTask = mainTaskQueue.splice(
+      mainTaskQueue.indexOf(parentTask),
+      1
+    )[0];
+    console.log(
+      `🎉 Task ${completedTask.id} completed. Results:`,
+      completedTask.results
+    );
+    storeResult(completedTask);
   }
 
   completedTaskCount++;
