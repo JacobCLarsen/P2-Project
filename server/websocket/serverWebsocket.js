@@ -22,7 +22,7 @@ export function WebsocketListen(ws, wss) {
 
     switch (message.action) {
       case "connect":
-        handleConnection(ws);
+        handleConnection(ws, message); // Pass the message object here
         break;
 
       case "request task":
@@ -30,7 +30,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "start work":
-        handleStartWork(ws, message); 
+        handleStartWork(ws, message);
         break;
 
       case "stop work":
@@ -202,7 +202,7 @@ function handleRequestTask(ws) {
 }
 
 // When a socket sonnects, sets it's id on the serer and update "workerclients[]" and "dashboardclients[]"
-function handleConnection(ws) {
+function handleConnection(ws, message) {
   ws.id = message.id;
   console.log(
     `Client connected with id: ${message.id} and role: ${message.role}`
@@ -226,7 +226,7 @@ function handleConnection(ws) {
     }
     ws.send(JSON.stringify({ action: "updateQueue", queue: mainTaskQueue }));
   } else {
-    console.log("User tried to connect with unknow role. Kicking....");
+    console.log("User tried to connect with unknown role. Kicking...");
     ws.close();
   }
 
