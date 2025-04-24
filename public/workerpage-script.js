@@ -54,7 +54,7 @@ window.addEventListener("beforeunload", () => {
   }
 });
 
-// Evenetlistener for the "import task butten", which lets a user upload a file with hashed passwords to crack
+// Evenetlistener for the "import task botten", which lets a user upload a file with hashed passwords to crack
 importTaskBtn.addEventListener("click", () => {
   toggleVisibility(uploadContainer, "block");
 });
