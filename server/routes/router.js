@@ -42,37 +42,37 @@ router.get("/profile", (req, res) => {
 
 // Route for the signup page
 router.get("/signup", (req, res) => {
-  res.sendFile(path.join(basePath, "public/signup.html"));
+  res.sendFile(path.join(basePath, "signup.html"));
 });
 
 // Route for the dashboard page
 router.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(basePath, "public/dashboard.html"));
+  res.sendFile(path.join(basePath, "dashboard.html"));
 });
 
 // Route for the converter page
 router.get("/converter", (req, res) => {
-  res.sendFile(path.join(basePath, "public/converter.html"));
+  res.sendFile(path.join(basePath, "converter.html"));
 });
 
 // Route for the leaderboard page
 router.get("/leaderboard", (req, res) => {
-  res.sendFile(path.join(basePath, "public/reward.html"));
+  res.sendFile(path.join(basePath, "reward.html"));
 });
 
 // Route for the client/ user my weak passwords page
 router.get("/results", (req, res) => {
-  res.sendFile(path.join(basePath, "public/results.html"));
+  res.sendFile(path.join(basePath, "results.html"));
 });
 
 // Route for the Terms & Conditions page
 router.get("/t&c", (req, res) => {
-  res.sendFile(path.join(basePath, "public/t&c.html"));
+  res.sendFile(path.join(basePath, "t&c.html"));
 });
 
 // Route for the Privacy Policy page
 router.get("/privacypolicy", (req, res) => {
-  res.sendFile(path.join(basePath, "public/privacy-policy.html"));
+  res.sendFile(path.join(basePath, "privacy-policy.html"));
 });
 
 // -------------- Post requests --------------
