@@ -8,6 +8,7 @@ let workerClientns = [];
 let activeWorkers = [];
 let dashboardClients = [];
 let completedTaskCount = 0;
+let weakPasswordcount = 0;
 let mainTaskQueue = [];
 let currentTaskQueue = [];
 let taskWaitingForResult = [];
@@ -110,7 +111,8 @@ function updateCompletedTasks() {
       client.send(
         JSON.stringify({
           action: "updateCompletedTasks",
-          count: completedTaskCount,
+          completedCount: completedTaskCount,
+          weakPasswordCount: weakPasswordcount,
         })
       );
     }
@@ -124,6 +126,7 @@ function loadDashBoard(ws) {
       onlineClients: workerClientns.length,
       workers: activeWorkers.length,
       completedTasks: completedTaskCount,
+      weakPasswordCount: weakPasswordcount,
     })
   );
 }
@@ -271,6 +274,9 @@ function handleResultReceived(message) {
     );
   } else {
     console.log(`Result from worker received: ${message.result}`);
+
+    // Update weakPasswordsFoundCounter for dashboard.html
+    weakPasswordcount += message.result.length;
   }
 
   // Scan the currentTaskQueue for a matching task ID and mark completed
