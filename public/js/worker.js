@@ -1,6 +1,3 @@
-// TODO: this shuld instead hash the list of dictionary words and the check for matches after
-// TODO: Implement the websocket logic directly inside of the webworker, to have the webworker send back the result directly to the server
-
 // This worker script takes
 onmessage = async (e) => {
   console.log("Message received from main script:");
@@ -32,8 +29,6 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
   // Log each set for debugging
   console.log("dictionary:", hashedDictionary);
   console.log("hashes:", targetHashes);
-  
-  
 
   // Create a map of target hashes for quick lookup
   const targetHashSet = new Set(targetHashes);
@@ -54,15 +49,10 @@ async function hashDictionary(dictionary) {
 
 // Helper function to hash a message with SHA-512
 async function hashSHA512(message) {
-  // Converts string into binary format
-  const encoder = new TextEncoder();
-  // Transfors the text into bytes
-  const data = encoder.encode(message);
-  // Computes the SHA-512 hash of the input
-  const hashBuffer = await crypto.subtle.digest("SHA-512", data);
-  // Converts hashBuffer to hex string
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  // Converts each byte into hexadecimal
+  const encoder = new TextEncoder(); // Converts string into binary format
+  const data = encoder.encode(message); // Transfors the text into bytes
+  const hashBuffer = await crypto.subtle.digest("SHA-512", data); // Computes the SHA-512 hash of the input
+  const hashArray = Array.from(new Uint8Array(hashBuffer)); // Converts hashBuffer to hex string
   const hashHex = hashArray
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");

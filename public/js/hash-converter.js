@@ -1,3 +1,4 @@
+// Import the hash function 
 import { hashSHA512 } from "./hash-functions.js";
 
 const copyBtn = document.getElementById("copy-btn");
