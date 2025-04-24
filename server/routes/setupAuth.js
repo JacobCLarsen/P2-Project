@@ -2,7 +2,7 @@
 // - Import the Express framework for creating a web server
 // - Import the database connection
 import express from "express";
-import DBConnection from "./databaseConnection.js";
+import DBConnection from "../database/databaseConnection.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
