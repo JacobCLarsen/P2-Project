@@ -295,21 +295,9 @@ function handleResultReceived(message) {
       if (message.result) {
         if (mainTaskQueue[0].result) {
           mainTaskQueue[0].results.push(message.result);
-        } else {
-          console.log(
-            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
-          );
-        }
-      } else {
-        console.log(
-          `no result in message, task ${message.taskId} not marked as completed`
-        );
-      }
+          mainTaskQueue[0].subTasksCompleted++; //Increment the number of completed subtasks in the main task
 
-      // Update the number of completed subtasks of the main task
-      mainTaskQueue[0].subTasksCompleted++;
-
-      // If the whole task is now completed
+          // If the whole task is now completed
       if (
         mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
       ) {
@@ -332,6 +320,19 @@ function handleResultReceived(message) {
   completedTaskCount++;
   updateTaskQueue();
   updateCompletedTasks();
+        } else {
+          console.log(
+            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
+          );
+        }
+      } else {
+        console.log(
+          `no result in message, task ${message.taskId} not marked as completed`
+        );
+      }
+
+
+    
 }
 
 // When a socket disconnects (closes the browser tap), remove them from arays and update the dashboard
