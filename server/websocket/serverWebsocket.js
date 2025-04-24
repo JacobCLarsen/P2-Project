@@ -298,17 +298,28 @@ function handleResultReceived(message) {
           mainTaskQueue[0].subTasksCompleted++; //Increment the number of completed subtasks in the main task
 
           // If the whole task is now completed
-      if (
-        mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
-      ) {
-        // Use this completed task and store it somewhere
-        let completed_task = mainTaskQueue.shift();
-        console.log(
-          `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
-        );
+          if (
+            mainTaskQueue[0].subTasksCompleted ===
+            mainTaskQueue[0].numberBatches
+          ) {
+            // Use this completed task and store it somewhere
+            let completed_task = mainTaskQueue.shift();
+            console.log(
+              `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
+            );
 
-        // Send the results of the task to the server
-        storeResult(completed_task);
+            // Send the results of the task to the server
+            storeResult(completed_task);
+          }
+        } else {
+          console.log(
+            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
+          );
+        }
+      } else {
+        console.log(
+          `no result in message, task ${message.taskId} not marked as completed`
+        );
       }
     }
 
@@ -320,19 +331,6 @@ function handleResultReceived(message) {
   completedTaskCount++;
   updateTaskQueue();
   updateCompletedTasks();
-        } else {
-          console.log(
-            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
-          );
-        }
-      } else {
-        console.log(
-          `no result in message, task ${message.taskId} not marked as completed`
-        );
-      }
-
-
-    
 }
 
 // When a socket disconnects (closes the browser tap), remove them from arays and update the dashboard
