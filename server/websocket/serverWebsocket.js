@@ -1,6 +1,6 @@
-import { authenticateJWT } from "./middleware_jwt.js";
-import { Task } from "./createTask.js";
-import { startNewTask } from "./startNewtask.js";
+import { authenticateJWT } from "../middleware/middleware_jwt.js";
+import { Task } from "../tasks/createTask.js";
+import { startNewTask } from "../../startNewtask.js";
 import { storeResult } from "./storeResults.js";
 
 // Keep track of online users and client roles

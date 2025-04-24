@@ -2,11 +2,11 @@ import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import { authenticateJWT } from "./middleware_jwt.js";
+import { authenticateJWT } from "../middleware/middleware_jwt.js";
 
 // Import function from other files
-import { createTask } from "./createTask.js";
-import { startNewTask } from "./startNewtask.js";
+import { createTask } from "../tasks/createTask.js";
+import { startNewTask } from "../../startNewtask.js";
 
 // Add a socket connection to the router page
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
