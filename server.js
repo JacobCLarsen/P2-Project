@@ -10,17 +10,17 @@ import express from "express";
 import { createServer } from "http";
 
 // Custom Modules
-import router from "server\routes\router.js"; //./router.js OLD
-import { setupAuth } from "./setupAuth.js";
+import router from "./server/routes/router.js"; // Updated path
+import { setupAuth } from "./server/routes/setupAuth.js"; // Updated path
 
 import { WebSocketServer } from "ws";
-import { WebsocketListen } from "./serverWebsocket.js";
+import { WebsocketListen } from "./server/websocket/serverWebsocket.js"; // Updated path
 
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
-} from "./databaseConnection.js";
-import { storeResults } from "./storeResults.js";
+} from "./server/database/databaseConnection.js"; // Updated path
+import { storeResults } from "./server/database/storeResults.js"; // Updated path
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -44,7 +44,7 @@ app.use("/", router);
 
 // Websockets:
 
-const wss = new WebSocketServer({ port: 4311 });
+const wss = new WebSocketServer({ port: 4312 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -72,11 +72,11 @@ app.get("/", (req, res) => {
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3311;
+  const PORT = 3312;
 
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
-      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node1/"
+      "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node2/"
     );
   });
 } else if (x === 2) {
