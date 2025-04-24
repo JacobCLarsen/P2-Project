@@ -293,7 +293,17 @@ function handleResultReceived(message) {
 
       // Push results to the task object's array for results
       if (message.result) {
-        mainTaskQueue[0].results.push(message.result);
+        if (mainTaskQueue[0].result) {
+          mainTaskQueue[0].results.push(message.result);
+        } else {
+          console.log(
+            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
+          );
+        }
+      } else {
+        console.log(
+          `no result in message, task ${message.taskId} not marked as completed`
+        );
       }
 
       // Update the number of completed subtasks of the main task
