@@ -6,7 +6,7 @@ import { authenticateJWT } from "../middleware/middleware_jwt.js";
 
 // Import function from other files
 import { createTask } from "../tasks/createTask.js";
-import { startNewTask } from "../../startNewtask.js";
+import { startNewTask } from "../tasks/startNewtask.js";
 
 // Add a socket connection to the router page
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
