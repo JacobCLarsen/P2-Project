@@ -324,6 +324,21 @@ function handleResultReceived(message) {
   updateCompletedTasks();
 }
 
+// When a socket disconnects (closes the browser tap), remove them from arays and update the dashboard
+function handleSocketDisconnect(ws) {
+  console.log(`worker disconnected with id: ${ws.id}`);
+
+  // Remove the worker WebSocket from both workerClientns and activeWorkers
+  workerClientns = workerClientns.filter((client) => client !== ws);
+  activeWorkers = activeWorkers.filter((client) => client !== ws);
+
+  // Remove the client from the dashboardClients list if it disconnects
+  dashboardClients = dashboardClients.filter((client) => client !== ws);
+
+  // Notify only dashboard clients about the updated number of online users
+  updateOnlineUsers();
+}
+
 // Authenticate user
 async function authenticateUser(message, ws) {
   const token = message.token;
