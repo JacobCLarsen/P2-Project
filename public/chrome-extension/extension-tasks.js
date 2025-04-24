@@ -1,9 +1,11 @@
 // Function for fetching tasks
+import { clientId } from "../workerpage-script";
+
 export function fetchTask(mySocket) {
     let message = {
         action: "request task",
         data: null,
-        id: "extension",
+        id: "Extension:" + clientId,
     };
   
     // When the server receives the message, it will send a task back to the client
