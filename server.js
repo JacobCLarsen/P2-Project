@@ -1,16 +1,16 @@
 /* ----- IMPORTS ----- */
 // TODO; We should use node Fetch
 
-// Core modules
+// Core Modules
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Third-party modules
+// Third-Party Modules
 import express from "express";
 import { createServer } from "http";
 
-// Custom modules
-import router from "./router.js";
+// Custom Modules
+import router from "server\routes\router.js"; //./router.js OLD
 import { setupAuth } from "./setupAuth.js";
 
 import { WebSocketServer } from "ws";
