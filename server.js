@@ -10,7 +10,7 @@ import express from "express";
 import { createServer } from "http";
 
 // Custom Modules
-import router from "server\routes\router.js"; //./router.js OLD
+import router from "server/routes/router.js"; //./router.js OLD
 import { setupAuth } from "./setupAuth.js";
 
 import { WebSocketServer } from "ws";
