@@ -15,12 +15,14 @@ export async function submitFileUpload(fileList) {
   await validateFileUpload(fileList)
     .then(async (hashes) => {
       // Clean hashes before upload
-      const cleanHashes = await cleanHashes(hashes);
+      const cleanedHashes = await cleanHashes(hashes);
       // Upload the hashes to the database
-      console.log("uploading hashes", cleanHashes);
-      uploadFiles(cleanHashes);
+      console.log("uploading hashes", cleanedHashes);
+      uploadFiles(cleanedHashes);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log("error - ", err);
+      
       throw new Error("Invalid file upload");
     });
 }
