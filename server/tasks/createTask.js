@@ -20,7 +20,7 @@ class Task {
 
 // Constructor of the a new task, from a list of hashes
 export function createTask(hashes) {
-  const numBatches = Math.ceil(hashes.length / 50); // Divide into chuncks of a given length
+  const numBatches = Math.max(1, Math.ceil(hashes.length / 100)); // Always ensure at least one batch
   const newTask = new Task(hashes, numBatches); // Create a new task with the given hashes and number of batches
 
   return newTask;
