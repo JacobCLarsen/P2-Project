@@ -293,9 +293,9 @@ function handleResultReceived(message) {
 
       // Push results to the task object's array for results
       if (message.result) {
-        if (mainTaskQueue[0].result) {
+        if (mainTaskQueue[0].results) {
           mainTaskQueue[0].results.push(message.result);
-          mainTaskQueue[0].subTasksCompleted++; //Increment the number of completed subtasks in the main task
+          mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
 
           // If the whole task is now completed
           if (
