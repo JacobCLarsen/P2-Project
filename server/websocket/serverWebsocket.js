@@ -30,7 +30,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "start work":
-        handleStartWork(ws);
+        handleStartWork(ws, message); 
         break;
 
       case "stop work":
@@ -59,12 +59,8 @@ export function WebsocketListen(ws, wss) {
         handleSocketDisconnect(ws);
         break;
 
-      case "authenticate":
-        authenticateUser(message, ws);
-        break;
-
       default:
-        console.warn("Unknown message type:", message.action);
+        console.warn(`Unknown action: ${message.action}`);
     }
   };
 }
@@ -238,7 +234,7 @@ function handleConnection(ws) {
 }
 
 // When a client start working, update the dashboard
-function handleStartWork(ws) {
+function handleStartWork(ws, message) {
   console.log(`${message.id} started working`);
 
   // Add the worker WebSocket to the activeWorkers array
