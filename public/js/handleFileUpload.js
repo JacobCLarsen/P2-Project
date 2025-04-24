@@ -1,6 +1,4 @@
 // TODO: Add a way to track wich user uploaded a task, to store the results in a database with their id. The user can then reference their results at a later time
-// TODO: Discard dublicates from the hashes
-// TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
 // Function to toggle visibility of a DOM object
@@ -57,7 +55,7 @@ async function cleanHashes(hashes) {
   const cleanedHashes = hashes.map((hash) =>
     hash.replace(/[\r\n]+/g, "").trim()
   );
-  // Remove duplicate hashes
+  // Remove duplicate hashes by creating a set
   const uniqueHashes = [...new Set(cleanedHashes)];
 
   return uniqueHashes;
@@ -67,10 +65,12 @@ async function cleanHashes(hashes) {
 async function uploadFiles(hashes) {
   console.log("Hashes to upload:", hashes); // Debug log to verify the array
 
+  // Check if hashes has been parsed into the correct format
   if (!Array.isArray(hashes)) {
     throw new Error("Hashes must be an array");
   }
 
+  // Send a post request to the "startwork" endpoint - received and handled in "router.js"
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

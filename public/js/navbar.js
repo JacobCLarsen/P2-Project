@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+
   // Dynamically add the external CSS file for the navbar
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.href = "css/navbar.css"; // Path to your external stylesheet
   document.head.appendChild(link);
 
+  // Navber HTML to inject to the top of each page. Contains navigation between pages
   const navbarHTML = `
     <nav id="navbar">
     <div id="navbar-link-container">

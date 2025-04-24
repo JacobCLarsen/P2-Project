@@ -1,8 +1,8 @@
 // Create a socket client and connect to the server
 const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
 
+  // Send a message to identify this client as a dashboard on open
 mySocket.addEventListener("open", () => {
-  // Send a message to identify this client as a dashboard
   mySocket.send(
     JSON.stringify({
       action: "connect",
