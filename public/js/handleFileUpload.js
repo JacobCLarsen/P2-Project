@@ -21,7 +21,9 @@ export async function submitFileUpload(fileList) {
       uploadFiles(cleanHashes);
     })
     .catch((err) => {
-      throw new Error("Invalid file upload - error:", err);
+      console.log("error - ", err);
+      
+      throw new Error("Invalid file upload");
     });
 }
 
