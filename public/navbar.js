@@ -17,9 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <a href="converter" class="link">
             <button>Converter</button>
         </a>
-        <a href="about" class="link">
-            <button>About</button>
-        </a>
         <a href="leaderboard" class="link">
             <button>Reward</button>
         </a>
@@ -29,6 +26,9 @@ document.addEventListener("DOMContentLoaded", function () {
             <button>Profile</button>
         </a>
         <div id="dropdown-content">
+            <a id="my-results" href="results">
+                My Results
+            </a>
             <a id="log-out" href="login">
                 Log out
             </a>
