@@ -2,14 +2,14 @@ import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
-import { authenticateJWT } from "./middleware_jwt.js";
+import { authenticateJWT } from "../middleware/middleware_jwt.js";
 
 // Import function from other files
-import { createTask } from "./createTask.js";
-import { startNewTask } from "./startNewtask.js";
+import { createTask } from "../tasks/createTask.js";
+import { startNewTask } from "../tasks/startNewtask.js";
 
 // Add a socket connection to the router page
-const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
 
 const router = Router();
 
@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); // Get the current file directory
 
 // Adjust the basePath to correctly point to the public/html folder from the root directory
-const basePath = path.join(__dirname, "./public/html"); // Going up one level to the root, then to 'public/html'
+const basePath = path.join(__dirname, "../../public/html"); // Going up one level to the root, then to 'public/html'
 
 // Define a route for the home page
 router.get("/", (req, res) => {
@@ -33,11 +33,6 @@ router.get("/login", (req, res) => {
 // Route for the worker page
 router.get("/startwork", (req, res) => {
   res.sendFile(path.join(basePath, "workerpage.html"));
-});
-
-// Route for the about page
-router.get("/about", (req, res) => {
-  res.sendFile(path.join(basePath, "about.html"));
 });
 
 // Route for the profile page

@@ -1,5 +1,5 @@
 import mysql from "mysql";
-import { authenticateJWT } from "./middleware_jwt.js";
+import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
 
 // Database connection configuration
 const DBConnection = mysql.createConnection({
@@ -27,18 +27,17 @@ export function connectToDatabase() {
             )`;
 
     // Create "results" table
-    const createWeakPasswordsTable = `
-        CREATE TABLE IF NOT EXISTS weak_passwords (
-          id INT AUTO_INCREMENT PRIMARY KEY, -- Unique result ID
-          password_hash VARCHAR(255) NOT NULL, -- The hash of the weak password
-          task_id INT NOT NULL, -- Id to the task assosiated with the user
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of when the result was created
-        )`;
+    const createPasswordsTable = `
+            CREATE TABLE IF NOT EXISTS passwords (
+              id INT AUTO_INCREMENT PRIMARY KEY, -- Password ID
+              password VARCHAR(255) NOT NULL, -- Password hash
+              user_id INT NOT NULL, -- User ID
+              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Time of database entry
+              FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- Ensures that user_id exists in users table and deletes all entries related to the user if the user is deleted
+            )`;
 
     // Execute the query to create the "users" table
     DBConnection.query(createUsersTable, (err, result) => {
-      console.log("hello, database fuckery 123 pick up the phone");
-
       if (err) {
         console.error("Error creating users table:", err); // Log error if table creation fails
       } else {
@@ -47,7 +46,7 @@ export function connectToDatabase() {
     });
 
     // Execute the query to create the "results" table
-    DBConnection.query(createWeakPasswordsTable, (err, result) => {
+    DBConnection.query(createPasswordsTable, (err, result) => {
       if (err) {
         console.error("Error creating results table:", err); // Log error if table creation fails
       } else {

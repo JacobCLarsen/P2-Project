@@ -1,8 +1,8 @@
 // Create a socket client and connect to the server
-const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws1/");
+const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
 
+// Send a message to identify this client as a dashboard on open
 mySocket.addEventListener("open", () => {
-  // Send a message to identify this client as a dashboard
   mySocket.send(
     JSON.stringify({
       action: "connect",
@@ -16,6 +16,7 @@ mySocket.addEventListener("open", () => {
 const onlineWorkersField = document.getElementById("online-workers");
 const activeWorkersField = document.getElementById("active-workers");
 const completedTasksField = document.getElementById("completed-tasks");
+const weakPasswordsField = document.getElementById("weakpasswordsFound");
 
 // Receive message from the server to update online workes, active workers, and completed tasks in total since server restart
 mySocket.onmessage = (event) => {
@@ -30,13 +31,15 @@ mySocket.onmessage = (event) => {
       break;
 
     case "updateCompletedTasks":
-      completedTasksField.innerText = `Completed tasks since restart: ${message.count}`;
+      completedTasksField.innerText = `Completed tasks since restart: ${message.completedCount}`;
+      weakPasswordsField.innerText = `Weak passwords found: ${message.weakPasswordCount}`;
       break;
 
     case "loadDashboard":
       onlineWorkersField.innerText = `Online workers: ${message.onlineClients}`;
       activeWorkersField.innerText = `Active workers: ${message.workers}`;
       completedTasksField.innerText = `Completed tasks since restart: ${message.completedTasks}`;
+      weakPasswordsField.innerText = `Weak passwords found: ${message.weakPasswordCount}`;
       console.log("Active Workers Count (Dashboard):", message.workers); // Log for debugging
       break;
 

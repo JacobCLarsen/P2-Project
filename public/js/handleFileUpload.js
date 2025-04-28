@@ -1,6 +1,4 @@
 // TODO: Add a way to track wich user uploaded a task, to store the results in a database with their id. The user can then reference their results at a later time
-// TODO: Discard dublicates from the hashes
-// TODO: Encrypt hashes
 // TODO: Be able to drag and drop files into a box to upload
 
 // Function to toggle visibility of a DOM object
@@ -15,12 +13,16 @@ export function toggleVisibility(object, displayStyle) {
 export async function submitFileUpload(fileList) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
   await validateFileUpload(fileList)
-    .then((hashes) => {
+    .then(async (hashes) => {
+      // Clean hashes before upload
+      const cleanedHashes = await cleanHashes(hashes);
       // Upload the hashes to the database
-      console.log("uploading hashes", hashes);
-      uploadFiles(hashes);
+      console.log("uploading hashes", cleanedHashes);
+      uploadFiles(cleanedHashes);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log("error - ", err);
+      
       throw new Error("Invalid file upload");
     });
 }
@@ -48,14 +50,29 @@ export async function validateFileUpload(fileList) {
 }
 
 // ----------- Helper functions------------
+
+// Removed defects and dublicates from the hashes
+async function cleanHashes(hashes) {
+  // Clean hashes to prevent "\r" or any other defects
+  const cleanedHashes = hashes.map((hash) =>
+    hash.replace(/[\r\n]+/g, "").trim()
+  );
+  // Remove duplicate hashes by creating a set
+  const uniqueHashes = [...new Set(cleanedHashes)];
+
+  return uniqueHashes;
+}
+
 // Upload files
 async function uploadFiles(hashes) {
   console.log("Hashes to upload:", hashes); // Debug log to verify the array
 
+  // Check if hashes has been parsed into the correct format
   if (!Array.isArray(hashes)) {
     throw new Error("Hashes must be an array");
   }
 
+  // Send a post request to the "startwork" endpoint - received and handled in "router.js"
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -96,36 +113,5 @@ async function checkHashLengths(fileList) {
   } else {
     // Else return false to show an error
     throw new Error("No valid 512 bit hashes found");
-  }
-}
-
-// Chech length of hashes, when the user has also specified usernames for each hash
-async function checkHashLengthUsername(fileList) {
-  let validHashes = [];
-  for (const file of fileList) {
-    const content = await file.text();
-    const lines = content.split("\n");
-    const validLines = lines.filter((line) => {
-      const parts = line.split(",");
-      const hash = parts[1]?.trim(); // Extract the hash from the line
-      if (hash.length === 128) {
-        validHashes.push(hash);
-      } else {
-        throw new Error(
-          `hash in ${file}, hash ${hash} has length ${hash.length}`
-        );
-      }
-    });
-    console.log(
-      `File: ${file.name}. Total lines: ${lines.length}, valid 512-bit hashes: ${validHashes.length}`
-    );
-  }
-
-  // If any hashes in the array
-  if (validHashes.length > 0) {
-    return validHashes;
-  } else {
-    // Else return false to show an error
-    return false;
   }
 }
