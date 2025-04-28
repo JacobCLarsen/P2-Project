@@ -366,8 +366,11 @@ async function handleResultReceived(message) {
     let matchingTask = taskWaitingForResult.find(
       (task) => task.id === message.taskId
     );
+    console.log("was a task removed?", taskWaitingForResult.length);
 
     if (matchingTask) {
+      console.log("mathiching task found");
+
       // Check if the task was completed already for catching erroes
       if (matchingTask.completed === 1) {
         console.log(`ERROR: Task ${matchingTask.id} was already completed`);
