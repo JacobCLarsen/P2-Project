@@ -39,7 +39,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "send result":
-        handleResultReceived(message);
+        await handleResultReceived(message);
         break;
 
       case "addTask":
@@ -188,6 +188,12 @@ function handleRequestTask(ws) {
     console.error("Error handling task request:", err);
     notifyNoMoreTasks(ws);
   }
+
+  // Debug
+  console.log(mainTaskQueue);
+  console.log(currentTaskQueue);
+  console.log(taskWaitingForResult);
+  
 }
 
 // Helper functions for handleRequestTask
@@ -347,7 +353,7 @@ function handleStopWork(ws) {
 // and store weak hashes in the database
 // TODO: Add a check to see if the task was completed correctly or not
 // TODO: Check if all subtasks have been completed
-function handleResultReceived(message) {
+async function handleResultReceived(message) {
   // Check if a result was received or no weak passwords were found
   if (!message.result) {
     console.log(
@@ -363,7 +369,7 @@ function handleResultReceived(message) {
     );
 
     if (matchingTask) {
-      // Check if the task was completed already for chatching erroes
+      // Check if the task was completed already for catching erroes
       if (matchingTask.completed === 1) {
         console.log(`ERROR: Task ${matchingTask.id} was already completed`);
       } else {
