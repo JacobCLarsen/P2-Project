@@ -166,14 +166,14 @@ function addDemoTask() {
 // Maximum retry attempts before giving up a task
 const MAX_TASK_RETRIES = 3;
 
-function handleRequestTask(ws) {
+async function handleRequestTask(ws) {
   console.log(`Client ${ws.id} requested a task`);
 
   try {
     if (currentTaskQueue.length > 0) {
       assignTaskFromCurrentQueue(ws);
     } else if (taskWaitingForResult.length > 0) {
-      reassignUncompletedTask(ws);
+      await reassignUncompletedTask(ws);
     } else if (mainTaskQueue.length > 0) {
       if (startNewMainTask()) {
         assignTaskFromCurrentQueue(ws);
@@ -190,9 +190,9 @@ function handleRequestTask(ws) {
   }
 
   // Debug
-  console.log(mainTaskQueue);
-  console.log(currentTaskQueue);
-  console.log(taskWaitingForResult);
+  console.log(mainTaskQueue.length);
+  console.log(currentTaskQueue.length);
+  console.log(taskWaitingForResult.length);
 }
 
 // Helper functions for handleRequestTask
@@ -225,7 +225,7 @@ function assignTaskFromCurrentQueue(ws) {
   }
 }
 
-function reassignUncompletedTask(ws) {
+async function reassignUncompletedTask(ws) {
   console.log("Reassigning uncompleted task");
 
   const taskToSend = taskWaitingForResult.shift();
