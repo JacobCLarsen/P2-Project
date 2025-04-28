@@ -39,7 +39,7 @@ export async function startWork(task, mySocket) {
         }
     });
 }
-  
+
 async function dictionaryAttack(targetHashes, dictionaryBatch) {
     let weakPasswordArray = [];
     // "For of" loop that goes through each password of the dictionary.

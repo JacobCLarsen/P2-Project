@@ -8,7 +8,7 @@ body {
 
 .container {
   display: flex;
-  flex-direction: column; /* Stack everything vertically */
+  flex-direction: column;
   align-items: center;
   width: 100%;
   max-width: 600px;
@@ -20,26 +20,7 @@ h1,h2 {
   text-align: center;
 }
 
-.description {
-  font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #333;
-}
-
-.btn {
-  padding: 10px 20px;
-  margin-bottom: 30px;
-  cursor: pointer;
-  background: #008cba;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.leaderboard,
-.rewards {
+.leaderboard {
   width: 100%;
   text-align: left;
   margin-bottom: 30px;
