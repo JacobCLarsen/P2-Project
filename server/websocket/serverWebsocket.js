@@ -361,58 +361,55 @@ async function handleResultReceived(message) {
   } else {
     console.log(`Result from worker received: ${message.result}`);
     weakPasswordcount += message.result.length; // Update weakPasswordsFoundCounter for dashboard.html
+  }
 
-    // Scan the currentTaskQueue for a matching task ID and mark completed
-    let matchingTask = taskWaitingForResult.find(
-      (task) => task.id === message.taskId
-    );
-    console.log("was a task removed?", taskWaitingForResult.length);
+  // Scan the currentTaskQueue for a matching task ID and mark completed
+  let matchingTask = taskWaitingForResult.find(
+    (task) => task.id === message.taskId
+  );
+  console.log("was a task removed?", taskWaitingForResult.length);
 
-    if (matchingTask) {
-      console.log("mathiching task found");
-
-      // Check if the task was completed already for catching erroes
-      if (matchingTask.completed === 1) {
-        console.log(`ERROR: Task ${matchingTask.id} was already completed`);
-      } else {
-        // Call complete() on the matching subtask
-        matchingTask.complete();
-
-        // Remove from taskWaitingForResult
-        taskWaitingForResult = taskWaitingForResult.filter(
-          (task) => task.id !== matchingTask.id
-        );
-
-        // Push results to the task object's array for results
-        if (mainTaskQueue[0].results) {
-          mainTaskQueue[0].results.push(message.result);
-          mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
-
-          // If the whole task is now completed
-          if (
-            mainTaskQueue[0].subTasksCompleted ===
-            mainTaskQueue[0].numberBatches
-          ) {
-            // Use this completed task and store it somewhere
-            let completed_task = mainTaskQueue.shift();
-            console.log(
-              `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
-            );
-
-            // Send the results of the task to the server
-            await storeResult(completed_task);
-          }
-        } else {
-          console.log(
-            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
-          );
-        }
-      }
-
-      console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+  if (matchingTask) {
+    // Check if the task was completed already for catching erroes
+    if (matchingTask.completed === 1) {
+      console.log(`ERROR: Task ${matchingTask.id} was already completed`);
     } else {
-      console.log(`No matching task found with ID ${message.taskId}.`);
+      // Call complete() on the matching subtask
+      matchingTask.complete();
+
+      // Remove from taskWaitingForResult
+      taskWaitingForResult = taskWaitingForResult.filter(
+        (task) => task.id !== matchingTask.id
+      );
+
+      // Push results to the task object's array for results
+      if (mainTaskQueue[0].results) {
+        mainTaskQueue[0].results.push(message.result);
+        mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
+
+        // If the whole task is now completed
+        if (
+          mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
+        ) {
+          // Use this completed task and store it somewhere
+          let completed_task = mainTaskQueue.shift();
+          console.log(
+            `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
+          );
+
+          // Send the results of the task to the server
+          await storeResult(completed_task);
+        }
+      } else {
+        console.log(
+          `Task ${message.taskId} has already been completed by another node and removed from the task queue`
+        );
+      }
     }
+
+    console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+  } else {
+    console.log(`No matching task found with ID ${message.taskId}.`);
   }
 
   // Update completed task counter and taskqueue for dashboard and clients
@@ -420,7 +417,6 @@ async function handleResultReceived(message) {
   updateTaskQueue();
   updateCompletedTasks();
 }
-
 // When a socket disconnects (closes the browser tap), remove them from arays and update the dashboard
 function handleSocketDisconnect(ws) {
   console.log(`worker disconnected with id: ${ws.id}`);
