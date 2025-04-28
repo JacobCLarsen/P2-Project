@@ -193,7 +193,6 @@ function handleRequestTask(ws) {
   console.log(mainTaskQueue);
   console.log(currentTaskQueue);
   console.log(taskWaitingForResult);
-  
 }
 
 // Helper functions for handleRequestTask
@@ -263,7 +262,7 @@ function reassignUncompletedTask(ws) {
 function startNewMainTask() {
   console.log("Starting new task from main queue");
 
-  const task = mainTaskQueue.shift();
+  const task = mainTaskQueue[0];
   if (!task) {
     console.error("No main tasks available.");
     return false;
@@ -376,7 +375,7 @@ async function handleResultReceived(message) {
         // Call complete() on the matching subtask
         matchingTask.complete();
 
-        // Remove from taskWatingForResult
+        // Remove from taskWaitingForResult
         taskWaitingForResult = taskWaitingForResult.filter(
           (task) => task.id !== matchingTask.id
         );
@@ -398,7 +397,7 @@ async function handleResultReceived(message) {
             );
 
             // Send the results of the task to the server
-            storeResult(completed_task);
+            await storeResult(completed_task);
           }
         } else {
           console.log(

@@ -8,7 +8,7 @@ import path from "path";
  * URL: /store_results
  * Request Body: { weak_passwords: weakPasswords, task_id: taskID }
  */
-export function storeResults(app) {
+export async function storeResults(app) {
   app.post("/store_results", async (req, res) => {
     const { weakPasswords, taskId } = req.body; // Extract weakPasswords and taskId from the request body
 
@@ -41,7 +41,7 @@ export function storeResults(app) {
 // Filepath to text element
 const filepath = path.join(process.cwd(), "./results.txt");
 
-function storeResult(task) {
+async function storeResult(task) {
   // Pull the results from the task
   const results = task.results;
 
