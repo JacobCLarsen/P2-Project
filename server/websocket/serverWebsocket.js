@@ -39,7 +39,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "send result":
-        handleResultReceived(message);
+        await handleResultReceived(message);
         break;
 
       case "addTask":
@@ -163,62 +163,135 @@ function addDemoTask() {
 
 // When the user request a task, send them the next one in the current/subtask queue.
 // If no tasks in the current queue start a new task form the main queue
-function handleRequestTask(ws) {
+// Maximum retry attempts before giving up a task
+const MAX_TASK_RETRIES = 3;
+
+async function handleRequestTask(ws) {
   console.log(`Client ${ws.id} requested a task`);
 
-  if (currentTaskQueue.length > 0) {
-    assignTaskFromCurrentQueue(ws);
-  } else if (taskWaitingForResult.length > 0) {
-    reassignUncompletedTask(ws);
-  } else if (mainTaskQueue.length > 0) {
-    startNewMainTask();
-    assignTaskFromCurrentQueue(ws);
-  } else {
+  try {
+    if (currentTaskQueue.length > 0) {
+      assignTaskFromCurrentQueue(ws);
+    } else if (taskWaitingForResult.length > 0) {
+      await reassignUncompletedTask(ws);
+    } else if (mainTaskQueue.length > 0) {
+      if (startNewMainTask()) {
+        assignTaskFromCurrentQueue(ws);
+      } else {
+        console.error("Failed to start a new main task.");
+        notifyNoMoreTasks(ws);
+      }
+    } else {
+      notifyNoMoreTasks(ws);
+    }
+  } catch (err) {
+    console.error("Error handling task request:", err);
     notifyNoMoreTasks(ws);
   }
+
+  // Debug
+  console.log(mainTaskQueue.length);
+  console.log(currentTaskQueue.length);
+  console.log(taskWaitingForResult.length);
 }
 
 // Helper functions for handleRequestTask
 function assignTaskFromCurrentQueue(ws) {
   console.log("Assigning task from current queue");
-  let taskToSend = currentTaskQueue.shift();
+
+  const taskToSend = currentTaskQueue.shift();
+  if (!taskToSend) {
+    console.warn("No task available to assign from current queue.");
+    notifyNoMoreTasks(ws);
+    return;
+  }
+
+  taskToSend.retries = taskToSend.retries || 0; // Initialize retries if undefined
   taskWaitingForResult.push(taskToSend);
 
-  ws.send(
-    JSON.stringify({
-      action: "new task",
-      subTask: taskToSend,
-    })
-  );
+  const success = wsSend(ws, {
+    action: "new task",
+    subTask: taskToSend,
+  });
 
-  console.log(`Task ${taskToSend.id} sent to the user`);
+  if (!success) {
+    console.error(
+      `Failed to send task ${taskToSend.id}. Removing from waiting list.`
+    );
+    taskWaitingForResult.pop(); // Remove it if failed to send
+    currentTaskQueue.unshift(taskToSend); // Requeue for later
+  } else {
+    console.log(`Task ${taskToSend.id} sent to client ${ws.id}`);
+  }
 }
 
-function reassignUncompletedTask(ws) {
+async function reassignUncompletedTask(ws) {
   console.log("Reassigning uncompleted task");
-  let taskToSend = taskWaitingForResult.shift();
-  taskWaitingForResult.push(taskToSend);
 
-  ws.send(
-    JSON.stringify({
-      action: "new task",
-      subTask: taskToSend,
-    })
-  );
+  const taskToSend = taskWaitingForResult.shift();
+  if (!taskToSend) {
+    console.warn("No uncompleted task available for reassignment.");
+    notifyNoMoreTasks(ws);
+    return;
+  }
 
-  console.log(`Uncompleted task ${taskToSend.id} reassigned`);
+  taskToSend.retries = (taskToSend.retries || 0) + 1;
+
+  if (taskToSend.retries > MAX_TASK_RETRIES) {
+    console.warn(`Task ${taskToSend.id} exceeded max retries. Discarding.`);
+    // Optionally log, escalate, or store failed tasks elsewhere
+    return reassignUncompletedTask(ws); // Try another task
+  }
+
+  taskWaitingForResult.push(taskToSend); // Rotate back
+
+  const success = wsSend(ws, {
+    action: "new task",
+    subTask: taskToSend,
+  });
+
+  if (!success) {
+    console.error(`Failed to send reassigned task ${taskToSend.id}.`);
+  } else {
+    console.log(
+      `Uncompleted task ${taskToSend.id} reassigned to client ${ws.id}`
+    );
+  }
 }
 
 function startNewMainTask() {
   console.log("Starting new task from main queue");
-  let task = mainTaskQueue[0];
-  currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches);
-  console.log(`Current queue populated with subtasks from task ${task.id}`);
+
+  const task = mainTaskQueue[0];
+  if (!task) {
+    console.error("No main tasks available.");
+    return false;
+  }
+
+  try {
+    currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches) || [];
+    console.log(`Populated current queue with subtasks from task ${task.id}`);
+    return currentTaskQueue.length > 0;
+  } catch (err) {
+    console.error(`Failed to start new main task ${task.id}:`, err);
+    return false;
+  }
 }
 
 function notifyNoMoreTasks(ws) {
-  console.log("No more tasks available");
-  ws.send(JSON.stringify({ action: "no more tasks" }));
+  console.log(`No more tasks available for client ${ws.id}`);
+  wsSend(ws, { action: "no more tasks" });
+}
+
+// Helper to send a message
+function wsSend(ws, data) {
+  if (ws.readyState === ws.OPEN) {
+    ws.send(JSON.stringify(data));
+    return true;
+  } else {
+    console.error(`WebSocket not open for client ${ws.id}`);
+    return false;
+  }
 }
 
 // When a socket sonnects, sets it's id on the serer and update "workerclients[]" and "dashboardclients[]"
@@ -279,7 +352,7 @@ function handleStopWork(ws) {
 // and store weak hashes in the database
 // TODO: Add a check to see if the task was completed correctly or not
 // TODO: Check if all subtasks have been completed
-function handleResultReceived(message) {
+async function handleResultReceived(message) {
   // Check if a result was received or no weak passwords were found
   if (!message.result) {
     console.log(
@@ -288,55 +361,55 @@ function handleResultReceived(message) {
   } else {
     console.log(`Result from worker received: ${message.result}`);
     weakPasswordcount += message.result.length; // Update weakPasswordsFoundCounter for dashboard.html
+  }
 
-    // Scan the currentTaskQueue for a matching task ID and mark completed
-    let matchingTask = taskWaitingForResult.find(
-      (task) => task.id === message.taskId
-    );
+  // Scan the currentTaskQueue for a matching task ID and mark completed
+  let matchingTask = taskWaitingForResult.find(
+    (task) => task.id === message.taskId
+  );
+  console.log("was a task removed?", taskWaitingForResult.length);
 
-    if (matchingTask) {
-      // Check if the task was completed already for chatching erroes
-      if (matchingTask.completed === 1) {
-        console.log(`ERROR: Task ${matchingTask.id} was already completed`);
-      } else {
-        // Call complete() on the matching subtask
-        matchingTask.complete();
-
-        // Remove from taskWatingForResult
-        taskWaitingForResult = taskWaitingForResult.filter(
-          (task) => task.id !== matchingTask.id
-        );
-
-        // Push results to the task object's array for results
-        if (mainTaskQueue[0].results) {
-          mainTaskQueue[0].results.push(message.result);
-          mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
-
-          // If the whole task is now completed
-          if (
-            mainTaskQueue[0].subTasksCompleted ===
-            mainTaskQueue[0].numberBatches
-          ) {
-            // Use this completed task and store it somewhere
-            let completed_task = mainTaskQueue.shift();
-            console.log(
-              `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
-            );
-
-            // Send the results of the task to the server
-            storeResult(completed_task);
-          }
-        } else {
-          console.log(
-            `Task ${message.taskId} has already been completed by another node and removed from the task queue`
-          );
-        }
-      }
-
-      console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+  if (matchingTask) {
+    // Check if the task was completed already for catching erroes
+    if (matchingTask.completed === 1) {
+      console.log(`ERROR: Task ${matchingTask.id} was already completed`);
     } else {
-      console.log(`No matching task found with ID ${message.taskId}.`);
+      // Call complete() on the matching subtask
+      matchingTask.complete();
+
+      // Remove from taskWaitingForResult
+      taskWaitingForResult = taskWaitingForResult.filter(
+        (task) => task.id !== matchingTask.id
+      );
+
+      // Push results to the task object's array for results
+      if (mainTaskQueue[0].results) {
+        mainTaskQueue[0].results.push(message.result);
+        mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
+
+        // If the whole task is now completed
+        if (
+          mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
+        ) {
+          // Use this completed task and store it somewhere
+          let completed_task = mainTaskQueue.shift();
+          console.log(
+            `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
+          );
+
+          // Send the results of the task to the server
+          await storeResult(completed_task);
+        }
+      } else {
+        console.log(
+          `Task ${message.taskId} has already been completed by another node and removed from the task queue`
+        );
+      }
     }
+
+    console.log(`Subtask with ID ${message.taskId} marked as complete.`);
+  } else {
+    console.log(`No matching task found with ID ${message.taskId}.`);
   }
 
   // Update completed task counter and taskqueue for dashboard and clients
@@ -344,7 +417,6 @@ function handleResultReceived(message) {
   updateTaskQueue();
   updateCompletedTasks();
 }
-
 // When a socket disconnects (closes the browser tap), remove them from arays and update the dashboard
 function handleSocketDisconnect(ws) {
   console.log(`worker disconnected with id: ${ws.id}`);
