@@ -1,5 +1,5 @@
 // Define URL for websocket connection "ws(n)" corresponds to node (n)
-const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws8/");
+const socket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws3/");
 
 document.documentElement.style.display = "none"; // Hide the page intitially
 
