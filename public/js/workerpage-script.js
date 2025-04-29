@@ -169,11 +169,13 @@ async function startWork(subTask) {
   );
 
   // When message received from the web worker send a mesage with task result to the server
+  const token = localStorage.getItem("token");
   myWorker.onmessage = async (e) => {
     let taskresult = {
       action: "send result",
       result: e.data,
       taskId: subTask.id,
+      token: token,
     };
 
     console.log("Message received from worker:", e.data);
