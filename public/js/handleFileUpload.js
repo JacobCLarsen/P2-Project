@@ -22,7 +22,7 @@ export async function submitFileUpload(fileList) {
     })
     .catch((err) => {
       console.log("error - ", err);
-      
+
       throw new Error("Invalid file upload");
     });
 }
@@ -36,7 +36,7 @@ export async function validateFileUpload(fileList) {
     const { name: fileName } = file;
     if (!allowedTypes.includes(file.type)) {
       throw new Error(
-        `❌ File "${fileName}" could not be uploaded. Only images with the following types are allowed: .csv`
+        `❌ File "${fileName}" could not be uploaded. Only files with the following types are allowed: .csv`
       );
     }
   }
