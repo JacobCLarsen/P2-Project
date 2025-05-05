@@ -17,5 +17,5 @@
         "service_worker": "/public/chrome-extension/background.js",
         "type": "module"
     },
-    "permissions": ["storage", "alarms", "background"]
+    "permissions": ["storage", "background"]
 }
