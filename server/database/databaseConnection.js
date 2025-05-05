@@ -56,6 +56,7 @@ export function connectToDatabase() {
   });
 }
 
+
 // Function to set up database-related routes
 export function setupDatabaseRoutes(app) {
   // Route to test database connection
