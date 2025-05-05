@@ -2,7 +2,6 @@
 export function fetchTask(mySocket) {
     let message = {
         action: "request task",
-        data: null,
         id: "Extension:",
     };
   
