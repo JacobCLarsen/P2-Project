@@ -125,7 +125,6 @@ function loadDashBoard(ws) {
 
 // For demo, create 5 tasks and add them to the task queue, when a button is clicked
 function addTaskToQueue(task) {
-  // TODO: have a task queue on the database
   mainTaskQueue.push(task);
 
   // Send a message to clients to update their task queue
@@ -367,49 +366,43 @@ async function handleResultReceived(message) {
   let matchingTask = taskWaitingForResult.find(
     (task) => task.id === message.taskId
   );
-  console.log("was a task removed?", taskWaitingForResult.length);
 
   if (matchingTask) {
-    // Check if the task was completed already for catching erroes
-    if (matchingTask.completed === 1) {
-      console.log(`ERROR: Task ${matchingTask.id} was already completed`);
-    } else {
-      // Call complete() on the matching subtask
-      matchingTask.complete();
+    // Call complete() on the matching subtask
+    matchingTask.complete();
 
-      // Remove from taskWaitingForResult
-      taskWaitingForResult = taskWaitingForResult.filter(
-        (task) => task.id !== matchingTask.id
-      );
+    // Remove from taskWaitingForResult
+    taskWaitingForResult = taskWaitingForResult.filter(
+      (task) => task.id !== matchingTask.id
+    );
 
-      // Push results to the task object's array for results
-      if (mainTaskQueue[0].results) {
-        mainTaskQueue[0].results.push(message.result);
-        mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
+    // Push results to the task object's array for results
+    if (mainTaskQueue[0].results) {
+      mainTaskQueue[0].results.push(message.result);
+      mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
 
-        // If the whole task is now completed
-        if (
-          mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
-        ) {
-          // Use this completed task and store it somewhere
-          let completed_task = mainTaskQueue.shift();
-          console.log(
-            `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
-          );
-
-          // Send the results of the task to the server
-          await storeResult(completed_task);
-        }
-      } else {
+      // If the whole task is now completed
+      if (
+        mainTaskQueue[0].subTasksCompleted === mainTaskQueue[0].numberBatches
+      ) {
+        // Use this completed task and store it somewhere
+        let completed_task = mainTaskQueue.shift();
         console.log(
-          `Task ${message.taskId} has already been completed by another node and removed from the task queue`
+          `Task was completed with id: ${completed_task.id} and result ${completed_task.results}`
         );
+
+        // Send the results of the task to the server
+        await storeResult(completed_task);
       }
+    } else {
+      console.log(`Maintask already complted and removed from the main queue`);
     }
 
     console.log(`Subtask with ID ${message.taskId} marked as complete.`);
   } else {
-    console.log(`No matching task found with ID ${message.taskId}.`);
+    console.log(
+      `Task ${message.taskId} has already been completed by another node and removed from the waiting for result queue`
+    );
   }
 
   // Update completed task counter and taskqueue for dashboard and clients
