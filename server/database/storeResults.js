@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 
+import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
 
 /* ----- Store_results: (Store weak password in the database) ----- */
 /**
@@ -8,21 +9,22 @@ import path from "path";
  * URL: /store_results
  * Request Body: { weak_passwords: weakPasswords, task_id: taskID }
  */
-export function storeResults(app) {
+export async function storeResults(app) {
   app.post("/store_results", async (req, res) => {
-    const { weakPasswords, taskId } = req.body; // Extract weakPasswords and taskId from the request body
+    const { weakPasswords, taskId, token } = req.body; // Extract weakPasswords and taskId from the request body
 
-    if (!weakPasswords || !taskId) {
+    if (!weakPasswords || !taskId || !token) {
       return res
         .status(400) // Respond with "Bad Request" if weakPasswords or taskId is missing
         .json({ success: false, message: "Missing results" });
     }
+    const userId = await authenticateJWT(token);
 
     // Iterate over weakPasswords and insert each hash into the database
     weakPasswords.forEach((hash) => {
       const insertQuery =
-        "INSERT INTO weak_passwords (password_hash, taskId) VALUES (?, ?)";
-      DBConnection.query(insertQuery, [hash, taskId], (err, result) => {
+        "INSERT INTO passwords (password_hash, taskId, userId) VALUES (?, ?, ?)";
+      DBConnection.query(insertQuery, [hash, taskId, userId], (err, result) => {
         if (err) {
           console.error("❌ Error inserting password:", err); // Log error if query fails
           return res
@@ -37,11 +39,10 @@ export function storeResults(app) {
   });
 }
 
-
 // Filepath to text element
 const filepath = path.join(process.cwd(), "./results.txt");
 
-function storeResult(task) {
+async function storeResult(task) {
   // Pull the results from the task
   const results = task.results;
 
