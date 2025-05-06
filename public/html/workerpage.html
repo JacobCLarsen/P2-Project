@@ -38,8 +38,8 @@
             <button id="addUsertaskBtn">Upload Task</button>
             <div id="uploadFormContainer">
               <form id="uploadForm" method="post" enctype="multipart/form-data">
-                <label for="file">Select .CSV Files</label>
-                <input name="file" type="file" multiple accept=".csv" />
+                <label for="files" class="btn">Select.CSV Files</label>
+                <input id="files" style="display: none" type="file" />
                 <button id="submitTaskBtn" type="submit">
                   Upload Hashes As Task
                 </button>
