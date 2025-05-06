@@ -137,7 +137,7 @@ body {
 }
 
 #submitTaskBtn {
-  width: 150px;
+  width: 130px;
   height: 40px;
   border: #444 solid 1.5px;
   color: #444;
@@ -151,7 +151,7 @@ body {
 }
 
 #chooseFileBtn {
-  width: 150px;
+  width: 130px;
   cursor: pointer;
   display: flex;
   align-items: center;
