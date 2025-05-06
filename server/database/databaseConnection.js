@@ -195,7 +195,7 @@ export function setupDatabaseRoutes(app) {
   //API endpoint for inserting weak password hashing into the "passwords" table in the database
   app.post("/store_passwords", async (req, res) => {
     try {
-      // Check if a token is provided
+      // Check for auth token
       const token = req.headers.authorization?.split(" ")[1];
       if (!token) {
         return res
@@ -203,37 +203,41 @@ export function setupDatabaseRoutes(app) {
           .json({ success: false, message: "No token provided" });
       }
 
-      // Pull data from request body
+      // Extract data from body
       const { weakPasswords, user_id } = req.body;
-      if (!weakPasswords || !user_id) {
+      if (!Array.isArray(weakPasswords) || !user_id) {
         return res.status(400).json({
           success: false,
-          message: "Failed to pull password and user_id from request body",
+          message: "Invalid request: missing passwords or user ID",
         });
       }
 
-      // Define query
+      // SQL query
       const query = "INSERT INTO passwords (password, user_id) VALUES (?, ?)";
 
-      // Insert each weak password
-      weakPasswords.array.forEach((password) => {
-        // Insert into the database
-        DBConnection.query(query, [password, user_id], (err, result) => {
-          if (err) {
-            console.error("Database insert error:", err);
-            return res
-              .status(500)
-              .json({ success: false, message: "Database insert failed" });
-          }
-
-          res.json({
-            success: true,
-            message: "Password saved successfully",
+      // Wrap inserts in promises for async handling
+      const insertPromises = weakPasswords.map((password) => {
+        return new Promise((resolve, reject) => {
+          DBConnection.query(query, [password, user_id], (err, result) => {
+            if (err) {
+              return reject(err);
+            }
+            resolve(result);
           });
         });
       });
+
+      // Wait for all inserts to complete
+      await Promise.all(insertPromises);
+
+      // Send final success response
+      res.json({
+        success: true,
+        message: "All passwords saved successfully",
+        insertedCount: weakPasswords.length,
+      });
     } catch (error) {
-      console.error("Error in storing passwords:", error);
+      console.error("Error storing passwords:", error);
       res.status(500).json({ success: false, message: error.message });
     }
   });
