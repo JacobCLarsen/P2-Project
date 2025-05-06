@@ -58,3 +58,31 @@ export async function storeResult(task) {
   }
 }
 
+//TODO: have user_id as parameter
+export async function storePasswordsOnDatabase(hashes) {
+  // testing
+  const user_id = 123;
+
+  // Define data
+  const postData = { weakPasswords: hashes, user_id: user_id };
+
+  // Create a post request to store passwords
+  try {
+    const response = await fetch("store_passwords", {
+      method: "POST", // Updating user data
+      body: JSON.stringify(postData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `Error ${response.status}`);
+    }
+
+    console.log("Inserted passwords into database", data);
+    location.reload();
+  } catch (error) {
+    console.error("Error inserting passwords:", error);
+    alert(`Error insterting passwords: ${error.message}`);
+  }
+}

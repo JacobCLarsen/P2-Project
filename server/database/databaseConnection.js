@@ -56,7 +56,6 @@ export function connectToDatabase() {
   });
 }
 
-
 // Function to set up database-related routes
 export function setupDatabaseRoutes(app) {
   // Route to test database connection
@@ -140,6 +139,8 @@ export function setupDatabaseRoutes(app) {
       });
     }
   });
+
+  // API endopoint for updating the profile
   app.put("/profile-update", async (req, res) => {
     try {
       const token = req.headers.authorization?.split(" ")[1];
@@ -191,6 +192,52 @@ export function setupDatabaseRoutes(app) {
     }
   });
 }
+
+//API endpoint for inserting weak password hashing into the "passwords" table in the database
+app.post("/store_passwords", async (req, res) => {
+  try {
+    // Check if a token is provided
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res
+        .status(401)
+        .json({ success: false, message: "No token provided" });
+    }
+
+    // Pull data from request body
+    const { weakPasswords, user_id } = req.body;
+    if (!weakPasswords || !user_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Failed to pull password and user_id from request body",
+      });
+    }
+
+    // Define query
+    const query = "INSERT INTO passwords (password, user_id) VALUES (?, ?)";
+
+    // Insert each weak password
+    weakPasswords.array.forEach((password) => {
+      // Insert into the database
+      DBConnection.query(query, [password, user_id], (err, result) => {
+        if (err) {
+          console.error("Database insert error:", err);
+          return res
+            .status(500)
+            .json({ success: false, message: "Database insert failed" });
+        }
+
+        res.json({
+          success: true,
+          message: "Password saved successfully",
+        });
+      });
+    });
+  } catch (error) {
+    console.error("Error in storing passwords:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 // Export the database connection object
 export default DBConnection;

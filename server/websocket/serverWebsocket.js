@@ -1,7 +1,11 @@
 import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
 import { Task } from "../tasks/createTask.js"; // Corrected path
 import { startNewTask } from "../tasks/startNewtask.js"; // Corrected path
-import { storeResult, storeResults } from "../database/storeResults.js"; // Corrected path
+import {
+  storePasswordsOnDatabase,
+  storeResult,
+  storeResults,
+} from "../database/storeResults.js"; // Corrected path
 
 // Keep track of online users and client roles
 let workerClientns = [];
@@ -390,7 +394,7 @@ async function handleResultReceived(message) {
         );
 
         // Send the results of the task to the server
-        await storeResults(completed_task);
+        await storePasswordsOnDatabase(completed_task);
       }
     } else {
       console.log(`Maintask already complted and removed from the main queue`);
