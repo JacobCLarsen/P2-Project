@@ -147,7 +147,6 @@ body {
   color: #444;
   border-radius: 8px;
   background-color: transparent;
-  font-size: 16px;
   transition: 0.3s;
 }
 
@@ -157,11 +156,12 @@ body {
   color: #444;
   border-radius: 8px;
   background-color: transparent;
-  font-size: 16px;
   padding: 10px 0px 10px 0px;
   cursor: pointer;
   display: none;
   transition: 0.3s;
+  color: #007bff;
+  border: #007bff solid 1.5px;
 }
 
 #chooseFileBtn:hover {
@@ -170,8 +170,8 @@ body {
 }
 
 #submitTaskBtn:hover {
-  color: #007bff;
-  border: #007bff solid 1.5px;
+  color: #0061c9;
+  border: #0061c9 solid 1.5px;
 }
 
 #newTaskBtn {
