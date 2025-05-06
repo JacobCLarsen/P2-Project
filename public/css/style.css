@@ -188,7 +188,7 @@ body {
 }
 
 #addUsertaskBtn {
-  width: 177px;
+  width: 166px;
   height: 40px;
   background-color: transparent;
   border: #444 solid 2px;
@@ -223,6 +223,7 @@ body {
 
 #uploadInfoContainer {
   overflow: scroll;
+  max-width: 166px;
 }
 
 #clearQueueBtn:hover {
