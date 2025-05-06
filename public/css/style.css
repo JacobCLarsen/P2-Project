@@ -222,7 +222,7 @@ body {
 }
 
 #uploadHashCount {
-  overflow: scroll;
+  overflow-x: scroll;
 }
 
 #clearQueueBtn:hover {
