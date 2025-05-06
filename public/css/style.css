@@ -137,19 +137,21 @@ body {
 }
 
 #submitTaskBtn {
+  width: 120px;
   height: 40px;
   border: #007bff solid 1.5px;
   color: #007bff;
   border-radius: 10px;
   background-color: transparent;
   font-size: 16px;
-  padding: 10px 10px 10px 10px;
+  padding: 10px 5px 10px 5px;
   cursor: pointer;
   color: #007bff;
   display: none;
 }
 
 #chooseFileBtn {
+  width: 120px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -175,7 +177,7 @@ body {
 }
 
 #addUsertaskBtn {
-  width: 250px;
+  width: 220px;
   height: 40px;
   background-color: transparent;
   border: #444 solid 2px;
