@@ -39,7 +39,12 @@
             <div id="uploadFormContainer">
               <form id="uploadForm" method="post" enctype="multipart/form-data">
                 <label for="files" id="chooseFileBtn">Select.CSV Files</label>
-                <input id="files" style="display: none" type="file" />
+                <input
+                  id="files"
+                  style="display: none"
+                  type="file"
+                  accept="text/CSV"
+                />
                 <button id="submitTaskBtn" type="submit">
                   Upload Hashes As Task
                 </button>
