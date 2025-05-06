@@ -145,7 +145,7 @@ body {
   height: 40px;
   border: #444 solid 1.5px;
   color: #444;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: transparent;
   font-size: 16px;
   transition: 0.3s;
@@ -155,7 +155,7 @@ body {
   height: 40px;
   border: #444 solid 1.5px;
   color: #444;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: transparent;
   font-size: 16px;
   padding: 10px 0px 10px 0px;
@@ -221,7 +221,7 @@ body {
 }
 
 #uploadInfoContainer {
-  overflow: scroll;
+  overflow: hidden;
   max-width: 166px;
 }
 
