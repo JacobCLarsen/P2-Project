@@ -1,7 +1,7 @@
 import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
 import { Task } from "../tasks/createTask.js"; // Corrected path
 import { startNewTask } from "../tasks/startNewtask.js"; // Corrected path
-import { storeResult } from "../database/storeResults.js"; // Corrected path
+import { storeResult, storeResults } from "../database/storeResults.js"; // Corrected path
 
 // Keep track of online users and client roles
 let workerClientns = [];
@@ -349,8 +349,6 @@ function handleStopWork(ws) {
 
 // When result is received from a client, varify the task was completed correctly, remove the task from "waiting for result" array,
 // and store weak hashes in the database
-// TODO: Add a check to see if the task was completed correctly or not
-// TODO: Check if all subtasks have been completed
 async function handleResultReceived(message) {
   // Check if a result was received or no weak passwords were found
   if (!message.result) {
@@ -392,7 +390,7 @@ async function handleResultReceived(message) {
         );
 
         // Send the results of the task to the server
-        await storeResult(completed_task);
+        await storeResults(completed_task);
       }
     } else {
       console.log(`Maintask already complted and removed from the main queue`);

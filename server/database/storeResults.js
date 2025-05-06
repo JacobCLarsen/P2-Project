@@ -42,7 +42,7 @@ export async function storeResults(app) {
 // Filepath to text element
 const filepath = path.join(process.cwd(), "./results.txt");
 
-async function storeResult(task) {
+export async function storeResult(task) {
   // Pull the results from the task
   const results = task.results;
 
@@ -58,4 +58,3 @@ async function storeResult(task) {
   }
 }
 
-export { storeResult };
