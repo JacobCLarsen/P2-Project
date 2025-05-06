@@ -394,7 +394,7 @@ async function handleResultReceived(message) {
         );
 
         // Send the results of the task to the server
-        await storePasswordsOnDatabase(completed_task);
+        await storeResult(completed_task);
       }
     } else {
       console.log(`Maintask already complted and removed from the main queue`);

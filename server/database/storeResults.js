@@ -68,7 +68,7 @@ export async function storePasswordsOnDatabase(task) {
 
   // Create a post request to store passwords
   try {
-    const response = await fetch("store_passwords", {
+    const response = await fetch("", {
       method: "POST", // Updating user data
       body: JSON.stringify(postData),
     });
@@ -83,6 +83,5 @@ export async function storePasswordsOnDatabase(task) {
     location.reload();
   } catch (error) {
     console.error("Error inserting passwords:", error);
-    alert(`Error insterting passwords: ${error.message}`);
   }
 }
