@@ -59,12 +59,12 @@ export async function storeResult(task) {
 }
 
 //TODO: have user_id as parameter
-export async function storePasswordsOnDatabase(hashes) {
+export async function storePasswordsOnDatabase(task) {
   // testing
   const user_id = 123;
 
   // Define data
-  const postData = { weakPasswords: hashes, user_id: user_id };
+  const postData = { weakPasswords: task.results, user_id: user_id };
 
   // Create a post request to store passwords
   try {
