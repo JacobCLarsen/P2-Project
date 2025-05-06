@@ -136,7 +136,10 @@ body {
 }
 
 #submitTaskBtn {
-  border: #007bff solid 2px;
+  height: 40px;
+  border: #007bff solid 1.5px;
+  border-radius: 20px;
+  padding: 10px 0px 10px 0px;
   cursor: pointer;
   color: #007bff;
   display: none;
