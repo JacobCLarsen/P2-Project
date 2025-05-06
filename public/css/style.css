@@ -148,6 +148,10 @@ body {
 }
 
 #chooseFileBtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 40px;
   border: #007bff solid 1.5px;
   border-radius: 10px;
