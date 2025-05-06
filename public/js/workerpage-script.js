@@ -7,6 +7,7 @@ const taskQueue = document.getElementById("taskqueue");
 const importTaskBtn = document.getElementById("addUsertaskBtn");
 const uploadContainer = document.getElementById("uploadFormContainer");
 const uploadForm = document.getElementById("uploadForm");
+const submitTaskBtn = document.getElementById("submitTaskBtn");
 const uploadMessage = document.getElementById("uploadMessage");
 const uploadHashCount = document.getElementById("uploadHashCount");
 const newTaskBtn = document.getElementById("newTaskBtn");
@@ -72,10 +73,12 @@ uploadForm.addEventListener("change", async (e) => {
       hashes.forEach((hash) => {
         console.log(hash);
       });
+      submitTaskBtn.style.display = "block";
       return hashes;
     })
     .catch((err) => {
       uploadMessage.innerText = `failed with error: ${err}`;
+      submitTaskBtn.style.display = "none";
       return null;
     });
 });

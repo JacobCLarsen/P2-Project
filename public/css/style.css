@@ -124,11 +124,17 @@ body {
 #uploadFormContainer {
   margin-top: 50px;
   display: none;
+  flex-direction: column;
   position: relative;
   z-index: 2;
 }
+
 #uploadForm {
   display: block;
+}
+
+#submitTaskBtn {
+  display: none;
 }
 
 #newTaskBtn {
