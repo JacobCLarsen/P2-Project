@@ -147,6 +147,15 @@ body {
   display: none;
 }
 
+#chooseFileBtn {
+  height: 40px;
+  border: #007bff solid 1.5px;
+  border-radius: 10px;
+  background-color: transparent;
+  font-size: 16px;
+  padding: 10px 0px 10px 0px;
+}
+
 #newTaskBtn {
   width: 120px;
   height: 40px;
