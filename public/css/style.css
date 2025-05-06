@@ -221,6 +221,10 @@ body {
   color: #29ac32;
 }
 
+#uploadHashCount {
+  overflow: visible;
+}
+
 #clearQueueBtn:hover {
   border: #f05656 solid 2px;
   color: #f05656;
