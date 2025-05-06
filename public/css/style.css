@@ -137,14 +137,14 @@ body {
 }
 
 #chooseFileBtn {
-  font-size: 14px;
+  font-size: 15px;
   height: 40px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 40px;
-  border: #444 solid 1.5px;
+  border: #444 solid 2px;
   color: #444;
   border-radius: 8px;
   background-color: transparent;
@@ -152,9 +152,8 @@ body {
 }
 
 #submitTaskBtn {
+  font-size: 15px;
   height: 40px;
-  border: #444 solid 1.5px;
-  color: #444;
   border-radius: 8px;
   background-color: transparent;
   padding: 10px 0px 10px 0px;
@@ -162,20 +161,21 @@ body {
   display: none;
   transition: 0.3s;
   color: #007bff;
-  border: #007bff solid 1.5px;
+  border: #007bff solid 2px;
 }
 
 #chooseFileBtn:hover {
   color: #007bff;
-  border: #007bff solid 1.5px;
+  border: #007bff solid 2px;
 }
 
 #submitTaskBtn:hover {
   color: #0061c9;
-  border: #0061c9 solid 1.5px;
+  border: #0061c9 solid 2px;
 }
 
 #newTaskBtn {
+  font-size: 15px;
   width: 120px;
   height: 40px;
   background-color: transparent;
@@ -188,7 +188,8 @@ body {
 }
 
 #addUsertaskBtn {
-  width: 166px;
+  font-size: 15px;
+  width: 160px;
   height: 40px;
   background-color: transparent;
   border: #444 solid 2px;
@@ -200,6 +201,7 @@ body {
 }
 
 #clearQueueBtn {
+  font-size: 15px;
   width: 60px;
   height: 40px;
   background-color: transparent;
@@ -223,7 +225,7 @@ body {
 
 #uploadInfoContainer {
   overflow: hidden;
-  max-width: 166px;
+  max-width: 160px;
 }
 
 #clearQueueBtn:hover {
