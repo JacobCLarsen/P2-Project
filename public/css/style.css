@@ -136,7 +136,9 @@ body {
 }
 
 #submitTaskBtn {
-  background-color: #007bff;
+  border: #007bff solid 2px;
+  cursor: pointer;
+  color: #007bff;
   display: none;
 }
 
