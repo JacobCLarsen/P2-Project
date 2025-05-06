@@ -137,31 +137,43 @@ body {
 }
 
 #submitTaskBtn {
-  width: 120px;
+  width: 150px;
   height: 40px;
-  border: #007bff solid 1.5px;
-  color: #007bff;
+  border: #444 solid 1.5px;
+  color: #444;
   border-radius: 10px;
   background-color: transparent;
   font-size: 16px;
   padding: 10px 5px 10px 5px;
   cursor: pointer;
-  color: #007bff;
   display: none;
+  transition: 0.3s;
 }
 
 #chooseFileBtn {
-  width: 120px;
+  width: 150px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 40px;
-  border: #007bff solid 1.5px;
+  border: #444 solid 1.5px;
+  color: #444;
   border-radius: 10px;
   background-color: transparent;
   font-size: 16px;
   padding: 10px 0px 10px 0px;
+  transition: 0.3s;
+}
+
+#chooseFileBtn:hover {
+  color: #007bff;
+  border: #007bff solid 1.5px;
+}
+
+#sumbitTaskBtn:hover {
+  color: #007bff;
+  border: #007bff solid 1.5px;
 }
 
 #newTaskBtn {
