@@ -136,19 +136,6 @@ body {
   flex-direction: column;
 }
 
-#submitTaskBtn {
-  height: 40px;
-  border: #444 solid 1.5px;
-  color: #444;
-  border-radius: 10px;
-  background-color: transparent;
-  font-size: 16px;
-  padding: 10px 0px 10px 0px;
-  cursor: pointer;
-  display: none;
-  transition: 0.3s;
-}
-
 #chooseFileBtn {
   height: 40px;
   cursor: pointer;
@@ -161,7 +148,19 @@ body {
   border-radius: 10px;
   background-color: transparent;
   font-size: 16px;
+  transition: 0.3s;
+}
+
+#submitTaskBtn {
+  height: 40px;
+  border: #444 solid 1.5px;
+  color: #444;
+  border-radius: 10px;
+  background-color: transparent;
+  font-size: 16px;
   padding: 10px 0px 10px 0px;
+  cursor: pointer;
+  display: none;
   transition: 0.3s;
 }
 
