@@ -222,7 +222,7 @@ body {
 }
 
 #uploadInfoContainer {
-  overflow-x: scroll;
+  overflow: scroll;
 }
 
 #clearQueueBtn:hover {
