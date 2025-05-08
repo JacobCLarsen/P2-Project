@@ -1,4 +1,4 @@
-const passowordList = document.getElementById("weakPasswordList");
+const passowordList = document.getElementById("passwordList");
 const reloadListBtn = document.getElementById("fetchResultsbtn");
 
 // User_id for testing
@@ -32,7 +32,7 @@ function reloadResults(passwords) {
   // Create a list element for each password in the response
   passwords.forEach((password) => {
     const item = document.createElement("div");
-    item.className = "passwordListItem"
+    item.className = "passwordListItem";
     item.innerText = password;
     passowordList.append(item);
   });
