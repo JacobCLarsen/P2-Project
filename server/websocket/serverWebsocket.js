@@ -5,6 +5,7 @@ import {
   storePasswordsOnDatabase,
   storeResult,
   storeResults,
+  addPoints,
 } from "../database/storeResults.js"; // Corrected path
 
 // Keep track of online users and client roles
@@ -329,28 +330,6 @@ function handleConnection(ws, message) {
   }
 
   updateOnlineUsers();
-}
-async function addPoints(points, userId) {
-  try {
-    const response = await fetch("add-points", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        points: points,
-        id: userId,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      console.log("Added points to user");
-    } else {
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    console.error("Error adding points:", error);
-  }
 }
 
 // When a client start working, update the dashboard

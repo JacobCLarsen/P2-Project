@@ -59,6 +59,29 @@ export async function storeResult(task) {
   }
 }
 
+export async function addPoints(points, userId) {
+  try {
+    const response = await fetch("add-points", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        points: points,
+        id: userId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log("Added points to user");
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error("Error adding points:", error);
+  }
+}
+
 //TODO: have user_id as parameter
 export async function storePasswordsOnDatabase(task) {
   // Parse weakpasswords from task.results
@@ -76,6 +99,29 @@ export async function storePasswordsOnDatabase(task) {
         success: false,
         message: "Invalid request: missing passwords or user ID",
       });
+    }
+
+    async function addPoints(points, userId) {
+      try {
+        const response = await fetch("add-points", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            points: points,
+            id: userId,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          console.log("Added points to user");
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.error("Error adding points:", error);
+      }
     }
 
     // SQL query
