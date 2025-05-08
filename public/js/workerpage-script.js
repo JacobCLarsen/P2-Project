@@ -147,7 +147,7 @@ async function authenticateUser() {
 newTaskBtn.addEventListener("click", () => {
   console.log("asked for new task to be created");
 
-  mySocket.send(JSON.stringify({ action: "addTask" , user_id: clientId}));
+  mySocket.send(JSON.stringify({ action: "addTask", user_id: clientId }));
 });
 
 // Function to clear the queue
@@ -226,7 +226,7 @@ async function startWork(subTask) {
       action: "send result",
       result: e.data,
       taskId: subTask.id,
-      token: token,
+      user_id: clientId,
     };
 
     console.log("Message received from worker:", e.data);
