@@ -379,7 +379,7 @@ async function handleResultReceived(message) {
     );
 
     // Push results to the task object's array for results
-    if (mainTaskQueue[0].results) {
+    if (mainTaskQueue[0]) {
       if (message.result) {
         // if result is not empty
         mainTaskQueue[0].results.push(...message.result); // Spread and insert each array item
