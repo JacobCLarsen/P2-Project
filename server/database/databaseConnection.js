@@ -209,6 +209,45 @@ export function setupDatabaseRoutes(app) {
       res.status(401).json({ success: false, message: error.message });
     }
   });
+
+  // GET endpoint for weak passwords on the server, for a given user id
+  app.get("/passwordsDB", (req, res) => {
+    try {
+      // Get user id
+      const user_id = req.query.user_id;
+
+      // Create a querry to pull weaks passwords for a given user
+      const query = "SELECT password FROM passwords WHERE user_id = ?";
+      DBConnection.query(query, user_id, (err, results) => {
+        if (err) {
+          console.error("Database query error:", err);
+          return res.status(500).json({
+            success: false,
+            message: "Database query failed",
+          });
+        }
+
+        if (results.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: `no passwords found for user with id ${user_id}`,
+          });
+        }
+
+        console.log("Query results:", results); // Debug log
+        res.json({
+          success: true,
+          passwords: results,
+        });
+      });
+    } catch (error) {
+      console.error("Password route error:", error);
+      res.status(401).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  });
 }
 
 // Export the database connection object

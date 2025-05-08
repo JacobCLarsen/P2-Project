@@ -42,6 +42,29 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
   return weakPasswordArray;
 }
 
+async function dictionaryAttackReturnHashes(targetHashes, dictionaryBatch) {
+  // Array to store any weak hashes found
+  let weakHashArray = [];
+
+  // Hash the dictionary
+  const hashedDictionary = await hashDictionary(dictionaryBatch);
+
+  // Log each set for debugging
+  console.log("dictionary:", hashedDictionary);
+  console.log("hashes:", targetHashes);
+
+  // Create a map of target hashes for quick lookup
+  const targetHashSet = new Set(targetHashes);
+
+  // Compare each hashed dictionary word with the target hashes
+  hashedDictionary.forEach((hashedWord) => {
+    if (targetHashSet.has(hashedWord)) {
+      weakHashArray.push(hashedWord);
+    }
+  });
+  return weakHashArray;
+}
+
 // Function to hash the dictionary
 async function hashDictionary(dictionary) {
   return Promise.all(dictionary.map(async (word) => await hashSHA512(word)));
