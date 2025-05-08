@@ -91,8 +91,8 @@ export function setupDatabaseRoutes(app) {
   });
 
   // Route to fetch all users from the database
-  app.get("/leaderboard", (req, res) => {
-    const query = "SELECT * FROM users ORDER BY score DESC LIMIT 5"; // SQL query to fetch all users
+  app.get("/get-leaderboard", (req, res) => {
+    const query = "SELECT * FROM users ORDER BY score DESC LIMIT 5"; // SQL query to fetch top 5 users
     // Execute the query to fetch all users
     DBConnection.query(query, (err, results) => {
       if (err) {
