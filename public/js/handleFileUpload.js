@@ -64,7 +64,7 @@ async function cleanHashes(hashes) {
 }
 
 // Upload files
-async function uploadFiles(hashes) {
+async function uploadFiles(hashes, user_id) {
   console.log("Hashes to upload:", hashes); // Debug log to verify the array
 
   // Check if hashes has been parsed into the correct format
@@ -76,7 +76,7 @@ async function uploadFiles(hashes) {
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: hashes, user_id: user_id }),
+    body: JSON.stringify({ hashes, user_id }),
   })
     .then((response) => {
       console.log(response);
