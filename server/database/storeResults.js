@@ -79,17 +79,12 @@ export function addPoints(points, userId) {
   DBConnection.query(query, [points, userId], (err, result) => {
     if (err) {
       console.error("Database update error:", err);
-      return res
-        .status(500)
-        .json({ success: false, message: "Database update failed" });
     }
 
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      console.error("User not found or no rows affected:", result);
     }
 
-    res.json({ success: true, message: "Points added successfully" });
+    console.log("Points added successfully:", result);
   });
 }
