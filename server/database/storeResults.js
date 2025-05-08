@@ -59,7 +59,6 @@ export async function storeResult(task) {
   }
 }
 
-//TODO: have user_id as parameter
 export async function storePasswordsOnDatabase(task) {
   // Parse weakpasswords from task.results
   let weakPasswords;
