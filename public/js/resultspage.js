@@ -8,56 +8,17 @@ const reloadListBtn = document.getElementById("fetchResultsbtn");
 // Authenticate the user, to make sure the user is logged in
 let user_id;
 
+// Load results on page load and when the reload button is clicked
 window.addEventListener("load", async () => {
-  try {
-    const user = await authenticateUser();
-    user_id = user.userId; // Set the user_id after successful authentication
-    await fetch(`passwordsDB?user_id=${user_id}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch hashes");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Server response:", data);
-        const passwords = data.passwords.map((row) => row.password);
-        reloadResults(passwords);
-      })
-      .catch((error) => {
-        console.error("Error fetching hashes", error);
-      });
-  } catch (error) {
-    console.error("Error during authentication or fetching data:", error);
-  }
+  loadResults()
 });
 
 reloadListBtn.addEventListener("click", async () => {
-  await fetch(`passwordsDB?user_id=${user_id}`, {
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch hashes");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Server response:", data);
-      const passwords = data.passwords.map((row) => row.password);
-      reloadResults(passwords);
-    })
-    .catch((error) => {
-      console.error("Error fetching hashes", error);
-    });
+  loadResults()
 });
 
 // Function to show results on the page
-function reloadResults(passwords) {
+function showResults(passwords) {
   // Remove existing results on the page
   passowordList.innerHTML = "";
   // Create a list element for each password in the response
@@ -67,6 +28,33 @@ function reloadResults(passwords) {
     item.innerText = password;
     passowordList.append(item);
   });
+}
+
+async function loadResults(){
+    try {
+        const user = await authenticateUser();
+        user_id = user.userId; // Set the user_id after successful authentication
+        await fetch(`passwordsDB?user_id=${user_id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch hashes");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Server response:", data);
+            const passwords = data.passwords.map((row) => row.password);
+            showResults(passwords);
+          })
+          .catch((error) => {
+            console.error("Error fetching hashes", error);
+          });
+      } catch (error) {
+        console.error("Error during authentication or fetching data:", error);
+      }
 }
 
 async function authenticateUser() {
