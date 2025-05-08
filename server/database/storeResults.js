@@ -22,7 +22,9 @@ export async function storeResults(app) {
     const userId = await authenticateJWT(token);
 
     // Iterate over weakPasswords and insert each hash into the database
+    const points = 0;
     weakPasswords.forEach((hash) => {
+      points++;
       const insertQuery =
         "INSERT INTO passwords (password_hash, taskId, userId) VALUES (?, ?, ?)";
       DBConnection.query(insertQuery, [hash, taskId, userId], (err, result) => {
@@ -37,7 +39,31 @@ export async function storeResults(app) {
 
     // Respond with success after processing all weakPasswords
     res.json({ success: true, message: "Passwords logged successfully!" });
+    await addPoints(points);
   });
+}
+
+async function addPoints(points) {
+  try {
+    const response = await fetch("addPoints", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        points: points,
+        id: userId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log("Added points to user");
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error("Error adding points:", error);
+  }
 }
 
 // Filepath to text element
