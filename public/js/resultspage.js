@@ -1,5 +1,5 @@
 // Import socket from requireAuth
-import { socket } from "./requireAuth";
+import { socket } from "./requireAuth.js";
 
 // Document elements
 const passowordList = document.getElementById("passwordList");
@@ -9,30 +9,30 @@ const reloadListBtn = document.getElementById("fetchResultsbtn");
 let user_id;
 
 window.addEventListener("load", async () => {
-    try {
-        const user = await authenticateUser();
-        user_id = user.userId; // Set the user_id after successful authentication
-        await fetch(`passwordsDB?user_id=${user_id}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch hashes");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log("Server response:", data);
-                const passwords = data.passwords.map((row) => row.password);
-                reloadResults(passwords);
-            })
-            .catch((error) => {
-                console.error("Error fetching hashes", error);
-            });
-    } catch (error) {
-        console.error("Error during authentication or fetching data:", error);
-    }
+  try {
+    const user = await authenticateUser();
+    user_id = user.userId; // Set the user_id after successful authentication
+    await fetch(`passwordsDB?user_id=${user_id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch hashes");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Server response:", data);
+        const passwords = data.passwords.map((row) => row.password);
+        reloadResults(passwords);
+      })
+      .catch((error) => {
+        console.error("Error fetching hashes", error);
+      });
+  } catch (error) {
+    console.error("Error during authentication or fetching data:", error);
+  }
 });
 
 reloadListBtn.addEventListener("click", async () => {
@@ -70,32 +70,32 @@ function reloadResults(passwords) {
 }
 
 async function authenticateUser() {
-    const token = localStorage.getItem("token");
-    if (token) {
-        return new Promise((resolve, reject) => {
-            socket.send(JSON.stringify({ action: "authenticate", token }));
+  const token = localStorage.getItem("token");
+  if (token) {
+    return new Promise((resolve, reject) => {
+      socket.send(JSON.stringify({ action: "authenticate", token }));
 
-            socket.addEventListener("message", function handleMessage(event) {
-                const response = JSON.parse(event.data);
+      socket.addEventListener("message", function handleMessage(event) {
+        const response = JSON.parse(event.data);
 
-                if (response.action === "authenticated") {
-                    console.log("User authenticated:", response.user);
-                    document.documentElement.style.display = "block"; // Show the page after successful authentication
-                    socket.removeEventListener("message", handleMessage); // Remove listener after handling
-                    resolve(response.user); // Return the authenticated user
-                } else if (response.action === "error") {
-                    console.error("Error:", response.message);
-                    socket.removeEventListener("message", handleMessage); // Remove listener after handling
-                    if (response.message === "Invalid token") {
-                        redirectToLogin();
-                    }
-                    reject(new Error("Authentication error: " + response.message));
-                }
-            });
-        });
-    } else {
-        console.log("No token found, redirecting to login.");
-        redirectToLogin();
-        return Promise.reject(new Error("No token found"));
-    }
+        if (response.action === "authenticated") {
+          console.log("User authenticated:", response.user);
+          document.documentElement.style.display = "block"; // Show the page after successful authentication
+          socket.removeEventListener("message", handleMessage); // Remove listener after handling
+          resolve(response.user); // Return the authenticated user
+        } else if (response.action === "error") {
+          console.error("Error:", response.message);
+          socket.removeEventListener("message", handleMessage); // Remove listener after handling
+          if (response.message === "Invalid token") {
+            redirectToLogin();
+          }
+          reject(new Error("Authentication error: " + response.message));
+        }
+      });
+    });
+  } else {
+    console.log("No token found, redirecting to login.");
+    redirectToLogin();
+    return Promise.reject(new Error("No token found"));
+  }
 }
