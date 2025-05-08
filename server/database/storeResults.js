@@ -10,6 +10,30 @@ import DBConnection from "./databaseConnection.js";
  * URL: /store_results
  * Request Body: { weak_passwords: weakPasswords, task_id: taskID }
  */
+
+export async function addPoints(points, userId) {
+  try {
+    const response = await fetch("add-points", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        points: points,
+        id: userId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log("Added points to user");
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (error) {
+    console.error("Error adding points:", error);
+  }
+}
+
 export async function storeResults(app) {
   app.post("/store_results", async (req, res) => {
     const { weakPasswords, taskId, token } = req.body; // Extract weakPasswords and taskId from the request body
