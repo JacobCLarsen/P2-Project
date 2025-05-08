@@ -191,56 +191,6 @@ export function setupDatabaseRoutes(app) {
       res.status(401).json({ success: false, message: error.message });
     }
   });
-
-  //API endpoint for inserting weak password hashing into the "passwords" table in the database
-  app.post("/store_passwords", async (req, res) => {
-    try {
-      // Check for auth token
-      const token = req.headers.authorization?.split(" ")[1];
-      if (!token) {
-        return res
-          .status(401)
-          .json({ success: false, message: "No token provided" });
-      }
-
-      // Extract data from body
-      const { weakPasswords, user_id } = req.body;
-      if (!Array.isArray(weakPasswords) || !user_id) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid request: missing passwords or user ID",
-        });
-      }
-
-      // SQL query
-      const query = "INSERT INTO passwords (password, user_id) VALUES (?, ?)";
-
-      // Wrap inserts in promises for async handling
-      const insertPromises = weakPasswords.map((password) => {
-        return new Promise((resolve, reject) => {
-          DBConnection.query(query, [password, user_id], (err, result) => {
-            if (err) {
-              return reject(err);
-            }
-            resolve(result);
-          });
-        });
-      });
-
-      // Wait for all inserts to complete
-      await Promise.all(insertPromises);
-
-      // Send final success response
-      res.json({
-        success: true,
-        message: "All passwords saved successfully",
-        insertedCount: weakPasswords.length,
-      });
-    } catch (error) {
-      console.error("Error storing passwords:", error);
-      res.status(500).json({ success: false, message: error.message });
-    }
-  });
 }
 
 // Export the database connection object

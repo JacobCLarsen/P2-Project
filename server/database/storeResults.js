@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 
-import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
+import { authenticateJWT } from "../middleware/middleware_jwt.js";
+import DBConnection from "./databaseConnection.js";
 
 /* ----- Store_results: (Store weak password in the database) ----- */
 /**
@@ -64,24 +65,36 @@ export async function storePasswordsOnDatabase(task) {
   const user_id = 123;
 
   // Define data
-  const postData = { weakPasswords: task.results, user_id: user_id };
+  const weakPasswords = task.results;
 
-  // Create a post request to store passwords
   try {
-    const response = await fetch("", {
-      method: "POST", // Updating user data
-      body: JSON.stringify(postData),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || `Error ${response.status}`);
+    // Extract data from body
+    if (!Array.isArray(weakPasswords) || !user_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid request: missing passwords or user ID",
+      });
     }
 
-    console.log("Inserted passwords into database", data);
-    location.reload();
+    // SQL query
+    const query = "INSERT INTO passwords (password, user_id) VALUES (?, ?)";
+
+    // Wrap inserts in promises for async handling
+    const insertPromises = weakPasswords.map((password) => {
+      return new Promise((resolve, reject) => {
+        DBConnection.query(query, [password, user_id], (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(result);
+        });
+      });
+    });
+
+    // Wait for all inserts to complete
+    await Promise.all(insertPromises);
   } catch (error) {
-    console.error("Error inserting passwords:", error);
+    console.error("Error storing passwords:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 }
