@@ -90,8 +90,6 @@ export async function storePasswordsOnDatabase(task) {
       });
     });
 
-    // Wait for all inserts to complete
-    await Promise.all(insertPromises);
   } catch (error) {
     console.error("Error storing passwords:", error);
   }
