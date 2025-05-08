@@ -23,7 +23,7 @@ import DBConnection, {
 import { storeResults } from "./server/database/storeResults.js"; 
 
 //Port Number Import
-import { PORT, PORTSocket, NODENumber } from "./port.js"; 
+import { PORT, PORTSocket, NODENumber } from "port.js"; 
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
