@@ -103,7 +103,7 @@ export function setupDatabaseRoutes(app) {
           .json({ error: "Failed to fetch users from the database." });
       } else {
         // Respond with a success message and the list of users if the query succeeds
-        res.json({ success: true, users: results });
+        res.json({ success: true, user: results });
       }
     });
   });
