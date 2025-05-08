@@ -24,6 +24,8 @@ import { storeResults } from "./server/database/storeResults.js";
 
 //Port Number Import
 import { PORT, PORTSocket, NODENumber } from "./port.js"; 
+console.log(PORT);
+
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
