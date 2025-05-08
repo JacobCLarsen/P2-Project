@@ -3,7 +3,7 @@ onmessage = async (e) => {
   console.log("Message received from main script:");
 
   // Crack hashes
-  let weakPasswords = await dictionaryAttackReturnHashes(e.data.hashes, e.data.dictionary);
+  let weakPasswords = await dictionaryAttack(e.data.hashes, e.data.dictionary);
 
   if (weakPasswords.length > 0) {
     const workerResult = weakPasswords;
