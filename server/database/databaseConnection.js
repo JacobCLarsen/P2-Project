@@ -113,6 +113,8 @@ export function setupDatabaseRoutes(app) {
     try {
       const { points, id: userId } = req.body;
       // Update user score in the database
+      console.log("Points: " + points);
+      console.log("Id: " + userId);
       const query = "UPDATE users SET score = score + ?, WHERE id = ?";
       DBConnection.query(query, [points, userId], (err, result) => {
         if (err) {
