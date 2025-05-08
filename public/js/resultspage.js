@@ -28,6 +28,8 @@ function showResults(passwords) {
     item.innerText = password;
     passowordList.append(item);
   });
+  console.log("Results updated on page");
+  
 }
 
 async function loadResults(){
