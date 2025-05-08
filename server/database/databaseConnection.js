@@ -1,24 +1,46 @@
 import mysql from "mysql";
-import { authenticateJWT } from "../middleware/middleware_jwt.js"; // Corrected path
+import { authenticateJWT } from "../middleware/middleware_jwt.js";
+import { testDbConfig } from "./testConfig.js"; // NEW
 
 // Database connection configuration
-const DBConnection = mysql.createConnection({
-  host: "localhost", // Database host
-  user: "cs-25-sw-2-01@student.aau.dk", // Database username
-  password: "mye7cahHm8/AWd%q", // Database password
-  database: "cs_25_sw_2_01", // Database name
-});
+export function createDbConnection(isTest = false) {  // NEW
+  const config = isTest ? testDbConfig : {  // NEW
+    host: "localhost",
+    user: "cs-25-sw-2-01@student.aau.dk",
+    password: "mye7cahHm8/AWd%q",
+    database: "cs_25_sw_2_01",
+  };  // NEW
+  
+  return mysql.createConnection(config);  // NEW
+}  // NEW
+
+let DBConnection = createDbConnection();  // NEW
 
 // Function to connect to the database and initialize tables
-export function connectToDatabase() {
-  DBConnection.connect((err) => {
-    if (err) {
-      console.error("Database connection failed:", err); // Log error if connection fails
-      return;
-    }
-    console.log("MySQL Connected!"); // Log success message if connection is successful
+export function connectToDatabase(isTest = false) {  // NEW
+  return new Promise((resolve, reject) => {  // NEW
+    if (isTest) {  // NEW
+      DBConnection = createDbConnection(true);  // NEW
+    }  // NEW
+    
+    DBConnection.connect((err) => {
+      if (err) {
+        console.error("Database connection failed:", err);
+        reject(err);  // NEW
+        return;
+      }
+      console.log("MySQL Connected!");
 
-    // Create "users" table
+      createTables()  // NEW
+        .then(() => resolve(DBConnection))  // NEW
+        .catch(reject);  // NEW
+    });
+  });  // NEW
+}
+
+// NEW
+export function createTables() {  // NEW
+  return new Promise((resolve, reject) => {  // NEW
     const createUsersTable = `
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY, -- Unique user ID
@@ -26,7 +48,6 @@ export function connectToDatabase() {
                 password VARCHAR(255) NOT NULL -- Password
             )`;
 
-    // Create "results" table
     const createPasswordsTable = `
             CREATE TABLE IF NOT EXISTS passwords (
               id INT AUTO_INCREMENT PRIMARY KEY, -- Password ID
@@ -36,24 +57,25 @@ export function connectToDatabase() {
               FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE -- Ensures that user_id exists in users table and deletes all entries related to the user if the user is deleted
             )`;
 
-    // Execute the query to create the "users" table
     DBConnection.query(createUsersTable, (err, result) => {
       if (err) {
-        console.error("Error creating users table:", err); // Log error if table creation fails
+        console.error("Error creating users table:", err);
+        reject(err);  // NEW
       } else {
-        console.log("Users table is ready!"); // Log success message if table is created
+        console.log("Users table is ready!");
+        
+        DBConnection.query(createPasswordsTable, (err, result) => {
+          if (err) {
+            console.error("Error creating results table:", err);
+            reject(err);  // NEW
+          } else {
+            console.log("Results table is ready!");
+            resolve();  // NEW
+          }
+        });
       }
     });
-
-    // Execute the query to create the "results" table
-    DBConnection.query(createPasswordsTable, (err, result) => {
-      if (err) {
-        console.error("Error creating results table:", err); // Log error if table creation fails
-      } else {
-        console.log("Results table is ready!"); // Log success message if table is created
-      }
-    });
-  });
+  });  // NEW
 }
 
 // Function to set up database-related routes

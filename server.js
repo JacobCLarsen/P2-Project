@@ -71,7 +71,7 @@ app.get("/", (req, res) => {
 });
 
 // Start The Server on the Specified Port:
-const PORT = 3313; // Port number for the server to listen on
+const PORT = 3318; // Port number for the server to listen on
 server.listen(PORT, "0.0.0.0", () => {
   console.log(
     "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node3/"
