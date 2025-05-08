@@ -14,6 +14,9 @@ const newTaskBtn = document.getElementById("newTaskBtn");
 const clearQueueBtn = document.getElementById("clearQueueBtn");
 const latestCompletedTask = document.getElementById("latestCompletedTask");
 
+// use socket object from require auth and set a clientId
+const mySocket = socket;
+
 // Import the socket connection to the server
 import { socket } from "./requireAuth.js";
 
@@ -27,9 +30,6 @@ import {
   submitFileUpload,
 } from "./handleFileUpload.js";
 
-// use socket object from require auth and set a clientId
-const mySocket = socket;
-
 // variable to keep track of worker state locally
 let workerActiveStatus;
 
@@ -39,7 +39,7 @@ mySocket.addEventListener("open", (event) => {
     action: "connect",
     role: "worker",
     data: null,
-    id: clientId, // Use the generated client ID
+    id: clientId,
   };
   mySocket.send(JSON.stringify(message));
 });
