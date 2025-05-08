@@ -17,6 +17,9 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 // use socket object from require auth and set a clientId
 const mySocket = socket;
 
+// Initialize a variable for client id
+let clientId;
+
 // Import the socket connection to the server
 import { socket } from "./requireAuth.js";
 
@@ -34,7 +37,7 @@ let workerActiveStatus;
 mySocket.addEventListener("open", async (event) => {
   // Authenticate user and get use id from token
   const user = await authenticateUser();
-  const clientId = user.userId;
+  clientId = user.userId;
   let message = {
     action: "connect",
     role: "worker",
