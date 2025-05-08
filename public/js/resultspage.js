@@ -5,8 +5,6 @@ const reloadListBtn = document.getElementById("fetchResultsbtn");
 const user_id = 2;
 
 reloadListBtn.addEventListener("click", async () => {
-  const user_id = 123; // or dynamically retrieved
-
   await fetch(`passwordsDB?user_id=${user_id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
