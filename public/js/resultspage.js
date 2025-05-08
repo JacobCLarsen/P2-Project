@@ -17,7 +17,7 @@ reloadListBtn.addEventListener("click", async () => {
     })
     .then((data) => {
       console.log("Server response:", data);
-      const passwords = data.map((row) => row.password);
+      const passwords = data.passwords.map((row) => row.password);
       reloadResults(passwords);
     })
     .catch((error) => {
