@@ -10,17 +10,17 @@ import express from "express";
 import { createServer } from "http";
 
 // Custom Modules
-import router from "./server/routes/router.js"; // Updated path
-import { setupAuth } from "./server/routes/setupAuth.js"; // Updated path
+import router from "./server/routes/router.js"; 
+import { setupAuth } from "./server/routes/setupAuth.js";
 
 import { WebSocketServer } from "ws";
-import { WebsocketListen } from "./server/websocket/serverWebsocket.js"; // Updated path
+import { WebsocketListen } from "./server/websocket/serverWebsocket.js"; 
 
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
-} from "./server/database/databaseConnection.js"; // Updated path
-import { storeResults } from "./server/database/storeResults.js"; // Updated path
+} from "./server/database/databaseConnection.js"; 
+import { storeResults } from "./server/database/storeResults.js"; 
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -69,7 +69,7 @@ app.get("/", (req, res) => {
   res.send("Server is running!");
 });
 
-// Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
+// Start The Server on the Specified Port:
 const PORT = 3313;
 server.listen(PORT, "0.0.0.0", () => {
   console.log(
