@@ -1,5 +1,6 @@
 // Create a socket client and connect to the server
-const mySocket = new WebSocket("wss://cs-25-sw-2-01.p2datsw.cs.aau.dk/ws2/");
+import { socket } from "./requireAuth";
+const MySocket = socket
 
 // Send a message to identify this client as a dashboard on open
 mySocket.addEventListener("open", () => {

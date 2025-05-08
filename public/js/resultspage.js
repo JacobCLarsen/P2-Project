@@ -10,11 +10,11 @@ let user_id;
 
 // Load results on page load and when the reload button is clicked
 window.addEventListener("load", async () => {
-  loadResults()
+  loadResults();
 });
 
 reloadListBtn.addEventListener("click", async () => {
-  loadResults()
+  loadResults();
 });
 
 // Function to show results on the page
@@ -29,34 +29,45 @@ function showResults(passwords) {
     passowordList.append(item);
   });
   console.log("Results updated on page");
-  
 }
 
-async function loadResults(){
-    try {
-        const user = await authenticateUser();
-        user_id = user.userId;
-        await fetch(`passwordsDB?user_id=${user_id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Failed to fetch hashes");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("Server response:", data);
-            const passwords = data.passwords.map((row) => row.password);
-            showResults(passwords);
-          })
-          .catch((error) => {
-            console.error("Error fetching hashes", error);
-          });
-      } catch (error) {
-        console.error("Error during authentication or fetching data:", error);
-      }
+// Function run when no weak passwords for a user
+function shownoResults() {
+  const item = document.createElement("div");
+  item.className = "passwordListItem";
+  item.innerText = "No weak passwords";
+  passowordList.append(item);
+}
+
+async function loadResults() {
+  try {
+    const user = await authenticateUser();
+    user_id = user.userId;
+    await fetch(`passwordsDB?user_id=${user_id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch hashes");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Server response:", data);
+        const passwords = data.passwords.map((row) => row.password);
+        if (passwords.length > 0) {
+          showResults(passwords);
+        } else {
+          shownoResults();
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching hashes", error);
+      });
+  } catch (error) {
+    console.error("Error during authentication or fetching data:", error);
+  }
 }
 
 // Return the user, authenticated using their local storage token

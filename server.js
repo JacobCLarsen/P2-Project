@@ -22,6 +22,11 @@ import DBConnection, {
 } from "./server/database/databaseConnection.js"; 
 import { storeResults } from "./server/database/storeResults.js"; 
 
+//Port Number Import
+import { PORT, PORTSocket, NODENumber } from "./port.js"; 
+console.log(PORT);
+
+
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,7 +50,7 @@ app.use("/", router);
 // Websockets:
 
 
-const wss = new WebSocketServer({ port: 4312 });
+const wss = new WebSocketServer({ port: PORTSocket });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -71,9 +76,8 @@ app.get("/", (req, res) => {
 });
 
 // Start The Server on the Specified Port:
-const PORT = 3313;
 server.listen(PORT, "0.0.0.0", () => {
   console.log(
-    "🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node3/"
+    `🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node${NODENumber}/`
   );
 });
