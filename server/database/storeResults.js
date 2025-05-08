@@ -64,8 +64,13 @@ export async function storePasswordsOnDatabase(task) {
   // testing
   const user_id = 123;
 
-  // Parse JSONstringify string into an array
-  const weakPasswords = JSON.parse(task.results);
+  // Parse weakpasswords from task.results
+  let weakPasswords;
+  if (typeof task.results === "string") {
+    weakPasswords = task.results.split(",").map((p) => p.trim());
+  } else {
+    weakPasswords = task.results; // Already an array
+  }
 
   try {
     // Extract data from body
