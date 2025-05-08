@@ -10,20 +10,17 @@ import express from "express";
 import { createServer } from "http";
 
 // Custom Modules
-import router from "./server/routes/router.js"; 
+import router from "./server/routes/router.js";
 import { setupAuth } from "./server/routes/setupAuth.js";
 
 import { WebSocketServer } from "ws";
-import { WebsocketListen } from "./server/websocket/serverWebsocket.js"; 
+import { WebsocketListen } from "./server/websocket/serverWebsocket.js";
 
 import DBConnection, {
   connectToDatabase,
   setupDatabaseRoutes,
-} from "./server/database/databaseConnection.js"; 
-import { storeResults } from "./server/database/storeResults.js"; 
-
-//Port Number Import
-import { PORT, PORTSocket, NODENumber } from "./port.js"; 
+} from "./server/database/databaseConnection.js";
+import { storeResults } from "./server/database/storeResults.js";
 
 // Define the path of the current file and directory:
 const __filename = fileURLToPath(import.meta.url);
@@ -47,8 +44,7 @@ app.use("/", router);
 
 // Websockets:
 
-
-const wss = new WebSocketServer({ port: PORTSocket });
+const wss = new WebSocketServer({ port: 4310 });
 
 wss.on("connection", function connection(ws) {
   console.log("connected");
@@ -74,8 +70,9 @@ app.get("/", (req, res) => {
 });
 
 // Start The Server on the Specified Port:
+const PORT = 3310;
 server.listen(PORT, "0.0.0.0", () => {
   console.log(
-    `🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node${NODENumber}/`
+    `🚀 Server is listening on https://cs-25-sw-2-01.p2datsw.cs.aau.dk/node0/`
   );
 });
