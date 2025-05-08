@@ -64,7 +64,7 @@ async function cleanHashes(hashes) {
 }
 
 // Upload files
-async function uploadFiles(hashes) {
+async function uploadFiles(hashes, user_id) {
   console.log("Hashes to upload:", hashes); // Debug log to verify the array
 
   // Check if hashes has been parsed into the correct format
