@@ -127,10 +127,10 @@ export function setupDatabaseRoutes(app) {
             .json({ success: false, message: "User not found" });
         }
 
-        res.json({ success: true, message: "Profile updated successfully" });
+        res.json({ success: true, message: "Points added successfully" });
       });
     } catch (error) {
-      console.error("Profile update error:", error);
+      console.error("Points update error:", error);
       res.status(401).json({ success: false, message: error.message });
     }
   });
