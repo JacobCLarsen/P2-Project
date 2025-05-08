@@ -11,27 +11,35 @@ import DBConnection from "./databaseConnection.js";
  * Request Body: { weak_passwords: weakPasswords, task_id: taskID }
  */
 
+// API endopoint for adding points
 export async function addPoints(points, userId) {
-  try {
-    const response = await fetch("add-points", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        points: points,
-        id: userId,
-      }),
-    });
+  app.post("/add-points", async (req, res) => {
+    try {
+      // Update user score in the database
+      console.log("Points: " + points);
+      console.log("Id: " + userId);
+      const query = "UPDATE users SET score = score + ?, WHERE id = ?";
+      DBConnection.query(query, [points, userId], (err, result) => {
+        if (err) {
+          console.error("Database update error:", err);
+          return res
+            .status(500)
+            .json({ success: false, message: "Database update failed" });
+        }
 
-    const data = await response.json();
+        if (result.affectedRows === 0) {
+          return res
+            .status(404)
+            .json({ success: false, message: "User not found" });
+        }
 
-    if (data.success) {
-      console.log("Added points to user");
-    } else {
-      throw new Error(data.message);
+        res.json({ success: true, message: "Points added successfully" });
+      });
+    } catch (error) {
+      console.error("Points update error:", error);
+      res.status(401).json({ success: false, message: error.message });
     }
-  } catch (error) {
-    console.error("Error adding points:", error);
-  }
+  });
 }
 
 export async function storeResults(app) {
