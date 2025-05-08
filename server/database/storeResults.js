@@ -1,7 +1,3 @@
-import fs from "fs";
-import path from "path";
-
-import { authenticateJWT } from "../middleware/middleware_jwt.js";
 import DBConnection from "./databaseConnection.js";
 
 /* ----- Store_results: (Store weak password in the database) ----- */
