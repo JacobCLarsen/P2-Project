@@ -72,7 +72,7 @@ app.get("/", (req, res) => {
 // Start The Server on the Specified Port (x = 1 (SERVER RAN) or x = 2 (LOCALHOST)):
 let x = 1;
 if (x === 1) {
-  const PORT = 3315;
+  const PORT = 3313;
 
   server.listen(PORT, "0.0.0.0", () => {
     console.log(
