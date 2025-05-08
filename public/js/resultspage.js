@@ -35,7 +35,7 @@ function showResults(passwords) {
 async function loadResults(){
     try {
         const user = await authenticateUser();
-        user_id = user.userId; // Set the user_id after successful authentication
+        user_id = user.userId;
         await fetch(`passwordsDB?user_id=${user_id}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },

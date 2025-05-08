@@ -84,7 +84,7 @@ uploadForm.addEventListener("change", async (e) => {
 });
 
 // On submit
-uploadForm.addEventListener("submit", (e) => {
+uploadForm.addEventListener("submit", async (e) => {
   // Get the filelist
   const fileList = uploadForm.querySelector('input[type="file"]').files;
   console.log(fileList);
@@ -92,8 +92,8 @@ uploadForm.addEventListener("submit", (e) => {
   e.preventDefault(); // Prevent default
 
   // Authenticate user and get user_id
-  const user = authenticateUser()
-  const user_id = user.userId
+  const user = await authenticateUser();
+  user_id = user.userId;
 
   // Helper functipn from "./handleFileUpload.js"
   submitFileUpload(fileList, user_id);
