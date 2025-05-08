@@ -60,7 +60,7 @@ async function loadResults(){
 }
 
 // Return the user, authenticated using their local storage token
- export async function authenticateUser() {
+async function authenticateUser() {
   const token = localStorage.getItem("token");
 
   if (!token) {
