@@ -75,7 +75,7 @@ export async function storePasswordsOnDatabase(task) {
 
 // API endopoint for adding points
 export async function addPoints(points, userId) {
-  const query = "UPDATE users SET score = score + ?, WHERE id = ?";
+  const query = "UPDATE users SET score = score + ? WHERE id = ?";
   DBConnection.query(query, [points, userId], (err, result) => {
     if (err) {
       console.error("Database update error:", err);
