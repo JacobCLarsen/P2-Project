@@ -44,6 +44,7 @@ export function WebsocketListen(ws, wss) {
 
       case "send result":
         await handleResultReceived(message);
+        console.log(message.user_id);
         await addPoints(1, message.user_id);
         break;
 

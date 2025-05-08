@@ -108,36 +108,6 @@ export function setupDatabaseRoutes(app) {
     });
   });
 
-  // API endopoint for adding points
-  app.post("/add-points", async (req, res) => {
-    try {
-      const { points, id: userId } = req.body;
-      // Update user score in the database
-      console.log("Points: " + points);
-      console.log("Id: " + userId);
-      const query = "UPDATE users SET score = score + ?, WHERE id = ?";
-      DBConnection.query(query, [points, userId], (err, result) => {
-        if (err) {
-          console.error("Database update error:", err);
-          return res
-            .status(500)
-            .json({ success: false, message: "Database update failed" });
-        }
-
-        if (result.affectedRows === 0) {
-          return res
-            .status(404)
-            .json({ success: false, message: "User not found" });
-        }
-
-        res.json({ success: true, message: "Points added successfully" });
-      });
-    } catch (error) {
-      console.error("Points update error:", error);
-      res.status(401).json({ success: false, message: error.message });
-    }
-  });
-
   // Profile route with token authentication
   app.get("/profile-data", async (req, res) => {
     try {
