@@ -71,31 +71,42 @@ function reloadResults(passwords) {
 
 async function authenticateUser() {
   const token = localStorage.getItem("token");
-  if (token) {
-    return new Promise((resolve, reject) => {
-      socket.send(JSON.stringify({ action: "authenticate", token }));
 
-      socket.addEventListener("message", function handleMessage(event) {
-        const response = JSON.parse(event.data);
-
-        if (response.action === "authenticated") {
-          console.log("User authenticated:", response.user);
-          document.documentElement.style.display = "block"; // Show the page after successful authentication
-          socket.removeEventListener("message", handleMessage); // Remove listener after handling
-          resolve(response.user); // Return the authenticated user
-        } else if (response.action === "error") {
-          console.error("Error:", response.message);
-          socket.removeEventListener("message", handleMessage); // Remove listener after handling
-          if (response.message === "Invalid token") {
-            redirectToLogin();
-          }
-          reject(new Error("Authentication error: " + response.message));
-        }
-      });
-    });
-  } else {
+  if (!token) {
     console.log("No token found, redirecting to login.");
     redirectToLogin();
     return Promise.reject(new Error("No token found"));
   }
+
+  // Ensure socket is open before sending anything
+  if (socket.readyState !== WebSocket.OPEN) {
+    await new Promise((resolve, reject) => {
+      socket.addEventListener("open", resolve);
+      socket.addEventListener("error", reject);
+    });
+  }
+
+  return new Promise((resolve, reject) => {
+    socket.send(JSON.stringify({ action: "authenticate", token }));
+
+    function handleMessage(event) {
+      const response = JSON.parse(event.data);
+
+      if (response.action === "authenticated") {
+        console.log("User authenticated:", response.user);
+        document.documentElement.style.display = "block"; // Show the page after successful authentication
+        socket.removeEventListener("message", handleMessage);
+        resolve(response.user);
+      } else if (response.action === "error") {
+        console.error("Error:", response.message);
+        socket.removeEventListener("message", handleMessage);
+        if (response.message === "Invalid token") {
+          redirectToLogin();
+        }
+        reject(new Error("Authentication error: " + response.message));
+      }
+    }
+
+    socket.addEventListener("message", handleMessage);
+  });
 }
