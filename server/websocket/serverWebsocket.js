@@ -380,7 +380,7 @@ async function handleResultReceived(message) {
 
     // Push results to the task object's array for results
     if (mainTaskQueue[0].results) {
-      mainTaskQueue[0].results.push(weakPasswords); // Spread and insert each array item
+      mainTaskQueue[0].results.push(message.result); // Spread and insert each array item
       mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
 
       // If the whole task is now completed
