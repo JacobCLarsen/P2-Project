@@ -3,8 +3,6 @@ import { createTask, Task } from "../tasks/createTask.js"; // Corrected path
 import { startNewTask } from "../tasks/startNewtask.js"; // Corrected path
 import {
   storePasswordsOnDatabase,
-  storeResult,
-  storeResults,
   addPoints,
 } from "../database/storeResults.js"; // Corrected path
 
