@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const userName = document.getElementById("userName");
+  const userScore = document.getElementById("userScore");
   const userEmail = document.getElementById("userEmail");
   const userBio = document.getElementById("userBio");
   const profileImg = document.getElementById("profileImg");
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function loadProfile(user) {
     userName.textContent = user.username;
+    userScore.textContent = user.score;
     userEmail.textContent = user.email;
     userBio.textContent = user.bio;
     userTasks.textContent = user.tasks;
