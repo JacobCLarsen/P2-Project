@@ -1,0 +1,22 @@
+.container {
+  padding-left: 100px;
+}
+
+.passwordListItem {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  font-size: 15px;
+  width: auto;
+  border: 1px solid gray;
+  background-color: lightgray;
+}
+
+#passwordList {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  gap: 5px;
+}

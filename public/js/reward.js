@@ -1,6 +1,6 @@
 async function fetchData() {
   try {
-    const response = await fetch("leaderboard", {
+    const response = await fetch("get-leaderboard", {
       method: "GET",
       headers: { "Content-Type": "application/json" }, //Specify JSON format
     });
