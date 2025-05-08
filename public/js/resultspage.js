@@ -1,6 +1,10 @@
 const passowordList = document.getElementById("passwordList");
 const reloadListBtn = document.getElementById("fetchResultsbtn");
 
+// Get user id from localstorage token
+const token = localStorage.getItem("token");
+console.log(token);
+
 // User_id for testing
 const user_id = 2;
 
