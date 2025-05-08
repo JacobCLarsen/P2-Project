@@ -200,7 +200,7 @@ export function setupDatabaseRoutes(app) {
 
       // Create a querry to pull weaks passwords for a given user
       const query = "SELECT password FROM passwords WHERE user_id = ?";
-      DBConnection.query(query, [decoded.user_id], (err, results) => {
+      DBConnection.query(query, user_id, (err, results) => {
         if (err) {
           console.error("Database query error:", err);
           return res.status(500).json({
