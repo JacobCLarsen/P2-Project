@@ -90,6 +90,24 @@ export function setupDatabaseRoutes(app) {
     });
   });
 
+  // Route to fetch all users from the database
+  app.get("/get-leaderboard", (req, res) => {
+    const query = "SELECT * FROM users ORDER BY score DESC LIMIT 5"; // SQL query to fetch top 5 users
+    // Execute the query to fetch all users
+    DBConnection.query(query, (err, results) => {
+      if (err) {
+        // Log the error and respond with an error message if the query fails
+        console.error("Error fetching users:", err);
+        res
+          .status(500)
+          .json({ error: "Failed to fetch users from the database." });
+      } else {
+        // Respond with a success message and the list of users if the query succeeds
+        res.json({ success: true, user: results });
+      }
+    });
+  });
+
   // Profile route with token authentication
   app.get("/profile-data", async (req, res) => {
     try {

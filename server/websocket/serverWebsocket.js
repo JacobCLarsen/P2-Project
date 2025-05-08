@@ -43,7 +43,11 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "send result":
-        await handleResultReceived(message);
+        if (message.result != null) {
+          await handleResultReceived(message);
+        } else {
+          console.log("Message is NULL");
+        }
         break;
 
       case "addTask":
