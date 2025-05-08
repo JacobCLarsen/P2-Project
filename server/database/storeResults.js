@@ -80,14 +80,13 @@ export async function storePasswordsOnDatabase(task) {
     const query = "INSERT INTO passwords (password, user_id) VALUES (?, ?)";
 
     // Wrap inserts in promises for async handling
-    const insertPromises = weakPasswords.map((password) => {
-      return new Promise((resolve, reject) => {
-        DBConnection.query(query, [password, user_id], (err, result) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve(result);
-        });
+    weakPasswords.forEach((password) => {
+      DBConnection.query(query, [password, user_id], (err, result) => {
+      if (err) {
+        console.error("Error inserting password:", err);
+      } else {
+        console.log("Password inserted successfully:", result);
+      }
       });
     });
 
