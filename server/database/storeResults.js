@@ -64,8 +64,8 @@ export async function storePasswordsOnDatabase(task) {
   // testing
   const user_id = 123;
 
-  // Define data
-  const weakPasswords = task.results;
+  // Parse JSONstringify string into an array
+  const weakPasswords = JSON.parse(task.results);
 
   try {
     // Extract data from body
@@ -82,14 +82,13 @@ export async function storePasswordsOnDatabase(task) {
     // Wrap inserts in promises for async handling
     weakPasswords.forEach((password) => {
       DBConnection.query(query, [password, user_id], (err, result) => {
-      if (err) {
-        console.error("Error inserting password:", err);
-      } else {
-        console.log("Password inserted successfully:", result);
-      }
+        if (err) {
+          console.error("Error inserting password:", err);
+        } else {
+          console.log("Password inserted successfully:", result);
+        }
       });
     });
-
   } catch (error) {
     console.error("Error storing passwords:", error);
   }
