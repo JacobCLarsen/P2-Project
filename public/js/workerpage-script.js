@@ -17,6 +17,9 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 // Import the socket connection to the server
 import { socket } from "./requireAuth.js";
 
+const user = await authenticateUser();
+const clientId = user.userId;
+
 // Import helper functions to upload files
 import {
   toggleVisibility,
@@ -26,7 +29,6 @@ import {
 
 // use socket object from require auth and set a clientId
 const mySocket = socket;
-const clientId = `client-${Math.random().toString(36).slice(2, 9)}`;
 
 // variable to keep track of worker state locally
 let workerActiveStatus;
@@ -90,10 +92,6 @@ uploadForm.addEventListener("submit", async (e) => {
   console.log(fileList);
 
   e.preventDefault(); // Prevent default
-
-  // Authenticate user and get user_id
-  const user = await authenticateUser();
-  const user_id = user.userId;
 
   // Helper functipn from "./handleFileUpload.js"
   submitFileUpload(fileList, user_id);
