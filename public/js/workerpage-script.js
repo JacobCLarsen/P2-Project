@@ -93,7 +93,7 @@ uploadForm.addEventListener("submit", async (e) => {
 
   // Authenticate user and get user_id
   const user = await authenticateUser();
-  user_id = user.userId;
+  const user_id = user.userId;
 
   // Helper functipn from "./handleFileUpload.js"
   submitFileUpload(fileList, user_id);
