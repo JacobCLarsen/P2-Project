@@ -48,7 +48,7 @@ export function WebsocketListen(ws, wss) {
         break;
 
       case "addTask":
-        addDemoTask();
+        addDemoTask(message.user_id);
         break;
 
       case "add client task":
@@ -151,7 +151,7 @@ function updateTaskQueue() {
 }
 
 // Test function to add a demo task
-function addDemoTask() {
+function addDemoTask(user_id) {
   let testHashes = [
     "adfb6dd1ab1238afc37acd8ca24c1279f8d46f61907dd842faab35b0cc41c6e8ad84cbdbef4964b8334c22c4985c2387d53bc47e6c3d0940ac962f521a127d9f",
     "b109f3bbbc244eb82441917ed06d618b9008dd09b3befd1b5e07394c706a8bb980b1d7785e5976ec049b46df5f1326af5a2ea6d103fd07c95385ffab0cacbc86",
@@ -160,7 +160,7 @@ function addDemoTask() {
     "9b908be092ca0b280236d5335597b4b8502d408d3b09809c2aea7f3922ff355050bf9c498c2e4940cfb1b8cb13cc0671e95de7e38475e296ccb4ad1eb64a61f2",
     "2e8be0a37186094db6e2c7111385917a49d9dc34ec121d96caaddd49833d971ad1b12400a49b125166e2a1f1a7c06925bbbfb7f1c0e2fa625fd86fe84bd6982d",
   ];
-  const task = createTask(testHashes, message.user_id)
+  const task = createTask(testHashes, user_id)
 
   addTaskToQueue(task);
 }
