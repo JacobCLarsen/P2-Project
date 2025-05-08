@@ -17,7 +17,8 @@ reloadListBtn.addEventListener("click", async () => {
     })
     .then((data) => {
       console.log("Server response:", data);
-      reloadResults(data);
+      const passwords = data.map((row) => row.password);
+      reloadResults(passwords);
     })
     .catch((error) => {
       console.error("Error fetching hashes", error);
