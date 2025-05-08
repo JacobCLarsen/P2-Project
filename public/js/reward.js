@@ -2,6 +2,7 @@ async function fetchData() {
   try {
     const response = await fetch("leaderboard", {
       method: "GET",
+      headers: { "Content-Type": "application/json" }, //Specify JSON format
     });
 
     console.log("Response status:", response.status); // Debug log
