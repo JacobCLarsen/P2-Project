@@ -95,6 +95,5 @@ export async function storePasswordsOnDatabase(task) {
     await Promise.all(insertPromises);
   } catch (error) {
     console.error("Error storing passwords:", error);
-    res.status(500).json({ success: false, message: error.message });
   }
 }
