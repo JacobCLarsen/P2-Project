@@ -1,6 +1,8 @@
-// Create a socket client and connect to the server
-import { socket } from "./requireAuth";
-const mySocket = socket
+// Import the socket connection to the server
+import { socket } from "./requireAuth.js";
+
+// use socket object from require auth and set a clientId
+const mySocket = socket;
 
 // Send a message to identify this client as a dashboard on open
 mySocket.addEventListener("open", () => {
