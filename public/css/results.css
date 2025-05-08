@@ -3,6 +3,7 @@
 }
 
 .passwordListItem {
+  padding-left: 10px;
   display: flex;
   align-items: center;
   height: 25px;
