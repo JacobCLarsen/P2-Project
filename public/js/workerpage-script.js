@@ -16,6 +16,7 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 // Import the socket connection to the server
 import { socket } from "./requireAuth.js";
+import { authenticateUser } from "./resultspage.js";
 
 // Import helper functions to upload files
 import {
@@ -91,8 +92,12 @@ uploadForm.addEventListener("submit", (e) => {
 
   e.preventDefault(); // Prevent default
 
+  // Authenticate user and get user_id
+  const user = authenticateUser()
+  const user_id = user.userId
+
   // Helper functipn from "./handleFileUpload.js"
-  submitFileUpload(fileList);
+  submitFileUpload(fileList, user_id);
 });
 
 // When "new task" btn is clicked, a message is sent to the server to create a new task and add it to the taskQueue

@@ -10,7 +10,7 @@ export function toggleVisibility(object, displayStyle) {
   }
 }
 // Handle the submit and add the task to the queue
-export async function submitFileUpload(fileList) {
+export async function submitFileUpload(fileList, user_id) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
   await validateFileUpload(fileList)
     .then(async (hashes) => {
@@ -18,7 +18,7 @@ export async function submitFileUpload(fileList) {
       const cleanedHashes = await cleanHashes(hashes);
       // Upload the hashes to the database
       console.log("uploading hashes", cleanedHashes);
-      uploadFiles(cleanedHashes);
+      uploadFiles(cleanedHashes, user_id);
     })
     .catch((err) => {
       console.log("error - ", err);
@@ -76,7 +76,7 @@ async function uploadFiles(hashes) {
   await fetch("startwork", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes: hashes }),
+    body: JSON.stringify({ hashes: hashes, user_id: user_id }),
   })
     .then((response) => {
       console.log(response);

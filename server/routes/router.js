@@ -83,6 +83,7 @@ router.post("/startwork", (req, res) => {
   console.log("Request file:", req.body.hashes); // Log the received hashes
 
   const hashes = req.body.hashes;
+  const user_id = req.body.user_id
 
   // Check if hashes are provided
   if (!hashes) {
@@ -95,10 +96,10 @@ router.post("/startwork", (req, res) => {
   }
 
   // Respond with success and the number of received hashes
-  res.json({ success: true, received: hashes.length, hashes });
+  res.json({ success: true, received: hashes.length, hashes, user_id });
 
   // Create a task with the received hashes
-  const newTask = createTask(hashes);
+  const newTask = createTask(hashes, user_id);
 
   // Add the task to the queue
   startNewTask(newTask);

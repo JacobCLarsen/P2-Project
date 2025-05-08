@@ -61,9 +61,6 @@ export async function storeResult(task) {
 
 //TODO: have user_id as parameter
 export async function storePasswordsOnDatabase(task) {
-  // testing
-  const user_id = 2; // Jacob profile
-
   // Parse weakpasswords from task.results
   let weakPasswords;
   if (typeof task.results === "string") {
@@ -74,7 +71,7 @@ export async function storePasswordsOnDatabase(task) {
 
   try {
     // Extract data from body
-    if (!Array.isArray(weakPasswords) || !user_id) {
+    if (!Array.isArray(weakPasswords) || !task.user_id) {
       return res.status(400).json({
         success: false,
         message: "Invalid request: missing passwords or user ID",
@@ -86,7 +83,7 @@ export async function storePasswordsOnDatabase(task) {
 
     // Wrap inserts in promises for async handling
     weakPasswords.forEach((password) => {
-      DBConnection.query(query, [password, user_id], (err, result) => {
+      DBConnection.query(query, [password, task.user_id], (err, result) => {
         if (err) {
           console.error("Error inserting password:", err);
         } else {
