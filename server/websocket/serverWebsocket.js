@@ -45,7 +45,7 @@ export function WebsocketListen(ws, wss) {
 
       case "send result":
         await handleResultReceived(message);
-        await addPoints(1);
+        await addPoints(1, message.user_id);
         break;
 
       case "addTask":
@@ -161,7 +161,7 @@ function addDemoTask(user_id) {
     "9b908be092ca0b280236d5335597b4b8502d408d3b09809c2aea7f3922ff355050bf9c498c2e4940cfb1b8cb13cc0671e95de7e38475e296ccb4ad1eb64a61f2",
     "2e8be0a37186094db6e2c7111385917a49d9dc34ec121d96caaddd49833d971ad1b12400a49b125166e2a1f1a7c06925bbbfb7f1c0e2fa625fd86fe84bd6982d",
   ];
-  const task = createTask(testHashes, user_id)
+  const task = createTask(testHashes, user_id);
 
   addTaskToQueue(task);
 }
@@ -330,7 +330,7 @@ function handleConnection(ws, message) {
 
   updateOnlineUsers();
 }
-async function addPoints(points) {
+async function addPoints(points, userId) {
   try {
     const response = await fetch("addPoints", {
       method: "POST",
