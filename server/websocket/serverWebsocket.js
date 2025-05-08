@@ -332,7 +332,7 @@ function handleConnection(ws, message) {
 }
 async function addPoints(points, userId) {
   try {
-    const response = await fetch("addPoints", {
+    const response = await fetch("/addPoints", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
