@@ -380,8 +380,10 @@ async function handleResultReceived(message) {
 
     // Push results to the task object's array for results
     if (mainTaskQueue[0].results) {
-      const parsedResults = JSON.parse(message.result); // Parse the JSON string into an array
-      mainTaskQueue[0].results.push(...parsedResults); // Spread and insert each array item
+      const weakPasswords = message.results
+        .split(",")
+        .map((p) => p.trim().replace(/^'|'$/g, ""));
+      mainTaskQueue[0].results.push(weakPasswords); // Spread and insert each array item
       mainTaskQueue[0].subTasksCompleted++; // Update the number of completed subtasks of the main task
 
       // If the whole task is now completed
