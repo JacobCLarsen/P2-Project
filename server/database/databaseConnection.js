@@ -108,9 +108,10 @@ export function setupDatabaseRoutes(app) {
     });
   });
 
-  // API endopoint for updating the profile
-  app.put("/addPoints", async (req, res) => {
+  // API endopoint for adding points
+  app.post("/addPoints", async (req, res) => {
     try {
+      const { points, id: userId } = req.body;
       // Update user score in the database
       const query = "UPDATE users SET score = score + ?, WHERE id = ?";
       DBConnection.query(query, [points, userId], (err, result) => {
