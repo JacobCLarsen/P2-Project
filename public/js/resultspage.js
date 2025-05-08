@@ -4,15 +4,14 @@ const reloadListBtn = document.getElementById("fetchResultsbtn");
 // User_id for testing
 const user_id = 2;
 
-reloadListBtn.addEventListener("click", async (user_id) => {
-  await fetch("passwordsDB", {
+reloadListBtn.addEventListener("click", async () => {
+  const user_id = 123; // or dynamically retrieved
+
+  await fetch(`passwordsDB?user_id=${user_id}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user_id),
   })
     .then((response) => {
-      console.log(response);
-
       if (!response.ok) {
         throw new Error("Failed to fetch hashes");
       }

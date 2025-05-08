@@ -196,7 +196,7 @@ export function setupDatabaseRoutes(app) {
   app.get("/passwordsDB", (req, res) => {
     try {
       // Get user id
-      const user_id = req.body;
+      const user_id = req.query.user_id;
 
       // Create a querry to pull weaks passwords for a given user
       const query = "SELECT password FROM passwords WHERE user_id = ?";
