@@ -94,7 +94,7 @@ uploadForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Prevent default
 
   // Helper functipn from "./handleFileUpload.js"
-  submitFileUpload(fileList, user_id);
+  submitFileUpload(fileList, clientId);
 });
 
 // Authentice user when submitting a file

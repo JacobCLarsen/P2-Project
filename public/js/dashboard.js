@@ -1,6 +1,6 @@
 // Create a socket client and connect to the server
 import { socket } from "./requireAuth";
-const MySocket = socket
+const mySocket = socket
 
 // Send a message to identify this client as a dashboard on open
 mySocket.addEventListener("open", () => {
