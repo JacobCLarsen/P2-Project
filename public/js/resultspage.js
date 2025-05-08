@@ -31,7 +31,8 @@ function reloadResults(passwords) {
   passowordList.innerHTML = "";
   // Create a list element for each password in the response
   passwords.forEach((password) => {
-    const item = document.createElement("li");
+    const item = document.createElement("div");
+    item.className = "passwordListItem"
     item.innerText = password;
     passowordList.append(item);
   });
