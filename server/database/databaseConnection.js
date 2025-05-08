@@ -109,7 +109,7 @@ export function setupDatabaseRoutes(app) {
   });
 
   // API endopoint for adding points
-  app.post("/addPoints", async (req, res) => {
+  app.post("/add-points", async (req, res) => {
     try {
       const { points, id: userId } = req.body;
       // Update user score in the database
