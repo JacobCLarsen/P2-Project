@@ -16,7 +16,7 @@ const latestCompletedTask = document.getElementById("latestCompletedTask");
 
 // Import the socket connection to the server
 import { socket } from "./requireAuth.js";
-import { authenticateUser } from "./resultspage.js";
+import  authenticateUser from "./resultspage.js";
 
 // Import helper functions to upload files
 import {
