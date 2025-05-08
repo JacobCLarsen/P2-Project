@@ -1,0 +1,40 @@
+const passowordList = document.getElementById("weakPasswordList");
+const reloadListBtn = document.getElementById("fetchResultsbtn");
+
+// User_id for testing
+const user_id = 2;
+
+reloadListBtn.addEventListener("click", async (user_id) => {
+  await fetch("passwordsDB", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user_id),
+  })
+    .then((response) => {
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch hashes");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Server response:", data);
+      reloadResults(data);
+    })
+    .catch((error) => {
+      console.error("Error fetching hashes", error);
+    });
+});
+
+// Function to show results on the page
+function reloadResults(passwords) {
+  // Remove existing results on the page
+  passowordList.innerHTML = "";
+  // Create a list element for each password in the response
+  passwords.forEach((password) => {
+    const item = document.createElement("li");
+    item.innerText = password;
+    passowordList.append(item);
+  });
+}

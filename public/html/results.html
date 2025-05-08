@@ -4,13 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Results</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/results.css" />
     <script type="module" src="js\requireAuth.js"></script>
   </head>
   <body>
     <script src="js\navbar.js"></script>
     <div class="container">
       <h1>Cracked Password Hashes:</h1>
+      <button id="fetchResultsbtn">Reload</button>
+      <div>
+        <ul id="weakPasswordList"></ul>
+      </div>
     </div>
+    <script type="module" src="js/resultspage.js"></script>
   </body>
 </html>
