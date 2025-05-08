@@ -3,7 +3,10 @@ onmessage = async (e) => {
   console.log("Message received from main script:");
 
   // Crack hashes
-  let weakPasswords = await dictionaryAttack(e.data.hashes, e.data.dictionary);
+  let weakPasswords = await dictionaryAttackReturnHashes(
+    e.data.hashes,
+    e.data.dictionary
+  );
 
   if (weakPasswords.length > 0) {
     const workerResult = weakPasswords;
@@ -40,6 +43,29 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
     }
   });
   return weakPasswordArray;
+}
+
+async function dictionaryAttackReturnHashes(targetHashes, dictionaryBatch) {
+  // Array to store any weak passwords found
+  let weakHashArray = [];
+
+  // Hash the dictionary
+  const hashedDictionary = await hashDictionary(dictionaryBatch);
+
+  // Log each set for debugging
+  console.log("dictionary:", hashedDictionary);
+  console.log("hashes:", targetHashes);
+
+  // Create a map of target hashes for quick lookup
+  const targetHashSet = new Set(targetHashes);
+
+  // Compare each hashed dictionary word with the target hashes
+  hashedDictionary.forEach((hashedWord, index) => {
+    if (targetHashSet.has(hashedWord)) {
+      weakHashArray.push(targetHashSet[index]);
+    }
+  });
+  return weakHashArray;
 }
 
 // Function to hash the dictionary
