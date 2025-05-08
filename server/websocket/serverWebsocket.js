@@ -28,8 +28,7 @@ export function WebsocketListen(ws, wss) {
     switch (message.action) {
       case "connect":
         handleConnection(ws, message);
-        console.log("trying to handle connect");
-        
+
         break;
 
       case "request task":

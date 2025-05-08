@@ -20,9 +20,6 @@ const mySocket = socket;
 // Import the socket connection to the server
 import { socket } from "./requireAuth.js";
 
-const user = await authenticateUser();
-const clientId = user.userId;
-
 // Import helper functions to upload files
 import {
   toggleVisibility,
@@ -34,7 +31,10 @@ import {
 let workerActiveStatus;
 
 // Send the name to the server after connecting
-mySocket.addEventListener("open", (event) => {
+mySocket.addEventListener("open", async (event) => {
+  // Authenticate user and get use id from token
+  const user = await authenticateUser();
+  const clientId = user.userId;
   let message = {
     action: "connect",
     role: "worker",
