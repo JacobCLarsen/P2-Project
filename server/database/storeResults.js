@@ -49,10 +49,7 @@ export async function storePasswordsOnDatabase(task) {
   try {
     // Extract data from body
     if (!Array.isArray(weakPasswords) || !task.user_id) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid request: missing passwords or user ID",
-      });
+      throw new Error("Invalid request: missing passwords or user ID");
     }
 
     // SQL query
