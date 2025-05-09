@@ -4,6 +4,7 @@ import { socket } from "./requireAuth.js";
 // Document elements
 const passowordList = document.getElementById("passwordList");
 const reloadListBtn = document.getElementById("fetchResultsbtn");
+const clearResultsBtn = document.getElementById("clearResultsBtn");
 
 // Authenticate the user, to make sure the user is logged in
 let user_id;
@@ -12,9 +13,13 @@ let user_id;
 window.addEventListener("load", async () => {
   loadResults();
 });
-
 reloadListBtn.addEventListener("click", async () => {
   loadResults();
+});
+
+// Eventlistener to clear results. All results from one user is deleted from the database and the page is reloaded
+clearResultsBtn.addEventListener("click", () => {
+  clearResults();
 });
 
 // Function to show results on the page
@@ -33,6 +38,9 @@ function showResults(passwords) {
 
 // Function run when no weak passwords for a user
 function shownoResults() {
+  // Clear the list
+  passowordList.innerHTML = "";
+  // Add an item telling the user that they have no results
   const item = document.createElement("div");
   item.className = "passwordListItem";
   item.innerText = "No weak passwords";
@@ -111,4 +119,34 @@ async function authenticateUser() {
 
     socket.addEventListener("message", handleMessage);
   });
+}
+
+// Function to clear results
+async function clearResults() {
+  try {
+    const user = await authenticateUser();
+    user_id = user.userId;
+    await fetch(`passwordsDB?user_id=${user_id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete hashes");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Server response:", data);
+        if (data.success) {
+          passowordList.innerHTML = ""; // Clear the list on the page
+          shownoResults(); // Show "No weak passwords" message
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting hashes", error);
+      });
+  } catch (error) {
+    console.error("Error during authentication or deleting data:", error);
+  }
 }
