@@ -42,7 +42,7 @@ function shownoResults() {
   passowordList.innerHTML = "";
   // Add an item telling the user that they have no results
   const item = document.createElement("div");
-  item.className = "passwordListItem";
+  item.className = "noResultMessage";
   item.innerText = "No weak passwords";
   passowordList.append(item);
 }

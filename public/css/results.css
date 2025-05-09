@@ -13,6 +13,15 @@
   background-color: lightgray;
 }
 
+.noResultMessage {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  font-size: 15px;
+  width: auto;
+}
+
 #passwordList {
   margin-top: 20px;
   display: flex;
