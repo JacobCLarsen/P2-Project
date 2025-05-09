@@ -49,10 +49,6 @@ export async function storePasswordsOnDatabase(task) {
   try {
     // Extract data from body
     if (!Array.isArray(weakPasswords) || !task.user_id) {
-      console.log(weakPasswords);
-      console.log(task.user_id);
-      
-      
       throw new Error("Invalid request: missing passwords or user ID");
     }
 
