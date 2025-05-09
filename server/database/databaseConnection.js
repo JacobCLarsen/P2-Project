@@ -227,13 +227,6 @@ export function setupDatabaseRoutes(app) {
           });
         }
 
-        if (results.length === 0) {
-          return res.status(404).json({
-            success: false,
-            message: `no passwords found for user with id ${user_id}`,
-          });
-        }
-
         console.log("Query results:", results); // Debug log
         res.json({
           success: true,
