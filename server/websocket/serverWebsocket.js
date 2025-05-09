@@ -44,8 +44,6 @@ export function WebsocketListen(ws, wss) {
 
       case "send result":
         await handleResultReceived(message);
-        console.log(message.user_id);
-        addPoints(1, message.user_id);
         break;
 
       case "addTask":
@@ -411,6 +409,9 @@ async function handleResultReceived(message) {
       `Task ${message.taskId} has already been completed by another node and removed from the waiting for result queue`
     );
   }
+
+  // Give the user points for working and submitting
+  addPoints(1, message.user_id);
 
   // Update completed task counter and taskqueue for dashboard and clients
   completedTaskCount++;
