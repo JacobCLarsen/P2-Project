@@ -124,8 +124,10 @@ async function authenticateUser() {
 // Function to clear results
 async function clearResults() {
   try {
-    const user = await authenticateUser();
-    user_id = user.userId;
+    if (!user_id) {
+      const user = await authenticateUser();
+      user_id = user.userId;
+    }
     await fetch(`passwordsDBDelete?user_id=${user_id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },

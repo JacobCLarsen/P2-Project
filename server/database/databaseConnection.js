@@ -256,7 +256,7 @@ export function setupDatabaseRoutes(app) {
       const user_id = req.query.user_id;
   
       // Create a querry to delete weaks passwords for a given user
-      const query = "DELETE password FROM passwords WHERE user_id = ?";
+      const query = "DELETE FROM passwords WHERE user_id = ?";
       DBConnection.query(query, user_id, (err, results) => {
         if (err) {
           console.error("Database query error:", err);
