@@ -42,7 +42,7 @@ function shownoResults() {
   passowordList.innerHTML = "";
   // Add an item telling the user that they have no results
   const item = document.createElement("div");
-  item.className = "passwordListItem";
+  item.className = "noResultMessage";
   item.innerText = "No weak passwords";
   passowordList.append(item);
 }
@@ -124,10 +124,12 @@ async function authenticateUser() {
 // Function to clear results
 async function clearResults() {
   try {
-    const user = await authenticateUser();
-    user_id = user.userId;
-    await fetch(`passwordsDB?user_id=${user_id}`, {
-      method: "DELETE",
+    if (!user_id) {
+      const user = await authenticateUser();
+      user_id = user.userId;
+    }
+    await fetch(`passwordsDBDelete?user_id=${user_id}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
