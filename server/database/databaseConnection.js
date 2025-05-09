@@ -248,8 +248,9 @@ export function setupDatabaseRoutes(app) {
       });
     }
   });
+
   // Endpoint to delete aff results for a given user
-  app.post("/passwordsDBDelete", (req, res) => {
+  app.put("/passwordsDBDelete", (req, res) => {
     try {
       // Get user id
       const user_id = req.query.user_id;

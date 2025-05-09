@@ -127,7 +127,7 @@ async function clearResults() {
     const user = await authenticateUser();
     user_id = user.userId;
     await fetch(`passwordsDBDelete?user_id=${user_id}`, {
-      method: "POST",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
