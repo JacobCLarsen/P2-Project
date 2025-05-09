@@ -249,7 +249,7 @@ export function setupDatabaseRoutes(app) {
     }
   });
   // Endpoint to delete aff results for a given user
-  app.delete("/passwordsDB", (req, res) => {
+  app.post("/passwordsDBDelete", (req, res) => {
     try {
       // Get user id
       const user_id = req.query.user_id;

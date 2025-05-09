@@ -126,8 +126,8 @@ async function clearResults() {
   try {
     const user = await authenticateUser();
     user_id = user.userId;
-    await fetch(`passwordsDB?user_id=${user_id}`, {
-      method: "DELETE",
+    await fetch(`passwordsDBDelete?user_id=${user_id}`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
