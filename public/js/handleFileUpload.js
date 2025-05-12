@@ -40,13 +40,15 @@ export async function validateFileUpload(fileList) {
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512), return valid hashes
-  let {validHashes, invalidHashes} = await checkHashLengths(fileList).catch(() => {
-    throw new Error(
-      "This file contains no hashes with the correct length (512bit)"
-    );
-  });
+  let { validHashes, invalidHashes } = await checkHashLengths(fileList).catch(
+    () => {
+      throw new Error(
+        "This file contains no hashes with the correct length (512bit)"
+      );
+    }
+  );
 
-  return {validHashes, invalidHashes};
+  return { validHashes, invalidHashes };
 }
 
 // ----------- Helper functions------------
@@ -98,6 +100,7 @@ async function uploadFiles(hashes, user_id) {
 async function checkHashLengths(fileList) {
   let validHashes = [];
   let invalidLengthHashes = [];
+  let invalidHexHashes = [];
   for (const file of fileList) {
     const content = await file.text();
     const hashes = content.split("\n");
@@ -115,21 +118,20 @@ async function checkHashLengths(fileList) {
     );
 
     // Separate valid and invalid hashes based on hexadecimal characters
-    validHashes = validHashes.filter((hash) =>
-      /^[a-fA-F0-9]+$/.test(hash)
-    );
-    const invalidHexHashes = validHashes.filter(
+    invalidHexHashes = validHashes.filter(
       (hash) => !/^[a-fA-F0-9]+$/.test(hash)
     );
+    validHashes = validHashes.filter((hash) => /^[a-fA-F0-9]+$/.test(hash));
 
     // Log valid and invalid hash count
     console.log(
       `File: ${file.name} contains ${validHashes.length} correct hashes and ${invalidHexHashes.length} hashes containing non hexidecimal characters: ${invalidHexHashes}`
     );
   }
+
   // If any 512 bit hashes in the array
   if (validHashes.length > 0) {
-    let invalidHashes = invalidLengthHashes.concat(invalidHexHashes)
+    let invalidHashes = invalidLengthHashes.concat(invalidHexHashes);
     return { validHashes, invalidHashes };
   } else {
     // Else return false to show an error
