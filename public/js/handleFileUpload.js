@@ -113,11 +113,13 @@ async function checkHashLengths(fileList) {
     );
   }
 
-  // Remove any hashes containing non hexedicimal letters
-  validHashes = validHashes.filter((hash) => /^[a-fA-F0-9]+$/.test(hash));
-  invalidHashes = invalidHashes.concat(
-    validHashes.filter((hash) => !/^[a-fA-F0-9]+$/.test(hash))
-  );
+  // Separate valid and invalid hashes based on hexadecimal characters
+  const filteredValidHashes = validHashes.filter((hash) => /^[a-fA-F0-9]+$/.test(hash));
+  const filteredInvalidHashes = validHashes.filter((hash) => !/^[a-fA-F0-9]+$/.test(hash));
+
+  // Update validHashes and invalidHashes arrays
+  validHashes = filteredValidHashes;
+  invalidHashes = invalidHashes.concat(filteredInvalidHashes);
 
   // Log valid and invalid hash count
   console.log(
