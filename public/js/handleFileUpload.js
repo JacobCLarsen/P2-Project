@@ -40,13 +40,13 @@ export async function validateFileUpload(fileList) {
   }
 
   // Check if the hashes are 512 bits (corresponding to the SHA1-512), return valid hashes
-  let validHashes = await checkHashLengths(fileList).catch(() => {
+  let {validHashes, invalidHashes} = await checkHashLengths(fileList).catch(() => {
     throw new Error(
       "This file contains no hashes with the correct length (512bit)"
     );
   });
 
-  return validHashes;
+  return {validHashes, invalidHashes};
 }
 
 // ----------- Helper functions------------
@@ -97,7 +97,7 @@ async function uploadFiles(hashes, user_id) {
 // Chech length of hashes
 async function checkHashLengths(fileList) {
   let validHashes = [];
-  let invalidHashes = [];
+  let invalidLengthHashes = [];
   for (const file of fileList) {
     const content = await file.text();
     const hashes = content.split("\n");
@@ -111,29 +111,26 @@ async function checkHashLengths(fileList) {
 
     // Log if any hashes found with a wrong length
     console.log(
-      `File: ${file.name} contains ${validHashes.length} 512 bit hashes and ${invalidHashes.length} hashes with wrong length: ${invalidHashes}`
+      `File: ${file.name} contains ${validHashes.length} 512 bit hashes and ${invalidLengthHashes.length} hashes with wrong length: ${invalidLengthHashes}`
     );
 
     // Separate valid and invalid hashes based on hexadecimal characters
-    const filteredValidHashes = validHashes.filter((hash) =>
+    validHashes = validHashes.filter((hash) =>
       /^[a-fA-F0-9]+$/.test(hash)
     );
-    const filteredInvalidHashes = validHashes.filter(
+    const invalidHexHashes = validHashes.filter(
       (hash) => !/^[a-fA-F0-9]+$/.test(hash)
     );
 
-    // Update validHashes and invalidHashes arrays
-    validHashes = filteredValidHashes;
-    invalidHashes = invalidHashes.concat(filteredInvalidHashes);
-
     // Log valid and invalid hash count
     console.log(
-      `File: ${file.name} contains ${validHashes.length} correct hashes and ${invalidHashes.length} hashes containing non hexidecimal characters: ${invalidHashes}`
+      `File: ${file.name} contains ${validHashes.length} correct hashes and ${invalidHexHashes.length} hashes containing non hexidecimal characters: ${invalidHexHashes}`
     );
   }
   // If any 512 bit hashes in the array
   if (validHashes.length > 0) {
-    return validHashes;
+    let invalidHashes = invalidLengthHashes.concat(invalidHexHashes)
+    return { validHashes, invalidHashes };
   } else {
     // Else return false to show an error
     throw new Error("No valid 512 bit hashes found");
