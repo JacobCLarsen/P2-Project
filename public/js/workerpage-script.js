@@ -82,7 +82,7 @@ uploadForm.addEventListener("change", async (e) => {
       return hashes;
     })
     .catch((err) => {
-      uploadMessage.innerText = `failed with error: ${err}`;
+      uploadMessage.innerText = `${err}`;
       submitTaskBtn.style.display = "none";
       return null;
     });
