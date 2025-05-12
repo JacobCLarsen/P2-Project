@@ -111,9 +111,11 @@ export function setupDatabaseRoutes(app) {
   // Profile route with token authentication
   app.get("/profile-data", async (req, res) => {
     try {
+      // Extract the token from the Authorization header
       const token = req.headers.authorization?.split(" ")[1];
       console.log("Token received:", token); // Debug log
 
+      // If no token is provided, return an unauthorized error
       if (!token) {
         return res.status(401).json({
           success: false,
@@ -121,14 +123,18 @@ export function setupDatabaseRoutes(app) {
         });
       }
 
+      // Decode the token to extract user information
       const decoded = await authenticateJWT(token);
       console.log("Decoded token:", decoded); // Debug log
 
-      // Use a Promise-based query instead of callback
+      // SQL query to fetch user profile data based on user ID
       const query =
         "SELECT username, score, email, bio FROM users WHERE id = ?";
+      
+      // Execute the query with the decoded user ID
       DBConnection.query(query, [decoded.userId], (err, results) => {
         if (err) {
+          // Log and return an error if the query fails
           console.error("Database query error:", err);
           return res.status(500).json({
             success: false,
@@ -136,6 +142,7 @@ export function setupDatabaseRoutes(app) {
           });
         }
 
+        // If no user is found, return a not found error
         if (results.length === 0) {
           return res.status(404).json({
             success: false,
@@ -144,12 +151,15 @@ export function setupDatabaseRoutes(app) {
         }
 
         console.log("Query results:", results); // Debug log
+
+        // Respond with the user profile data
         res.json({
           success: true,
           user: results[0],
         });
       });
     } catch (error) {
+      // Log and return an error if token decoding or other operations fail
       console.error("Profile route error:", error);
       res.status(401).json({
         success: false,
@@ -158,23 +168,27 @@ export function setupDatabaseRoutes(app) {
     }
   });
 
-  // API endopoint for updating the profile
+  // API endpoint for updating the profile
   app.put("/profile-update", async (req, res) => {
     try {
+      // Extract the token from the Authorization header
       const token = req.headers.authorization?.split(" ")[1];
 
+      // If no token is provided, return an unauthorized error
       if (!token) {
         return res
           .status(401)
           .json({ success: false, message: "No token provided" });
       }
 
+      // Decode the token to extract user information
       const decoded = await authenticateJWT(token);
       const userId = decoded.userId;
 
+      // Extract user data from the request body
       const { username, email, bio } = req.body;
 
-      // Validate input
+      // Validate input fields
       if (!username || !email || !bio) {
         return res
           .status(400)
@@ -189,37 +203,42 @@ export function setupDatabaseRoutes(app) {
         [username, email, bio, userId],
         (err, result) => {
           if (err) {
+            // Log and return an error if the update query fails
             console.error("Database update error:", err);
             return res
               .status(500)
               .json({ success: false, message: "Database update failed" });
           }
 
+          // If no rows are affected, return a not found error
           if (result.affectedRows === 0) {
             return res
               .status(404)
               .json({ success: false, message: "User not found" });
           }
 
+          // Respond with a success message if the update is successful
           res.json({ success: true, message: "Profile updated successfully" });
         }
       );
     } catch (error) {
+      // Log and return an error if token decoding or other operations fail
       console.error("Profile update error:", error);
       res.status(401).json({ success: false, message: error.message });
     }
   });
 
-  // GET endpoint for weak passwords on the server, for a given user id
+  // GET endpoint to fetch weak passwords for a given user ID
   app.get("/passwordsDB", (req, res) => {
     try {
-      // Get user id
+      // Extract user ID from the query parameters
       const user_id = req.query.user_id;
 
-      // Create a querry to pull weaks passwords for a given user
+      // SQL query to fetch weak passwords for the given user ID
       const query = "SELECT password FROM passwords WHERE user_id = ?";
       DBConnection.query(query, user_id, (err, results) => {
         if (err) {
+          // Log and return an error if the query fails
           console.error("Database query error:", err);
           return res.status(500).json({
             success: false,
@@ -228,12 +247,14 @@ export function setupDatabaseRoutes(app) {
         }
 
         console.log("Query results:", results); // Debug log
+        // Respond with the list of weak passwords
         res.json({
           success: true,
           passwords: results,
         });
       });
     } catch (error) {
+      // Log and return an error if any exception occurs
       console.error("Password route error:", error);
       res.status(401).json({
         success: false,
@@ -242,37 +263,41 @@ export function setupDatabaseRoutes(app) {
     }
   });
 
-  // Endpoint to delete aff results for a given user
+  // Endpoint to delete all weak passwords for a given user ID
   app.put("/passwordsDBDelete", (req, res) => {
     try {
-      // Get user id
+      // Extract user ID from the query parameters
       const user_id = req.query.user_id;
-  
-      // Create a querry to delete weaks passwords for a given user
+
+      // SQL query to delete weak passwords for the given user ID
       const query = "DELETE FROM passwords WHERE user_id = ?";
       DBConnection.query(query, user_id, (err, results) => {
         if (err) {
+          // Log and return an error if the query fails
           console.error("Database query error:", err);
           return res.status(500).json({
             success: false,
             message: "Database query failed",
           });
         }
-  
-        if (results.length === 0) {
+
+        // If no rows are affected, return a not found error
+        if (results.affectedRows === 0) {
           return res.status(404).json({
             success: false,
-            message: `no passwords found for user with id ${user_id}`,
+            message: `No passwords found for user with ID ${user_id}`,
           });
         }
-  
-        console.log("Delted Passwords:", results); // Debug log
+
+        console.log("Deleted Passwords:", results); // Debug log
+        // Respond with a success message if the deletion is successful
         res.json({
           success: true,
-          passwords: results,
+          message: "Passwords deleted successfully",
         });
       });
     } catch (error) {
+      // Log and return an error if any exception occurs
       console.error("Password route error:", error);
       res.status(401).json({
         success: false,
@@ -280,8 +305,7 @@ export function setupDatabaseRoutes(app) {
       });
     }
   });
-}
-
+};
 
 // Export the database connection object
 export default DBConnection;
