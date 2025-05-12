@@ -130,6 +130,11 @@ async function checkHashLengths(fileList) {
     );
   }
 
+  if (allInvalidHashes > 0){
+    console.log(`Invalid hashes: ${allInvalidHashes}`);
+    
+  }
+
   if (validHashes.length > 0) {
     return { validHashes, invalidHashes: allInvalidHashes };
   } else {
