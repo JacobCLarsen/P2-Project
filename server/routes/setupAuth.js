@@ -96,7 +96,7 @@ export function setupAuth(app) {
         "INSERT INTO users (username, password) VALUES (?, ?)";
       DBConnection.query(insertQuery, [username, password], (err, result) => {
         if (err) {
-          console.error("❌ Error creating user:", err); // Log error if query fails
+          console.error("Error creating user:", err); // Log error if query fails
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" }); // Respond with "Internal Server Error"
