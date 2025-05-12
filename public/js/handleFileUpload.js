@@ -94,15 +94,34 @@ async function uploadFiles(hashes, user_id) {
 // Chech length of hashes
 async function checkHashLengths(fileList) {
   let validHashes = [];
+  let invalidHashes = [];
   for (const file of fileList) {
     const content = await file.text();
     const hashes = content.split("\n");
-    validHashes.push(...hashes.filter((hash) => hash.trim().length === 128));
-    console.log(`File: ${file.name} contains ${validHashes.length} hashes`);
+    hashes.forEach((hash) => {
+      if (hash.trim().length === 128) {
+        validHashes.push(hash.trim());
+      } else {
+        invalidHashes.push(hash.trim());
+      }
+    });
+
+    // Log if any hashes found with a wrong length
+    console.log(
+      `File: ${file.name} contains ${validHashes.length} 512 bit hashes and ${invalidHashes.length} hashes with wrong length: ${invalidHashes}`
+    );
   }
 
-  // Filter for hashes using the specificied length of 128 characters
-  console.log("Total 512 bit hashes found:", validHashes.length);
+  // Remove any hashes containing non hexedicimal letters
+  validHashes = validHashes.filter((hash) => /^[a-fA-F0-9]+$/.test(hash));
+  invalidHashes = invalidHashes.concat(
+    validHashes.filter((hash) => !/^[a-fA-F0-9]+$/.test(hash))
+  );
+
+  // Log valid and invalid hash count
+  console.log(
+    `File: ${file.name} contains ${validHashes.length} correct hashes and ${invalidHashes.length} hashes containing non hexidecimal characters: ${invalidHashes}`
+  );
 
   // If any 512 bit hashes in the array
   if (validHashes.length > 0) {
