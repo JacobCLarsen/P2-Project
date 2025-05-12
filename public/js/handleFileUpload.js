@@ -42,10 +42,10 @@ export async function validateFileUpload(fileList) {
   // Check if the files uploaded are too large
   let totalSize = 0;
   fileList.forEach(file => {
-    totalSize += file.size
-    if (totalSize >31457281.5) {
-      throw new Error ("Files are too large (Max 3MB")
-    } // If the total payload is larger than 3MB, approx 22.0000 hashes
+    totalSize += file.size;
+    if (totalSize > 3145728) { // Corrected the size limit to 3MB (3 * 1024 * 1024)
+      throw new Error("Files are too large (Max 3MB)");
+    }
   });
 
   // Check hash lengths and characters
