@@ -54,7 +54,7 @@ export async function validateFileUpload(fileList) {
     }
   );
 
-  return { validHashes, invalidHashes };
+  return { validHashes, invalidHashes, fileList };
 }
 
 // ----------- Helper functions ------------
