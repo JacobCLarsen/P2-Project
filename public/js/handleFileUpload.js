@@ -18,7 +18,7 @@ export async function submitFileUpload(fileList, user_id) {
 
     // Upload the hashes to the database
     await uploadFiles(cleanedHashes, user_id);
-    console.log("Uploaded hashes")
+    console.log("Uploaded hashes");
   } catch (err) {
     console.error("Error:", err);
     throw new Error("Invalid file upload");
@@ -30,23 +30,20 @@ export async function validateFileUpload(fileList) {
   const allowedTypes = ["text/csv"];
 
   // Check each file if they are the correct filetype
+  let totalSize = 0;
   for (const file of fileList) {
     const { name: fileName } = file;
     if (!allowedTypes.includes(file.type)) {
       throw new Error(
         `❌ File "${fileName}" could not be uploaded. Only .csv files are allowed.`
       );
+    } else {
+      totalSize += file.size;
+      if (totalSize > 3145728) { // Max 3MB
+        throw new Error("Upload too large (Max 3MB)");
+      }
     }
   }
-
-  // Check if the files uploaded are too large
-  let totalSize = 0;
-  fileList.forEach(file => {
-    totalSize += file.size;
-    if (totalSize > 3145728) { // Corrected the size limit to 3MB (3 * 1024 * 1024)
-      throw new Error("Files are too large (Max 3MB)");
-    }
-  });
 
   // Check hash lengths and characters
   const { validHashes, invalidHashes } = await checkHashLengths(fileList).catch(
@@ -139,9 +136,8 @@ async function checkHashLengths(fileList) {
     );
   }
 
-  if (allInvalidHashes.length > 0){
+  if (allInvalidHashes.length > 0) {
     console.log(`Invalid hashes: ${allInvalidHashes}`);
-    
   }
 
   if (validHashes.length > 0) {
