@@ -37,7 +37,7 @@
           <div id="taskUploadContainer">
             <button id="addUsertaskBtn">Upload Task</button>
             <div id="uploadFormContainer">
-                <form id="uploadForm" method="post" enctype="multipart/form-data"></form>
+              <form id="uploadForm" method="post" enctype="multipart/form-data">
                 <label for="files" id="chooseFileBtn">Select Files (SHA-512)</label>
                 <input
                   id="files"
@@ -46,12 +46,12 @@
                   accept="text/CSV"
                   multiple
                 />
-                <div id="uploadInfoContainer"></div>
+                <div id="uploadInfoContainer">
                   <p id="uploadMessage"></p>
                   <p id="uploadHashCount"></p>
                 </div>
                 <button id="submitTaskBtn" type="submit">Submit Task</button>
-                </form>
+              </form>
             </div>
           </div>
           <button id="newTaskBtn">Add Demo Task</button>
