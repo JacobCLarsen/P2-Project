@@ -6,6 +6,7 @@ export function toggleVisibility(object, displayStyle) {
     object.style.display = "none";
   }
 }
+
 // Handle the submit and add the task to the queue
 export async function submitFileUpload(fileList, user_id) {
   // Validate the files again to make sure nothing as changed since the user uploaded their files
