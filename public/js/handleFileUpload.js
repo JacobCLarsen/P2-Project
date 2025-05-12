@@ -17,7 +17,7 @@ export async function submitFileUpload(fileList, user_id) {
     const cleanedHashes = await cleanHashes(validHashes);
 
     // Upload the hashes to the database
-    console.log("Uploading hashes:", cleanedHashes);
+    console.log("Uploading hashes:")
     await uploadFiles(cleanedHashes, user_id);
   } catch (err) {
     console.error("Error:", err);
