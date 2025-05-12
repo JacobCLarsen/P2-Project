@@ -77,9 +77,6 @@ uploadForm.addEventListener("change", async (e) => {
       uploadHashCount.innerHTML = `${validHashes.length} valid hashes of ${
         validHashes.length + invalidHashes.length
       }`;
-      validHashes.forEach((hash) => {
-        console.log(hash);
-      });
       submitTaskBtn.style.display = "block";
       return validHashes;
     })
