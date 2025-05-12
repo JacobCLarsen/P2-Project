@@ -108,7 +108,7 @@ async function checkHashLengths(fileList) {
       if (hash.trim().length === 128) {
         validHashes.push(hash.trim());
       } else {
-        invalidHashes.push(hash.trim());
+        invalidLengthHashes.push(hash.trim());
       }
     });
 
