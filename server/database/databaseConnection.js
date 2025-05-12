@@ -58,20 +58,6 @@ export function connectToDatabase() {
 
 // Function to set up database-related routes
 export function setupDatabaseRoutes(app) {
-  // Route to test database connection
-  app.get("/test-db", (req, res) => {
-    // Execute a simple query to test the database connection
-    DBConnection.query("SELECT 1 + 1 AS result", (err, result) => {
-      if (err) {
-        // Respond with an error message if the query fails
-        res.status(500).json({ error: "Database connection failed!" });
-      } else {
-        // Respond with a success message and query result if the query succeeds
-        res.json({ success: true, message: "Database connected!", result });
-      }
-    });
-  });
-
   // Route to fetch all users from the database
   app.get("/get-leaderboard", (req, res) => {
     const query = "SELECT * FROM users ORDER BY score DESC LIMIT 5"; // SQL query to fetch top 5 users
