@@ -83,6 +83,9 @@ router.post("/startwork", (req, res) => {
   const hashes = req.body.hashes;
   const user_id = req.body.user_id;
 
+  console.log(`A user uploaded a task with ${hashes.length} hashes`);
+  
+
   // Check if hashes are provided
   if (!hashes) {
     return res.status(400).json({ error: "No file uploaded" }); // Return error if no hashes are provided
