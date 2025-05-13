@@ -1,32 +1,24 @@
-// Test/dictionaryattack.test.js
-import { jest } from "@jest/globals";
-//import { dictionaryAttack, hashDictionary } from "./workerFunctions.js";
+// dictionaryattack.test.js
+import { jest } from '@jest/globals';
 
-// Mock before importing
-jest.unstable_mockModule("./workerFunctions.js", () => ({
+jest.unstable_mockModule('../js/workerFunctions.js', () => ({
   hashDictionary: jest.fn(),
 }));
 
-// Must be imported after mock
-const { dictionaryAttack, hashDictionary } = await import(
-  "./workerFunctions.js"
-);
+const { dictionaryAttack, hashDictionary } = await import('../js/workerFunctions.js');
 
 describe("dictionaryAttack", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("should return weak passwords that match target hashes", async () => {
     const dictionaryBatch = ["123456", "password", "admin", "letmein"];
     const targetHashes = ["abc123", "hashed_password", "xyz789"];
 
-    hashDictionary.mockResolvedValue([
+    const mockedHashedDictionary = [
       "aaa111",
       "hashed_password",
       "bbb222",
       "ccc333",
-    ]);
+    ];
+    hashDictionary.mockResolvedValue(mockedHashedDictionary);
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
     expect(result).toEqual(["password"]);
@@ -37,7 +29,6 @@ describe("dictionaryAttack", () => {
     const targetHashes = ["no_match1", "no_match2"];
 
     hashDictionary.mockResolvedValue(["hash1", "hash2"]);
-
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
     expect(result).toEqual([]);
   });
@@ -47,7 +38,6 @@ describe("dictionaryAttack", () => {
     const targetHashes = ["hash1"];
 
     hashDictionary.mockResolvedValue([]);
-
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
     expect(result).toEqual([]);
   });
