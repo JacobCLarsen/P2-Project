@@ -79,7 +79,7 @@ router.get("/privacypolicy", (req, res) => {
 // -------------- Post requests --------------
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
-router.post("/startwork", (req, res) => {
+router.post("/uploadTask", (req, res) => {
   const hashes = req.body.hashes;
   const user_id = req.body.user_id;
 

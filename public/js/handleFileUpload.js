@@ -75,7 +75,7 @@ async function uploadFiles(hashes, user_id) {
   }
 
   try {
-    const response = await fetch("startwork", {
+    const response = await fetch("uploadTask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hashes, user_id }),
