@@ -1,6 +1,6 @@
 // Test/dictionaryattack.test.js
 import { jest } from "@jest/globals";
-import { dictionaryAttack, hashDictionary } from "./workerFunctions.js";
+//import { dictionaryAttack, hashDictionary } from "./workerFunctions.js";
 
 // Mock before importing
 jest.unstable_mockModule("./workerFunctions.js", () => ({
