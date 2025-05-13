@@ -30,7 +30,7 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
   console.log("dictionary:", hashedDictionary);
   console.log("hashes:", targetHashes);
 
-  // Create a map of target hashes for quick lookup
+  // Create a set of target hashes for quick lookup
   const targetHashSet = new Set(targetHashes);
 
   // Compare each hashed dictionary word with the target hashes
