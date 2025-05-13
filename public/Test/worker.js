@@ -19,7 +19,7 @@ onmessage = async (e) => {
   }
 };
 
-async function dictionaryAttack(targetHashes, dictionaryBatch) {
+export async function dictionaryAttack(targetHashes, dictionaryBatch) {
   // Array to store any weak passwords found
   let weakPasswordArray = [];
 
@@ -66,7 +66,7 @@ async function dictionaryAttackReturnHashes(targetHashes, dictionaryBatch) {
 }
 
 // Function to hash the dictionary
-async function hashDictionary(dictionary) {
+export async function hashDictionary(dictionary) {
   return Promise.all(dictionary.map(async (word) => await hashSHA512(word)));
 }
 
