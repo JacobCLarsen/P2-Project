@@ -2,7 +2,7 @@
 const { dictionaryAttack, hashDictionary } = require("public/js/worker.js");
 
 // Mock the hashDictionary dependency
-jest.mock("./dictionaryAttackUtils", () => ({
+jest.mock("public/js/worker.js", () => ({
   hashDictionary: jest.fn(),
 }));
 
