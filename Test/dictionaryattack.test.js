@@ -1,8 +1,8 @@
 // Import the function to test
-const { dictionaryAttack, hashDictionary } = require("./public/js/worker.js");
+const { dictionaryAttack, hashDictionary } = require("worker.js");
 
 // Mock the hashDictionary dependency
-jest.mock("./public/js/worker.js", () => ({
+jest.mock("worker.js", () => ({
   hashDictionary: jest.fn(),
 }));
 
@@ -21,7 +21,7 @@ describe("dictionaryAttack", () => {
     hashDictionary.mockResolvedValue(mockedHashedDictionary);
 
     // Import function under test after mocking
-    const { dictionaryAttack } = require("./dictionaryAttack");
+    const { dictionaryAttack } = require("./dictionaryAttack.js");
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
 
