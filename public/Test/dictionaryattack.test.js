@@ -1,11 +1,11 @@
 // dictionaryattack.test.js
 import { jest } from '@jest/globals';
 
-jest.unstable_mockModule('../js/workerFunctions.js', () => ({
+jest.unstable_mockModule('./workerFunctions.js', () => ({
   hashDictionary: jest.fn(),
 }));
 
-const { dictionaryAttack, hashDictionary } = await import('../js/workerFunctions.js');
+const { dictionaryAttack, hashDictionary } = await import('./workerFunctions.js');
 
 describe("dictionaryAttack", () => {
   it("should return weak passwords that match target hashes", async () => {
