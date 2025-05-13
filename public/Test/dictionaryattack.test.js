@@ -60,4 +60,15 @@ describe("dictionaryAttack", () => {
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
     expect(result).toEqual([]);
   });
+
+  it("should return an empty array if target hashes are empty", async () => {
+    const dictionaryBatch = ["admin", "123456"];
+    const targetHashes = [];
+
+    const mockedHashedDictionary = ["somehash1", "somehash2"];
+    hashDictionary.mockResolvedValue(mockedHashedDictionary);
+
+    const result = await dictionaryAttack(targetHashes, dictionaryBatch);
+    expect(result).toEqual([]);
+  });
 });
