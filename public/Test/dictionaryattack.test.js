@@ -9,7 +9,7 @@ jest.unstable_mockModule("./workerFunctions.js", () => ({
 
 // Must be imported after mock
 const { dictionaryAttack, hashDictionary } = await import(
-  "../js/workerLogic.js"
+  "./workerFunctions.js"
 );
 
 describe("dictionaryAttack", () => {
