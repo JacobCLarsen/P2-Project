@@ -80,10 +80,11 @@ router.get("/privacypolicy", (req, res) => {
 
 // Handle the post request to upload hashes as a user. Data has been validated on the client side
 router.post("/startwork", (req, res) => {
-  console.log("Request file:", req.body.hashes); // Log the received hashes
-
   const hashes = req.body.hashes;
-  const user_id = req.body.user_id
+  const user_id = req.body.user_id;
+
+  console.log(`A user uploaded a task with ${hashes.length} hashes`);
+  
 
   // Check if hashes are provided
   if (!hashes) {

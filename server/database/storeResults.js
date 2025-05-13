@@ -24,7 +24,7 @@ export async function storeResults(app) {
         "INSERT INTO passwords (password_hash, taskId, userId) VALUES (?, ?, ?)";
       DBConnection.query(insertQuery, [hash, taskId, userId], (err, result) => {
         if (err) {
-          console.error("❌ Error inserting password:", err); // Log error if query fails
+          console.error("Error inserting password:", err); // Log error if query fails
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" }); // Respond with "Internal Server Error"

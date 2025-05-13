@@ -1,4 +1,4 @@
-// Function to toggle visibility of a DOM object
+// Toggle visibility of a DOM object
 export function toggleVisibility(object, displayStyle) {
   if (object.style.display === "none" || object.style.display === "") {
     object.style.display = displayStyle;
@@ -6,128 +6,143 @@ export function toggleVisibility(object, displayStyle) {
     object.style.display = "none";
   }
 }
+
 // Handle the submit and add the task to the queue
 export async function submitFileUpload(fileList, user_id) {
-  // Validate the files again to make sure nothing as changed since the user uploaded their files
-  await validateFileUpload(fileList)
-    .then(async (hashes) => {
-      // Clean hashes before upload
-      const cleanedHashes = await cleanHashes(hashes);
-      // Upload the hashes to the database
-      console.log("uploading hashes", cleanedHashes);
-      uploadFiles(cleanedHashes, user_id);
-    })
-    .catch((err) => {
-      console.log("error - ", err);
+  try {
+    // Validate the files again to make sure nothing has changed
+    const { validHashes } = await validateFileUpload(fileList);
 
-      throw new Error("Invalid file upload");
-    });
+    // Clean hashes before upload
+    const cleanedHashes = await cleanHashes(validHashes);
+
+    // Upload the hashes to the database
+    await uploadFiles(cleanedHashes, user_id);
+    console.log("Uploaded hashes");
+  } catch (err) {
+    console.error("Error:", err);
+    throw new Error("Invalid file upload");
+  }
 }
 
 // Validate the file type and hash length of the uploaded file(s)
 export async function validateFileUpload(fileList) {
   const allowedTypes = ["text/csv"];
 
-  // Check each file if they are the right filetype
+  // Check each file if they are the correct filetype
+  let totalSize = 0;
   for (const file of fileList) {
     const { name: fileName } = file;
     if (!allowedTypes.includes(file.type)) {
       throw new Error(
-        `❌ File "${fileName}" could not be uploaded. Only files with the following types are allowed: .csv`
+        `❌ File "${fileName}" could not be uploaded. Only .csv files are allowed.`
       );
+    } else {
+      totalSize += file.size;
+      if (totalSize > 3145728) { // Max 3MB
+        throw new Error("Upload too large (Max 3MB)");
+      }
     }
   }
 
-  // Check if the hashes are 512 bits (corresponding to the SHA1-512), return valid hashes
-  let validHashes = await checkHashLengths(fileList).catch(() => {
-    throw new Error("Invalid hash length");
-  });
+  // Check hash lengths and characters
+  const { validHashes, invalidHashes } = await checkHashLengths(fileList).catch(
+    () => {
+      throw new Error(
+        "This file contains no valid 512-bit hexadecimal hashes."
+      );
+    }
+  );
 
-  return validHashes;
+  return { validHashes, invalidHashes, fileList };
 }
 
-// ----------- Helper functions------------
+// ----------- Helper functions ------------
 
-// Removed defects and dublicates from the hashes
+// Remove defects and duplicates from the hashes
 async function cleanHashes(hashes) {
-  // Clean hashes to prevent "\r" or any other defects
   const cleanedHashes = hashes.map((hash) =>
     hash.replace(/[\r\n]+/g, "").trim()
   );
-  // Remove duplicate hashes by creating a set
   const uniqueHashes = [...new Set(cleanedHashes)];
-
   return uniqueHashes;
 }
 
 // Upload files
 async function uploadFiles(hashes, user_id) {
-  console.log("Hashes to upload:", hashes); // Debug log to verify the array
-
-  // Check if hashes has been parsed into the correct format
   if (!Array.isArray(hashes)) {
     throw new Error("Hashes must be an array");
   }
 
-  // Send a post request to the "startwork" endpoint - received and handled in "router.js"
-  await fetch("startwork", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ hashes, user_id }),
-  })
-    .then((response) => {
-      console.log(response);
-
-      if (!response.ok) {
-        throw new Error("Failed to upload hashes");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Server response:", data);
-    })
-    .catch((error) => {
-      console.error("Error uploading hashes:", error);
+  try {
+    const response = await fetch("startwork", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ hashes, user_id }),
     });
+
+    if (!response.ok) {
+      throw new Error("Failed to upload hashes");
+    }
+
+    const data = await response.json();
+    console.log("Server response:", data);
+  } catch (error) {
+    console.error("Error uploading hashes:", error);
+    throw error;
+  }
 }
 
-// Chech length of hashes
+// Check length and validity of hashes
 async function checkHashLengths(fileList) {
   let validHashes = [];
-  let invalidHashes = [];
+  let allInvalidHashes = [];
+
   for (const file of fileList) {
     const content = await file.text();
-    const hashes = content.split("\n");
-    hashes.forEach((hash) => {
-      if (hash.trim().length === 128) {
-        validHashes.push(hash.trim());
-      } else {
-        invalidHashes.push(hash.trim());
+    const hashes = content.split(/\r?\n/);
+
+    let fileValidHashes = [];
+    let fileInvalidLength = [];
+    let fileInvalidHex = [];
+
+    hashes.forEach((rawHash) => {
+      const hash = rawHash.trim();
+      if (hash.length === 128) {
+        if (/^[a-fA-F0-9]+$/.test(hash)) {
+          fileValidHashes.push(hash);
+        } else {
+          fileInvalidHex.push(hash);
+        }
+      } else if (hash !== "") {
+        fileInvalidLength.push(hash);
       }
     });
 
-    // Log if any hashes found with a wrong length
     console.log(
-      `File: ${file.name} contains ${validHashes.length} 512 bit hashes and ${invalidHashes.length} hashes with wrong length: ${invalidHashes}`
+      `File: ${file.name} contains ${fileValidHashes.length} valid hashes`
+    );
+    console.log(
+      `File: ${file.name} contains ${fileInvalidLength.length} hashes with incorrect length`
+    );
+    console.log(
+      `File: ${file.name} contains ${fileInvalidHex.length} hashes with non-hex characters`
+    );
+
+    validHashes = validHashes.concat(fileValidHashes);
+    allInvalidHashes = allInvalidHashes.concat(
+      fileInvalidLength,
+      fileInvalidHex
     );
   }
 
-  // Remove any hashes containing non hexedicimal letters
-  validHashes = validHashes.filter((hash) => /^[a-fA-F0-9]+$/.test(hash));
-  invalidHashes = invalidHashes.concat(
-    validHashes.filter((hash) => !/^[a-fA-F0-9]+$/.test(hash))
-  );
+  if (allInvalidHashes.length > 0) {
+    console.log(`Invalid hashes: ${allInvalidHashes}`);
+  }
 
-  // Log valid and invalid hash count
-  console.log(
-    `File: ${file.name} contains ${validHashes.length} correct hashes and ${invalidHashes.length} hashes containing non hexidecimal characters: ${invalidHashes}`
-  );
-
-  // If any 512 bit hashes in the array
   if (validHashes.length > 0) {
-    return validHashes;
+    return { validHashes, invalidHashes: allInvalidHashes };
   } else {
-    // Else return false to show an error
-    throw new Error("No valid 512 bit hashes found");
+    throw new Error("No valid 512-bit hexadecimal hashes found");
   }
 }
