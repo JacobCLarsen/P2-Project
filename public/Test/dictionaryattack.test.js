@@ -7,6 +7,11 @@ jest.unstable_mockModule("./workerFunctions.js", () => ({
   hashDictionary: jest.fn(),
 }));
 
+// Must be imported after mock
+const { dictionaryAttack, hashDictionary } = await import(
+  "../js/workerLogic.js"
+);
+
 describe("dictionaryAttack", () => {
   beforeEach(() => {
     jest.clearAllMocks();
