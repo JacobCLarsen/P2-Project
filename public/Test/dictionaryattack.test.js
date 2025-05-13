@@ -1,8 +1,8 @@
 // Import the function to test
-const { dictionaryAttack, hashDictionary } = require("./Test/worker.js");
+const { dictionaryAttack, hashDictionary } = require("worker.js");
 
 // Mock the hashDictionary dependency
-jest.mock("./Test/worker.js", () => ({
+jest.mock("worker.js", () => ({
   hashDictionary: jest.fn(),
 }));
 
