@@ -1,54 +1,51 @@
-// Import the function to test
-const { dictionaryAttack, hashDictionary } = require("public/Test/worker.js");
+// Test/dictionaryattack.test.js
+import { jest } from '@jest/globals';
 
-// Mock the hashDictionary dependency
-jest.mock("public/Test/worker.js", () => ({
+// Mock before importing
+jest.unstable_mockModule('../public/js/worker.js', () => ({
   hashDictionary: jest.fn(),
 }));
 
-describe("dictionaryAttack", () => {
-  it("should return weak passwords that match target hashes", async () => {
-    const dictionaryBatch = ["123456", "password", "admin", "letmein"];
-    const targetHashes = ["abc123", "hashed_password", "xyz789"];
+// Import after mocking
+const { dictionaryAttack, hashDictionary } = await import('../public/js/worker.js');
 
-    // Mocked hashed output of dictionaryBatch
-    const mockedHashedDictionary = [
-      "aaa111",
-      "hashed_password",
-      "bbb222",
-      "ccc333",
-    ];
-    hashDictionary.mockResolvedValue(mockedHashedDictionary);
-
-    // Import function under test after mocking
-    const { dictionaryAttack } = require("Test/worker.js");
-
-    const result = await dictionaryAttack(targetHashes, dictionaryBatch);
-
-    expect(result).toEqual(["password"]);
+describe('dictionaryAttack', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("should return an empty array if no matches found", async () => {
-    const dictionaryBatch = ["123456", "password"];
-    const targetHashes = ["no_match1", "no_match2"];
+  it('should return weak passwords that match target hashes', async () => {
+    const dictionaryBatch = ['123456', 'password', 'admin', 'letmein'];
+    const targetHashes = ['abc123', 'hashed_password', 'xyz789'];
 
-    const mockedHashedDictionary = ["hash1", "hash2"];
-    hashDictionary.mockResolvedValue(mockedHashedDictionary);
+    hashDictionary.mockResolvedValue([
+      'aaa111',
+      'hashed_password',
+      'bbb222',
+      'ccc333',
+    ]);
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
+    expect(result).toEqual(['password']);
+  });
 
+  it('should return an empty array if no matches found', async () => {
+    const dictionaryBatch = ['123456', 'password'];
+    const targetHashes = ['no_match1', 'no_match2'];
+
+    hashDictionary.mockResolvedValue(['hash1', 'hash2']);
+
+    const result = await dictionaryAttack(targetHashes, dictionaryBatch);
     expect(result).toEqual([]);
   });
 
-  it("should handle an empty dictionary", async () => {
+  it('should handle an empty dictionary', async () => {
     const dictionaryBatch = [];
-    const targetHashes = ["hash1"];
+    const targetHashes = ['hash1'];
 
-    const mockedHashedDictionary = [];
-    hashDictionary.mockResolvedValue(mockedHashedDictionary);
+    hashDictionary.mockResolvedValue([]);
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
-
     expect(result).toEqual([]);
   });
 });
