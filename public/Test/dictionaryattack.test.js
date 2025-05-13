@@ -2,12 +2,12 @@
 import { jest } from "@jest/globals";
 
 // Mock before importing
-jest.unstable_mockModule("./Test/worker.js", () => ({
+jest.unstable_mockModule("./worker.js", () => ({
   hashDictionary: jest.fn(),
 }));
 
 // Import after mocking
-const { dictionaryAttack, hashDictionary } = await import("./Test/worker.js");
+const { dictionaryAttack, hashDictionary } = await import("./worker");
 
 describe("dictionaryAttack", () => {
   beforeEach(() => {
