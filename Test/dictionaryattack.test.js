@@ -1,25 +1,30 @@
-// dictionaryAttack.test.js
+// Import the function to test
+const { dictionaryAttack, hashDictionary } = require("public/js/worker.js");
 
-import { jest } from "@jest/globals";
-import { dictionaryAttack } from "../public/js/worker.js";
-import * as dictionaryUtils from "../public/js/worker.js";
+// Mock the hashDictionary dependency
+jest.mock("./dictionaryAttackUtils", () => ({
+  hashDictionary: jest.fn(),
+}));
 
 describe("dictionaryAttack", () => {
-  beforeEach(() => {
-    // Reset mock between tests
-    jest.restoreAllMocks();
-  });
-
   it("should return weak passwords that match target hashes", async () => {
     const dictionaryBatch = ["123456", "password", "admin", "letmein"];
     const targetHashes = ["abc123", "hashed_password", "xyz789"];
 
-    // Mock the hashDictionary function inside the module
-    jest
-      .spyOn(dictionaryUtils, "hashDictionary")
-      .mockResolvedValue(["aaa111", "hashed_password", "bbb222", "ccc333"]);
+    // Mocked hashed output of dictionaryBatch
+    const mockedHashedDictionary = [
+      "aaa111",
+      "hashed_password",
+      "bbb222",
+      "ccc333",
+    ];
+    hashDictionary.mockResolvedValue(mockedHashedDictionary);
+
+    // Import function under test after mocking
+    const { dictionaryAttack } = require("./dictionaryAttack");
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
+
     expect(result).toEqual(["password"]);
   });
 
@@ -27,11 +32,11 @@ describe("dictionaryAttack", () => {
     const dictionaryBatch = ["123456", "password"];
     const targetHashes = ["no_match1", "no_match2"];
 
-    jest
-      .spyOn(dictionaryUtils, "hashDictionary")
-      .mockResolvedValue(["hash1", "hash2"]);
+    const mockedHashedDictionary = ["hash1", "hash2"];
+    hashDictionary.mockResolvedValue(mockedHashedDictionary);
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
+
     expect(result).toEqual([]);
   });
 
@@ -39,9 +44,11 @@ describe("dictionaryAttack", () => {
     const dictionaryBatch = [];
     const targetHashes = ["hash1"];
 
-    jest.spyOn(dictionaryUtils, "hashDictionary").mockResolvedValue([]);
+    const mockedHashedDictionary = [];
+    hashDictionary.mockResolvedValue(mockedHashedDictionary);
 
     const result = await dictionaryAttack(targetHashes, dictionaryBatch);
+
     expect(result).toEqual([]);
   });
 });
