@@ -1,5 +1,5 @@
 // workerLogic.js
-async function dictionaryAttack(targetHashes, dictionaryBatch) {
+export async function dictionaryAttack(targetHashes, dictionaryBatch) {
   const hashedDictionary = await hashDictionary(dictionaryBatch);
   const targetHashSet = new Set(targetHashes);
 
@@ -8,7 +8,7 @@ async function dictionaryAttack(targetHashes, dictionaryBatch) {
   );
 }
 
-async function hashDictionary(dictionary) {
+export async function hashDictionary(dictionary) {
   return Promise.all(dictionary.map(hashSHA512));
 }
 
@@ -19,5 +19,3 @@ async function hashSHA512(message) {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
-
-export { dictionaryAttack, hashDictionary };
