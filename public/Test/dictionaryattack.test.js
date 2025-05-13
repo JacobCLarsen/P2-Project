@@ -3,7 +3,7 @@ import { jest } from "@jest/globals";
 import { dictionaryAttack, hashDictionary } from "./workerFunctions.js";
 
 // Mock before importing
-jest.unstable_mockModule("./workerFunction.js", () => ({
+jest.unstable_mockModule("./workerFunctions.js", () => ({
   hashDictionary: jest.fn(),
 }));
 
