@@ -1,24 +1,25 @@
-// Import or define the function and dependencies
-import {
-  handleRequestTask,
-  __setQueues__,
-  __resetMocks__,
-} from "./assigntaskutils.js"; // adjust the path as needed
-
+// Enable Jest ESM mocking
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
   startNewMainTask: jest.fn(),
   notifyNoMoreTasks: jest.fn(),
   wsSend: jest.fn(),
+  __setQueues__: jest.fn(),
+  __resetMocks__: jest.fn(),
 }));
 
-import {
+// Import AFTER mocking
+const { handleRequestTask, __setQueues__, __resetMocks__ } = await import(
+  "./assigntaskutils.js"
+);
+
+const {
   assignTaskFromCurrentQueue,
   reassignUncompletedTask,
   startNewMainTask,
   notifyNoMoreTasks,
-} from "./assigntaskutils.js";
+} = await import("./assigntaskutils.js");
 
 describe("handleRequestTask", () => {
   let mockWs;
@@ -26,9 +27,18 @@ describe("handleRequestTask", () => {
   beforeEach(() => {
     mockWs = { id: "client1" };
     __resetMocks__();
+    jest.clearAllMocks();
   });
 
   test("should assign task from current queue if available", async () => {
+    __setQueues__.mockImplementation(
+      ({ currentTaskQueue, taskWaitingForResult, mainTaskQueue }) => {
+        global.currentTaskQueue = currentTaskQueue;
+        global.taskWaitingForResult = taskWaitingForResult;
+        global.mainTaskQueue = mainTaskQueue;
+      }
+    );
+
     __setQueues__({
       currentTaskQueue: [{ id: "task1" }],
       taskWaitingForResult: [],
