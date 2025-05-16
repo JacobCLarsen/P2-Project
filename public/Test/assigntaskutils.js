@@ -128,12 +128,51 @@ function wsSend(ws, data) {
   }
 }
 
+function startNewMainTask() {
+  console.log("Starting new task from main queue");
+
+  const task = mainTaskQueue[0];
+  if (!task) {
+    console.error("No main tasks available.");
+    return false;
+  }
+
+  try {
+    currentTaskQueue = startNewTask(task, dictionaryNumberOfBatches) || [];
+    console.log(`Populated current queue with subtasks from task ${task.id}`);
+    return currentTaskQueue.length > 0;
+  } catch (err) {
+    console.error(`Failed to start new main task ${task.id}:`, err);
+    return false;
+  }
+}
+
+function startNewTask(task) {
+  const numberBatches = task.numberBatches;
+  // Validate input parameters
+  if (!task || !Array.isArray(task.hashes)) {
+    throw new Error("Invalid task object. 'hashes' must be an array.");
+  }
+  if (typeof numberBatches !== "number" || numberBatches <= 0) {
+    throw new Error("Invalid numberBatches. It must be a positive number.");
+  }
+
+  // Split dictionary into batches
+  const batchesArray = splitDictionary(dictionaryPath, numberBatches);
+  if (!Array.isArray(batchesArray)) {
+    throw new Error("splitDictionary must return an array.");
+  }
+
+  // Create sub-tasks using map for cleaner code
+  return batchesArray.map((batch) => new SubTask(batch, task.hashes));
+}
+
 export {
   __setQueues__,
   __resetMocks__,
   handleRequestTask,
   reassignUncompletedTask,
-  startNewTask,
+  startNewMainTask,
   wsSend,
   assignTaskFromCurrentQueue,
   notifyNoMoreTasks,
