@@ -1,5 +1,7 @@
 import { handleResultReceived } from "./handleResultReceived.js"; // Update path as needed
 
+import { jest } from "@jest/globals";
+
 let mockComplete;
 let mockStorePasswordsOnDatabase;
 let mockAddPoints;
