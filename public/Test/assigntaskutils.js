@@ -52,15 +52,16 @@ async function handleRequestTask(ws) {
 function assignTaskFromCurrentQueue(ws) {
   console.log("Assigning task from current queue");
 
+  let taskToSend;
+
   try {
-    const taskToSend = currentTaskQueue.shift();
+    taskToSend = currentTaskQueue.shift();
     if (!taskToSend) {
       console.warn("No task available to assign from current queue.");
       notifyNoMoreTasks(ws);
       return;
     }
 
-    taskToSend.retries = taskToSend.retries || 0; // Initialize retries if undefined
     taskWaitingForResult.push(taskToSend);
 
     const success = wsSend(ws, {
@@ -76,6 +77,9 @@ function assignTaskFromCurrentQueue(ws) {
   } catch (err) {
     console.error(err.message);
     notifyNoMoreTasks(ws);
+
+    taskWaitingForResult.pop(); // Remove from task waiting for results, as it was not send
+    currentTaskQueue.unshift(taskToSend); // Add the task back to the current queue at the front
   }
 }
 

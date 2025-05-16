@@ -209,7 +209,6 @@ function assignTaskFromCurrentQueue(ws) {
     return;
   }
 
-  taskToSend.retries = taskToSend.retries || 0; // Initialize retries if undefined
   taskWaitingForResult.push(taskToSend);
 
   const success = wsSend(ws, {
