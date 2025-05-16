@@ -2,7 +2,34 @@ import { jest } from "@jest/globals";
 
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
-  handleRequestTask: jest.fn(),
+  handleRequestTask: jest.fn()(async (ws) => {
+    console.log(`Client ${ws.id} requested a task`);
+
+    try {
+      if (currentTaskQueue.length > 0) {
+        assignTaskFromCurrentQueue(ws);
+      } else if (taskWaitingForResult.length > 0) {
+        await reassignUncompletedTask(ws);
+      } else if (mainTaskQueue.length > 0) {
+        if (startNewMainTask()) {
+          assignTaskFromCurrentQueue(ws);
+        } else {
+          console.error("Failed to start a new main task.");
+          notifyNoMoreTasks(ws);
+        }
+      } else {
+        notifyNoMoreTasks(ws);
+      }
+    } catch (err) {
+      console.error("Error handling task request:", err);
+      notifyNoMoreTasks(ws);
+    }
+
+    // Debug
+    console.log(mainTaskQueue.length);
+    console.log(currentTaskQueue.length);
+    console.log(taskWaitingForResult.length);
+  }),
   reassignUncompletedTask: jest.fn(),
   startNewMainTask: jest.fn(),
   notifyNoMoreTasks: jest.fn(),
