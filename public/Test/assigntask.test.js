@@ -1,8 +1,5 @@
-// assigntask.test.js (ESM) or .mjs if needed
-// Tell Jest to treat this as ESM: either rename to `.mjs` or use `"type": "module"` in package.json
 import { jest } from "@jest/globals";
 
-// 1. Mock BEFORE importing
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
@@ -14,7 +11,6 @@ jest.unstable_mockModule("./assigntaskutils.js", () => ({
   __resetMocks__: jest.fn(),
 }));
 
-// 2. Dynamically import AFTER mocking
 const { handleRequestTask, __setQueues__, __resetMocks__ } = await import(
   "./assigntaskutils.js"
 );
@@ -32,12 +28,7 @@ describe("handleRequestTask", () => {
   beforeEach(() => {
     mockWs = { id: "client1" };
 
-    // Reset internal states if needed
-    __resetMocks__.mockClear();
-    assignTaskFromCurrentQueue.mockClear();
-    reassignUncompletedTask.mockClear();
-    startNewMainTask.mockClear();
-    notifyNoMoreTasks.mockClear();
+    jest.clearAllMocks(); // resets all mock calls
   });
 
   test("should assign task from current queue if available", async () => {
@@ -148,7 +139,6 @@ describe("handleRequestTask", () => {
   });
 
   test("should handle error and notify no more tasks", async () => {
-    // Simulate assignTaskFromCurrentQueue throwing during execution
     assignTaskFromCurrentQueue.mockImplementation(() => {
       throw new Error("Boom");
     });
