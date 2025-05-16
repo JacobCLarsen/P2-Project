@@ -52,29 +52,30 @@ async function handleRequestTask(ws) {
 function assignTaskFromCurrentQueue(ws) {
   console.log("Assigning task from current queue");
 
-  const taskToSend = currentTaskQueue.shift();
-  if (!taskToSend) {
-    console.warn("No task available to assign from current queue.");
-    notifyNoMoreTasks(ws);
-    return;
-  }
+  try {
+    const taskToSend = currentTaskQueue.shift();
+    if (!taskToSend) {
+      console.warn("No task available to assign from current queue.");
+      notifyNoMoreTasks(ws);
+      return;
+    }
 
-  taskToSend.retries = taskToSend.retries || 0; // Initialize retries if undefined
-  taskWaitingForResult.push(taskToSend);
+    taskToSend.retries = taskToSend.retries || 0; // Initialize retries if undefined
+    taskWaitingForResult.push(taskToSend);
 
-  const success = wsSend(ws, {
-    action: "new task",
-    subTask: taskToSend,
-  });
+    const success = wsSend(ws, {
+      action: "new task",
+      subTask: taskToSend,
+    });
 
-  if (!success) {
-    console.error(
-      `Failed to send task ${taskToSend.id}. Removing from waiting list.`
-    );
-    taskWaitingForResult.pop(); // Remove it if failed to send
-    currentTaskQueue.unshift(taskToSend); // Requeue for later
-  } else {
+    if (!success) {
+      throw new Error(`Failed to send task ${taskToSend.id}`);
+    }
+
     console.log(`Task ${taskToSend.id} sent to client ${ws.id}`);
+  } catch (err) {
+    console.error(err.message);
+    notifyNoMoreTasks(ws);
   }
 }
 
