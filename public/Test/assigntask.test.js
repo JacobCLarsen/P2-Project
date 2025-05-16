@@ -148,14 +148,9 @@ describe("handleRequestTask", () => {
   });
 
   test("should handle error and notify no more tasks", async () => {
+    // Simulate assignTaskFromCurrentQueue throwing during execution
     assignTaskFromCurrentQueue.mockImplementation(() => {
       throw new Error("Boom");
-    });
-
-    __setQueues__.mockImplementation(({ currentTaskQueue }) => {
-      if (currentTaskQueue.length > 0) {
-        assignTaskFromCurrentQueue(mockWs); // throws
-      }
     });
 
     __setQueues__({
