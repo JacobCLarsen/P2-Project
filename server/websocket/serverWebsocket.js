@@ -417,6 +417,7 @@ async function handleResultReceived(message) {
   updateTaskQueue();
   updateCompletedTasks();
 }
+
 // When a socket disconnects (closes the browser tap), remove them from arays and update the dashboard
 function handleSocketDisconnect(ws) {
   console.log(`worker disconnected with id: ${ws.id}`);

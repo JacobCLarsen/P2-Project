@@ -10,7 +10,7 @@ class Task {
     this.completed = 0;
     this.id = Math.floor(10000000 + Math.random() * 90000000); // ID to keep track of task complesion
     this.results = [];
-    this.user_id = user_id
+    this.user_id = user_id;
   }
 
   // Function to mark the task as completed
@@ -21,7 +21,7 @@ class Task {
 
 // Constructor of the a new task, from a list of hashes
 export function createTask(hashes, user_id) {
-  const numBatches = Math.ceil(hashes.length / 500);
+  const numBatches = Math.ceil(hashes.length / 1000);
   const newTask = new Task(hashes, numBatches, user_id); // Create a new task with the given hashes and number of batches
 
   return newTask;
