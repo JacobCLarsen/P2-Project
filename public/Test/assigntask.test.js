@@ -1,18 +1,15 @@
 import { jest } from "@jest/globals";
 
-jest.unstable_mockModule("./assigntaskutils.js", async () => {
-  const actual = await import("./assigntaskutils.js");
-  return {
-    ...actual,
-    assignTaskFromCurrentQueue: jest.fn(),
-    reassignUncompletedTask: jest.fn(),
-    startNewMainTask: jest.fn(),
-    notifyNoMoreTasks: jest.fn(),
-    wsSend: jest.fn(),
-    __setQueues__: jest.fn(),
-    __resetMocks__: jest.fn(),
-  };
-});
+jest.unstable_mockModule("./assigntaskutils.js", () => ({
+  assignTaskFromCurrentQueue: jest.fn(),
+  handleRequestTask: jest.fn(),
+  reassignUncompletedTask: jest.fn(),
+  startNewMainTask: jest.fn(),
+  notifyNoMoreTasks: jest.fn(),
+  wsSend: jest.fn(),
+  __setQueues__: jest.fn(),
+  __resetMocks__: jest.fn(),
+}));
 
 const {
   handleRequestTask,
