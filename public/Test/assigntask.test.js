@@ -24,11 +24,6 @@ jest.unstable_mockModule("./assigntaskutils.js", () => ({
       console.error("Error handling task request:", err);
       notifyNoMoreTasks(ws);
     }
-
-    // Debug
-    console.log(mainTaskQueue.length);
-    console.log(currentTaskQueue.length);
-    console.log(taskWaitingForResult.length);
   }),
   reassignUncompletedTask: jest.fn(),
   startNewMainTask: jest.fn(),
