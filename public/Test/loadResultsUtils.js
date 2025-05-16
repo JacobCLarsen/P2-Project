@@ -129,4 +129,4 @@ async function clearResults() {
   }
 }
 
-export { showResults, shownoResults, authenticateUser };
+export { loadResults, showResults, shownoResults, authenticateUser };
