@@ -50,6 +50,7 @@ const { loadResults, authenticateUser, showResults, shownoResults } =
 describe("loadResults", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    console.error = jest.fn();
   });
 
   test("fetches and displays passwords on success", async () => {
