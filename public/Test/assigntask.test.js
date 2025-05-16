@@ -1,4 +1,6 @@
 // Enable Jest ESM mocking
+import { jest } from "@jest/globals";
+
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
