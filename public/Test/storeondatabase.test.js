@@ -65,6 +65,24 @@ test("parses and inserts passwords from string", async () => {
   );
 });
 
+test("stores each password with the correct user_id", async () => {
+  const task = {
+    results: ["pw1", "pw2", "pw3"],
+    user_id: 777,
+  };
+
+  await storePasswordsOnDatabase(task);
+
+  for (let i = 0; i < task.results.length; i++) {
+    expect(mockQuery).toHaveBeenNthCalledWith(
+      i + 1,
+      "INSERT INTO passwords (password, user_id) VALUES (?, ?)",
+      [task.results[i], 777],
+      expect.any(Function)
+    );
+  }
+});
+
 test("logs error if passwords are missing or invalid", async () => {
   const invalidTasks = [
     { results: null, user_id: 1 },
