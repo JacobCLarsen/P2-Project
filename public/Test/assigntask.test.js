@@ -7,6 +7,7 @@ jest.unstable_mockModule("./assigntaskutils.js", () => ({
   startNewMainTask: jest.fn(),
   notifyNoMoreTasks: jest.fn(),
   wsSend: jest.fn(),
+  handleRequestTask: jest.fn(),
   __setQueues__: jest.fn(),
   __resetMocks__: jest.fn(),
 }));
