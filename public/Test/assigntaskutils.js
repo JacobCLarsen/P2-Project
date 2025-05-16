@@ -128,7 +128,7 @@ function wsSend(ws, data) {
   }
 }
 
-export default {
+export {
   handleRequestTask,
   __setQueues__,
   __resetMocks__,
