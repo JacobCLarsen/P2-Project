@@ -10,15 +10,14 @@ jest.unstable_mockModule("./assigntaskutils.js", () => ({
   __resetMocks__: jest.fn(),
 }));
 
-const { handleRequestTask, __setQueues__, __resetMocks__ } = await import(
-  "./assigntaskutils.js"
-);
-
 const {
-  assignTaskFromCurrentQueue,
-  reassignUncompletedTask,
-  startNewMainTask,
-  notifyNoMoreTasks,
+    handleRequestTask,
+    __setQueues__,
+    __resetMocks__,
+    assignTaskFromCurrentQueue,
+    reassignUncompletedTask,
+    startNewMainTask,
+    notifyNoMoreTasks,
 } = await import("./assigntaskutils.js");
 
 describe("handleRequestTask", () => {
