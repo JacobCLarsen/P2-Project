@@ -3,7 +3,7 @@
 import { jest } from "@jest/globals";
 
 // 1. Mock BEFORE importing
-jest.unstable_mockModule("../assigntaskutils.js", () => ({
+jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
   startNewMainTask: jest.fn(),
@@ -16,7 +16,7 @@ jest.unstable_mockModule("../assigntaskutils.js", () => ({
 
 // 2. Dynamically import AFTER mocking
 const { handleRequestTask, __setQueues__, __resetMocks__ } = await import(
-  "../assigntaskutils.js"
+  "./assigntaskutils.js"
 );
 
 const {
@@ -24,7 +24,7 @@ const {
   reassignUncompletedTask,
   startNewMainTask,
   notifyNoMoreTasks,
-} = await import("../assigntaskutils.js");
+} = await import("./assigntaskutils.js");
 
 describe("handleRequestTask", () => {
   let mockWs;
