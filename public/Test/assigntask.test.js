@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 
+jest.spyOn(taskUtils, "notifyNoMoreTasks");
+
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
@@ -115,42 +117,43 @@ describe("handleRequestTask", () => {
   });
 
   test("should notify no more tasks if all queues are empty", async () => {
-    __setQueues__.mockImplementation(
-      ({ currentTaskQueue, taskWaitingForResult, mainTaskQueue }) => {
-        if (
-          currentTaskQueue.length === 0 &&
-          taskWaitingForResult.length === 0 &&
-          mainTaskQueue.length === 0
-        ) {
-          notifyNoMoreTasks(mockWs);
-        }
-      }
-    );
-
+    // No need to mock __setQueues__ like this:
     __setQueues__({
       currentTaskQueue: [],
       taskWaitingForResult: [],
       mainTaskQueue: [],
     });
 
+    // Spy on notifyNoMoreTasks to track actual usage
+    const spy = jest.spyOn(taskUtils, "notifyNoMoreTasks");
+
     await handleRequestTask(mockWs);
 
-    expect(notifyNoMoreTasks).toHaveBeenCalledWith(mockWs);
+    expect(spy).toHaveBeenCalledWith(mockWs);
   });
 
   test("should handle error and notify no more tasks", async () => {
-    assignTaskFromCurrentQueue.mockImplementation(() => {
-      throw new Error("Boom");
-    });
+    jest.spyOn(taskUtils, "notifyNoMoreTasks");
+    jest
+      .spyOn(taskUtils, "assignTaskFromCurrentQueue")
+      .mockImplementation(() => {
+        throw new Error("Boom");
+      });
 
-    __setQueues__({
+    taskUtils.__setQueues__({
       currentTaskQueue: [{ id: "task1" }],
       taskWaitingForResult: [],
       mainTaskQueue: [],
     });
 
-    await handleRequestTask(mockWs);
+    await taskUtils.handleRequestTask({
+      id: "client1",
+      readyState: 1,
+      send: jest.fn(),
+    });
 
-    expect(notifyNoMoreTasks).toHaveBeenCalledWith(mockWs);
+    expect(taskUtils.notifyNoMoreTasks).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "client1" })
+    );
   });
 });
