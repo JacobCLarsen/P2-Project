@@ -28,7 +28,7 @@ beforeEach(() => {
   global.updateCompletedTasks = mockUpdateCompletedTasks;
 });
 
-test("logs no result if message.result is undefined", async () => {
+test("logs no password found if message.result is undefined", async () => {
   const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   const message = { taskId: "abc123", user_id: "user1" };
 
@@ -82,7 +82,7 @@ test("stores task on DB if all subtasks are completed", async () => {
   const message = {
     taskId: "task2",
     user_id: "user1",
-    result: ["r1"],
+    result: ["result1"],
   };
 
   await handleResultReceived(message);
@@ -90,12 +90,12 @@ test("stores task on DB if all subtasks are completed", async () => {
   expect(mockStorePasswordsOnDatabase).toHaveBeenCalledWith(
     expect.objectContaining({
       id: "main2",
-      results: ["r1"],
+      results: ["result1"],
     })
   );
 });
 
-test("logs when task is already completed and not in waiting queue", async () => {
+test("logs when task is already completed by another worker", async () => {
   global.taskWaitingForResult = [];
   const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   const message = {
@@ -112,7 +112,7 @@ test("logs when task is already completed and not in waiting queue", async () =>
   consoleSpy.mockRestore();
 });
 
-test("logs if main task is already removed", async () => {
+test("logs if main task of the subtask result sent is already completed", async () => {
   const mockTask = { id: "task3", complete: mockComplete };
   global.taskWaitingForResult = [mockTask];
   global.mainTaskQueue = [];
