@@ -8,6 +8,7 @@ const mockAuthenticateUser = jest.fn();
 
 jest.unstable_mockModule("./loadResultsUtils.js", () => ({
   loadResults: jest.fn(async () => {
+    let user_id;
     try {
       const user = await authenticateUser();
       user_id = user.userId;
