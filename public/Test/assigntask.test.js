@@ -5,7 +5,7 @@ import {
   __resetMocks__,
 } from "./assigntaskutils.js"; // adjust the path as needed
 
-jest.mock("./assigntaskutils.js", () => ({
+jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
   startNewMainTask: jest.fn(),
