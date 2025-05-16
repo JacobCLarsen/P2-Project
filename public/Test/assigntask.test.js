@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
-  handleRequestTask: jest.fn()(async (ws) => {
+  handleRequestTask: jest.fn(async (ws) => {
     console.log(`Client ${ws.id} requested a task`);
 
     try {
