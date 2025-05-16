@@ -129,7 +129,6 @@ function wsSend(ws, data) {
 }
 
 export {
-  handleRequestTask,
   __setQueues__,
   __resetMocks__,
   handleRequestTask,
