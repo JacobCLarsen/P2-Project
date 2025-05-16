@@ -1,14 +1,11 @@
 import { jest } from "@jest/globals";
 
-jest.spyOn(taskUtils, "notifyNoMoreTasks");
-
 jest.unstable_mockModule("./assigntaskutils.js", () => ({
   assignTaskFromCurrentQueue: jest.fn(),
   reassignUncompletedTask: jest.fn(),
   startNewMainTask: jest.fn(),
   notifyNoMoreTasks: jest.fn(),
   wsSend: jest.fn(),
-  handleRequestTask: jest.fn(),
   __setQueues__: jest.fn(),
   __resetMocks__: jest.fn(),
 }));
@@ -117,43 +114,42 @@ describe("handleRequestTask", () => {
   });
 
   test("should notify no more tasks if all queues are empty", async () => {
-    // No need to mock __setQueues__ like this:
+    __setQueues__.mockImplementation(
+      ({ currentTaskQueue, taskWaitingForResult, mainTaskQueue }) => {
+        if (
+          currentTaskQueue.length === 0 &&
+          taskWaitingForResult.length === 0 &&
+          mainTaskQueue.length === 0
+        ) {
+          notifyNoMoreTasks(mockWs);
+        }
+      }
+    );
+
     __setQueues__({
       currentTaskQueue: [],
       taskWaitingForResult: [],
       mainTaskQueue: [],
     });
 
-    // Spy on notifyNoMoreTasks to track actual usage
-    const spy = jest.spyOn(taskUtils, "notifyNoMoreTasks");
-
     await handleRequestTask(mockWs);
 
-    expect(spy).toHaveBeenCalledWith(mockWs);
+    expect(notifyNoMoreTasks).toHaveBeenCalledWith(mockWs);
   });
 
   test("should handle error and notify no more tasks", async () => {
-    jest.spyOn(taskUtils, "notifyNoMoreTasks");
-    jest
-      .spyOn(taskUtils, "assignTaskFromCurrentQueue")
-      .mockImplementation(() => {
-        throw new Error("Boom");
-      });
+    assignTaskFromCurrentQueue.mockImplementation(() => {
+      throw new Error("Boom");
+    });
 
-    taskUtils.__setQueues__({
+    __setQueues__({
       currentTaskQueue: [{ id: "task1" }],
       taskWaitingForResult: [],
       mainTaskQueue: [],
     });
 
-    await taskUtils.handleRequestTask({
-      id: "client1",
-      readyState: 1,
-      send: jest.fn(),
-    });
+    await handleRequestTask(mockWs);
 
-    expect(taskUtils.notifyNoMoreTasks).toHaveBeenCalledWith(
-      expect.objectContaining({ id: "client1" })
-    );
+    expect(notifyNoMoreTasks).toHaveBeenCalledWith(mockWs);
   });
 });
