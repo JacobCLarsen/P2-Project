@@ -7,6 +7,36 @@ const mockShowNoResults = jest.fn();
 const mockAuthenticateUser = jest.fn();
 
 jest.unstable_mockModule("./loadResultsUtils.js", () => ({
+  loadResults: jest.fn(async () => {
+    try {
+      const user = await authenticateUser();
+      user_id = user.userId;
+      await fetch(`passwordsDB?user_id=${user_id}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch hashes");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Server response:", data);
+          const passwords = data.passwords.map((row) => row.password);
+          if (passwords.length > 0) {
+            showResults(passwords);
+          } else {
+            shownoResults();
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching hashes", error);
+        });
+    } catch (error) {
+      console.error("Error during authentication or fetching data:", error);
+    }
+  }),
   authenticateUser: mockAuthenticateUser,
   showResults: mockShowResults,
   shownoResults: mockShowNoResults,
