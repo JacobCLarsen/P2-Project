@@ -216,6 +216,48 @@ export function setupDatabaseRoutes(app) {
       });
     }
   });
+
+  app.put("/passwordsDBDelete", (req, res) => {
+    try {
+      // Extract User ID from the Query Parameters
+      const user_id = req.query.user_id;
+
+      // SQL Query to Delete Weak Passwords for the given User ID
+      const query = "DELETE FROM passwords WHERE user_id = ?";
+      DBConnection.query(query, user_id, (err, results) => {
+        if (err) {
+          // Log and Return an Error if the Query Fails
+          console.error("Database query error:", err);
+          return res.status(500).json({
+            success: false,
+            message: "Database query failed",
+          });
+        }
+
+        // If No Rows are Affected, Return a Not Found Error Message
+        if (results.affectedRows === 0) {
+          return res.status(404).json({
+            success: false,
+            message: `No passwords found for user with ID ${user_id}`,
+          });
+        }
+
+        console.log("Deleted Passwords:", results); // Debug Log
+        // Respond With a Success Message if the Deletion is Successful
+        res.json({
+          success: true,
+          message: "Passwords deleted successfully",
+        });
+      });
+    } catch (error) {
+      // Log and Return an Error if Any Exception Occurs
+      console.error("Password route error:", error);
+      res.status(401).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  });
 }
 
 // Export the database connection object
