@@ -151,4 +151,5 @@ async function clearResults() {
   } catch (error) {
     console.error("Error during authentication or deleting data:", error);
   }
+  
 }
