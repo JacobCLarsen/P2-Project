@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button>Converter</button>
         </a>
         <a href="leaderboard" class="link">
-            <button>Reward</button>
+            <button>Leaderboard</button>
         </a>
     </div>
     <div id="navbar-profile-container">
