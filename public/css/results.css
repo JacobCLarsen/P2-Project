@@ -10,8 +10,8 @@
   height: 25px;
   font-size: 15px;
   width: auto;
-  background-color: white;
-  border-radius: 10px;
+  border: 1px solid gray;
+  background-color: lightgray;
 }
 
 .noResultMessage {
@@ -29,5 +29,4 @@
   flex-direction: column;
   width: 60%;
   gap: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
