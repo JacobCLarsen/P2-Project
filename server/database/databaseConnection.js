@@ -217,7 +217,6 @@ export function setupDatabaseRoutes(app) {
     }
   });
 
-<<<<<<< Updated upstream
   app.put("/passwordsDBDelete", (req, res) => {
     try {
       // Extract User ID from the Query Parameters
@@ -259,10 +258,6 @@ export function setupDatabaseRoutes(app) {
       });
     }
   });
-=======
-  
-  
->>>>>>> Stashed changes
 }
 
 // Export the database connection object
