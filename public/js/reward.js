@@ -44,7 +44,7 @@ function loadLeaderboard(usersFromServer) {
     } else if (user_ranking === 2) {
       board.innerHTML += `
       <div class='user'>
-        <span>&#12935 2${user.username}</span>
+        <span>&#129352 ${user.username}</span>
         <span>${user.score} Points</span>
       </div>
     `;
@@ -58,7 +58,7 @@ function loadLeaderboard(usersFromServer) {
     } else {
       board.innerHTML += `
       <div class='user'>
-        <span>${user.username}</span>
+        <span style="margin: 0 0 0 0.5rem;">${user.username}</span>
         <span>${user.score} Points</span>
       </div>
     `;
