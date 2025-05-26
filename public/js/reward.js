@@ -58,7 +58,7 @@ function loadLeaderboard(usersFromServer) {
     } else {
       board.innerHTML += `
       <div class='user'>
-        <span style="margin: 0 0 0 0.5rem;">${user.username}</span>
+        <span class="leaderboard-no-rank">${user.username}</span>
         <span>${user.score} Points</span>
       </div>
     `;
