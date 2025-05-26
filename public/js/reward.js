@@ -34,35 +34,15 @@ function loadLeaderboard(usersFromServer) {
 
   let user_ranking = 1;
   usersFromServer.forEach((user) => {
-    if (user_ranking === 1) {
-      board.innerHTML += `
+    const rankEmojis = ["&#129351", "&#129352", "&#129353"];
+    const rankEmoji = rankEmojis[user_ranking - 1] || "";
+
+    board.innerHTML += `
       <div class='user'>
-      <span>&#129351 ${user.username}</span>
+      <span>${rankEmoji} ${user.username}</span>
       <span>${user.score} Points</span>
       </div>
     `;
-    } else if (user_ranking === 2) {
-      board.innerHTML += `
-      <div class='user'>
-        <span>&#129352 ${user.username}</span>
-        <span>${user.score} Points</span>
-      </div>
-    `;
-    } else if (user_ranking === 3) {
-      board.innerHTML += `
-      <div class='user'>
-        <span>&#129353 ${user.username}</span>
-        <span>${user.score} Points</span>
-      </div>
-    `;
-    } else {
-      board.innerHTML += `
-      <div class='user'>
-        <span class="leaderboard-no-rank"> ${user.username}</span>
-        <span>${user.score} Points</span>
-      </div>
-    `;
-    }
     user_ranking++;
   });
 }
