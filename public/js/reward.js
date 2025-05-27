@@ -1,8 +1,9 @@
+// Fetch user data from the /user table in the database. Users are added to an array and sorted by number of points
 async function fetchData() {
   try {
     const response = await fetch("get-leaderboard", {
       method: "GET",
-      headers: { "Content-Type": "application/json" }, //Specify JSON format
+      headers: { "Content-Type": "application/json" },
     });
 
     console.log("Response status:", response.status); // Debug log
@@ -28,12 +29,14 @@ async function fetchData() {
   }
 }
 
+// Display the leaderboard on the page, by changing the "board" element in the webpage to display users in order of most points
 function loadLeaderboard(usersFromServer) {
   const board = document.getElementById("leaderboard");
   board.innerHTML = "";
 
   let user_ranking = 1;
   usersFromServer.forEach((user) => {
+    // The top three users get a medal (gold, silver, and bronze) the "rankEmojis" array contains html entities for the medals
     const rankEmojis = ["&#129351", "&#129352", "&#129353"];
     const rankEmoji = rankEmojis[user_ranking - 1] || "";
 
@@ -47,4 +50,7 @@ function loadLeaderboard(usersFromServer) {
   });
 }
 
-fetchData();
+// The leaderboard is updated and displayed on page load
+window.addEventListener("load", () => {
+  fetchData();
+});
