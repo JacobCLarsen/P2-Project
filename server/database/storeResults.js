@@ -6,7 +6,6 @@ import DBConnection from "./databaseConnection.js";
  * URL: /store_results
  * Request Body: { weak_passwords: weakPasswords, task_id: taskID }
  */
-
 export async function storeResults(app) {
   app.post("/store_results", async (req, res) => {
     const { weakPasswords, taskId, token } = req.body; // Extract weakPasswords and taskId from the request body
